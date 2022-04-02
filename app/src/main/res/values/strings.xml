@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Football365</string>
+    <string name="title_matches">Matches</string>
+    <string name="title_bets">Bet Tips</string>
+    <string name="title_profile">Profile</string>
+    <string name="welcome">Welcome to Football365 app</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="login_hint">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="already_registered">I have already an account</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="repeatPassword_hint">Repeat Password</string>
+    <string name="register_hint">Register</string>
+    <string name="last_name_hint">Last Name</string>
+
+</resources>
