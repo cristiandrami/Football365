@@ -1,4 +1,4 @@
-package com.cristiandrami.football365;
+package com.cristiandrami.football365.ui.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +14,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.Utilities;
+import com.cristiandrami.football365.ui.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -30,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
 

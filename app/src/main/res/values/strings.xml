@@ -10,7 +10,7 @@
     <string name="email_hint">Email</string>
     <string name="already_registered">I have already an account</string>
     <string name="first_name_hint">First Name</string>
-    <string name="repeatPassword_hint">Repeat Password</string>
+    <string name="repeat_password_hint">Repeat Password</string>
     <string name="register_hint">Register</string>
     <string name="last_name_hint">Last Name</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -21,9 +21,15 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="sign_up_to_continue">SignUp to continue</string>
+    <string name="sign_up_to_continue">Get on board, and experience football to the fullest</string>
     <string name="sign_in_to_continue">SignIn to continue</string>
     <string name="sign_up_hint">New here? Let\'s SignUp</string>
     <string name="splash_description_text">Enjoy football at 365°</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="sign_up">Sign Up</string>
 
 </resources>

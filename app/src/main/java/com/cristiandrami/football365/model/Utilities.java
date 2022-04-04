@@ -6,4 +6,5 @@ public class Utilities {
     public static final String SPLASH_TRANSACTION_TEXT_NAME = "welcome_text";
     public static String LOGIN_HINT ="Login";
     public static String SIGN_UP_HINT ="SigUp";
+    public static  String LOGIN_FAILED="Authentication failed. Please check your email or password...";
 }

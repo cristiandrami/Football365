@@ -10,8 +10,8 @@
     android:background="@color/yellow">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/loginLogo"
         android:src="@drawable/ic_baseline_sports_soccer_24"
         android:transitionName="logo_image"
@@ -19,11 +19,11 @@
         ></ImageView>
 
     <TextView
-        android:id="@+id/welcomeLoginText"
+        android:id="@+id/sign_up_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome"
-        android:textSize="40sp"
+        android:text="@string/sign_up"
+        android:textSize="25sp"
         android:transitionName="welcome_text"
         android:fontFamily="@font/bungee_regular"
         android:textColor="@color/black">
@@ -34,7 +34,7 @@
         android:id="@+id/sign_up_to_continue_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in_to_continue"
+        android:text="@string/sign_up_to_continue"
         android:textSize="18sp"
         android:textColor="@color/black">
 
@@ -45,6 +45,36 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/first_name_field_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/first_name_hint"
+            android:layout_marginBottom="5dp"
+            android:textColorHint="@color/black">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/first_name_field_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.google.android.material.textfield.TextInputEditText>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/last_name_field_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/last_name_hint"
+            android:layout_marginBottom="5dp"
+            android:textColorHint="@color/black">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/last_name_field_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.google.android.material.textfield.TextInputEditText>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,23 +108,34 @@
 
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/forget_password_button"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="@string/forgot_password"
-            android:textColor="@color/black"
-            android:layout_gravity="right"
-            android:background="@android:color/transparent"
-            android:elevation="0dp"
-            android:layout_margin="5dp"></Button>
-
-        <Button
-            android:id="@+id/login_button"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_hint"
+            android:id="@+id/repeat_password_field_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/black"
+            android:hint="@string/repeat_password_hint"
+            app:passwordToggleEnabled="true"
+            android:layout_marginTop="5dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/repeat_password_field_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"></com.google.android.material.textfield.TextInputEditText>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+        <Button
+            android:id="@+id/registration_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
             android:textColor="@color/white"
             android:layout_gravity="right"
             android:background="@color/black"
@@ -104,10 +145,10 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"></Button>
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up_hint"
+            android:text="@string/already_registered"
             android:textColor="@color/black"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
