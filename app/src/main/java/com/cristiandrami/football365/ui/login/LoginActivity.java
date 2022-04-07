@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.RegistrationActivity;
 import com.cristiandrami.football365.model.Utilities;
 import com.cristiandrami.football365.model.login.EmailPasswordUserLogin;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
     private Button loginButton;
+    private Button registrationLinkButton;
     private TextInputEditText emailTextField;
     private TextInputEditText passwordTextField;
     @Override
@@ -37,15 +39,31 @@ public class LoginActivity extends AppCompatActivity {
 
         if(firebaseAuth.getCurrentUser()!=null)
         {
-            goToMainActivity();
+            //goToMainActivity();
             //finish();
         }
         bindGraphicalObjects();
 
-        setListeners();
+        setLoginButtonListener();
+        setRegistrationButtonLinkListener();
     }
 
-    private void setListeners() {
+    private void setRegistrationButtonLinkListener() {
+        registrationLinkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToRegistrationActivity();
+            }
+        });
+
+    }
+
+    private void switchToRegistrationActivity() {
+        Intent switchToRegistrationActivity= new Intent(LoginActivity.this, RegistrationActivity.class);
+        startActivity(switchToRegistrationActivity);
+    }
+
+    private void setLoginButtonListener() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton= findViewById(R.id.login_button);
         emailTextField = findViewById(R.id.email_field_edit_text);
         passwordTextField = findViewById(R.id.password_field_edit_text);
+        registrationLinkButton= findViewById(R.id.register_button_link);
 
     }
 }
