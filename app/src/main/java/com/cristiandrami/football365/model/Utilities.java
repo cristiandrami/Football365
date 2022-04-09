@@ -1,5 +1,13 @@
 package com.cristiandrami.football365.model;
 
+import com.cristiandrami.football365.model.registration.ValidationUser;
+
+/**
+ * This class is a class that contains only Strings, it is used to make clean the code
+ * It is used to make flexible the code, here are stored all string used in other classes
+ * @author Cristian D. Dramisino
+ */
+
 public class Utilities {
 
     public static final String SPLASH_TRANSACTION_LOGO_NAME = "logo_image";
@@ -14,4 +22,11 @@ public class Utilities {
     public static final String LOGIN_HINT ="Login";
     public static final String SIGN_UP_HINT ="SigUp";
     public static final String LOGIN_FAILED="Authentication failed. Please check your email or password...";
+
+
+
+
+    public static final String FIREBASE_DOCUMENT_FIELD_EMAIL = "email";
+    public static final String FIREBASE_DOCUMENT_FIELD_FIRST_NAME = "firstName";
+    public static final String FIREBASE_DOCUMENT_FIELD_LAST_NAME = "lastName";
 }

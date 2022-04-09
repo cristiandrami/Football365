@@ -14,7 +14,7 @@ import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.RegistrationActivity;
 import com.cristiandrami.football365.model.Utilities;
-import com.cristiandrami.football365.model.login.EmailPasswordUserLogin;
+import com.cristiandrami.football365.model.login.UserLogin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,10 +37,9 @@ public class LoginActivity extends AppCompatActivity {
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
-        if(firebaseAuth.getCurrentUser()!=null)
-        {
-            //goToMainActivity();
-            //finish();
+        if(firebaseAuth.getCurrentUser()!=null) {
+            goToMainActivity();
+            finish();
         }
         bindGraphicalObjects();
 
@@ -73,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-        EmailPasswordUserLogin user= new EmailPasswordUserLogin();
+        UserLogin user= new UserLogin();
         user.setEmail(emailTextField.getText().toString());
         user.setPassword(passwordTextField.getText().toString());
 

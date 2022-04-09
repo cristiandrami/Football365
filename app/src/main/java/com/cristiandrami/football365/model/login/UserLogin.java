@@ -1,11 +1,11 @@
 package com.cristiandrami.football365.model.login;
 
-public class EmailPasswordUserLogin {
+public class UserLogin {
 
     private String email;
     private String password;
 
-    public EmailPasswordUserLogin() {
+    public UserLogin() {
     }
 
     public String getEmail() {

@@ -31,6 +31,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * This class is used as a Controller for the Registration Activity
+ * It contains all methods to manage the Registration Activity
+ *
+ * @author Cristian D. Dramisino
+ *
+ */
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
@@ -74,10 +83,10 @@ public class RegistrationActivity extends AppCompatActivity {
            public void onComplete(@NonNull Task<AuthResult> task) {
                if(task.isSuccessful()){
                    Map<String, Object> user = new HashMap<>();
-                   user.put("first name", newUser.getFirstName());
-                   user.put("last name", newUser.getLastName());
-                   user.put("email ", newUser.getEmail());
-                   addToDatabase(user);
+                   user.put("firstName", newUser.getFirstName());
+                   user.put("lastName", newUser.getLastName());
+                   user.put("email", newUser.getEmail());
+                   addToDatabase(user, newUser.getEmail());
                }
                else{
                    Toast.makeText(RegistrationActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
@@ -87,24 +96,21 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
-    private void addToDatabase(Map<String, Object> user) {
-        firestoneFirestoreDB.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+    private void addToDatabase(Map<String, Object> user, String email) {
+        firestoneFirestoreDB.collection("users").document(email).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.i("user","user added");
-                switchToMainActivity();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("registration error", e.toString());
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.i("user","user added");
+                    switchToMainActivity();
+                }
             }
         });
     }
 
     private void switchToMainActivity() {
-       // Intent switchToMainActivityIntent= new Intent(RegistrationActivity.this, MainActivity.class);
-        //startActivity(switchToMainActivityIntent);
+       Intent switchToMainActivityIntent= new Intent(RegistrationActivity.this, MainActivity.class);
+       startActivity(switchToMainActivityIntent);
     }
 
     private void setInvalidFields(ValidationUser validatedUser) {

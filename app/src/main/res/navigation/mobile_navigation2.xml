@@ -3,23 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation2"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_news"
+    >
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.cristiandrami.football365.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_news"
+        android:name="com.cristiandrami.football365.ui.home.NewsFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.cristiandrami.football365.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_matches"
+        android:name="com.cristiandrami.football365.ui.dashboard.MatchesFragment"
+        android:label="@string/title_matches"
+        tools:layout="@layout/fragment_matches" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.cristiandrami.football365.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_bets"
+        android:name="com.cristiandrami.football365.ui.notifications.BetsFragment"
+        android:label="@string/title_bets"
+        tools:layout="@layout/fragment_bets" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.cristiandrami.football365.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
