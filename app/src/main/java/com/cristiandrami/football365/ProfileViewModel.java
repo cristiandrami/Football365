@@ -1,6 +1,7 @@
 package com.cristiandrami.football365;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -11,7 +12,10 @@ import com.cristiandrami.football365.model.Utilities;
 import com.cristiandrami.football365.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -105,5 +109,60 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<String> getFullName() {
         return fullName;
+    }
+
+    public void updateInformation(User newInformation) {
+        String userEmail=newInformation.getEmail();
+
+        Log.e("update", userEmail);
+
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userEmail);
+        Map<String, Object> user= new HashMap<>();
+        user.put(Utilities.FIREBASE_DOCUMENT_FIELD_EMAIL, newInformation.getEmail());
+        user.put(Utilities.FIREBASE_DOCUMENT_FIELD_FIRST_NAME, newInformation.getFirstName());
+        user.put(Utilities.FIREBASE_DOCUMENT_FIELD_LAST_NAME, newInformation.getLastName());
+        docRef.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    email.setValue(newInformation.getEmail());
+                    firstName.setValue(newInformation.getFirstName());
+                    lastName.setValue(newInformation.getLastName());
+                    fullName.setValue(newInformation.getFirstName()+ " " + newInformation.getLastName());
+                }
+
+            }
+        });
+    }
+
+    public void updateAuthentication(String oldPassword, String newPassword) {
+
+        //TODO control
+       FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+       AuthCredential oldCredential = EmailAuthProvider.getCredential(user.getEmail(),oldPassword);
+       user.reauthenticate(oldCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+           @Override
+           public void onComplete(@NonNull Task<Void> task) {
+               if(task.isSuccessful()){
+                   user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                       @Override
+                       public void onComplete(@NonNull Task<Void> task) {
+
+                           if(task.isSuccessful()){
+                               Log.e("password", "updated "+ newPassword);
+                               return;
+                           }
+
+                       }
+                   });
+               }
+               else
+               {
+                   Log.e("update failed", "password not valid");
+               }
+
+           }
+       });
+
     }
 }

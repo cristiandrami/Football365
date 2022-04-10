@@ -39,5 +39,7 @@
     <string name="title_news">News</string>
     <string name="full_name_title">FullName</string>
     <string name="new_password_hint">New password</string>
+    <string name="update_hint">Update</string>
+    <string name="old_password_hint">Old Password</string>
 
 </resources>
