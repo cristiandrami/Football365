@@ -10,11 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Football365">
         <activity
+            android:name=".DetailedNewsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main" />
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".ui.registration.RegistrationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"

@@ -1,4 +1,4 @@
-package com.cristiandrami.football365.ui.dashboard;
+package com.cristiandrami.football365.ui.matches;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

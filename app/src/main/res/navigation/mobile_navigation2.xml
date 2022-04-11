@@ -8,25 +8,25 @@
 
     <fragment
         android:id="@+id/navigation_news"
-        android:name="com.cristiandrami.football365.ui.home.NewsFragment"
+        android:name="com.cristiandrami.football365.ui.news.NewsFragment"
         android:label="@string/title_news"
         tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/navigation_matches"
-        android:name="com.cristiandrami.football365.ui.dashboard.MatchesFragment"
+        android:name="com.cristiandrami.football365.ui.matches.MatchesFragment"
         android:label="@string/title_matches"
         tools:layout="@layout/fragment_matches" />
 
     <fragment
         android:id="@+id/navigation_bets"
-        android:name="com.cristiandrami.football365.ui.notifications.BetsFragment"
+        android:name="com.cristiandrami.football365.ui.bets.BetsFragment"
         android:label="@string/title_bets"
         tools:layout="@layout/fragment_bets" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.cristiandrami.football365.ProfileFragment"
+        android:name="com.cristiandrami.football365.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

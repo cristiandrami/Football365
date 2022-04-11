@@ -1,4 +1,4 @@
-package com.cristiandrami.football365.ui.notifications;
+package com.cristiandrami.football365.ui.matches;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.cristiandrami.football365.databinding.FragmentBetsBinding;
+import com.cristiandrami.football365.databinding.FragmentMatchesBinding;
 
-public class BetsFragment extends Fragment {
+public class MatchesFragment extends Fragment {
 
-    private FragmentBetsBinding binding;
+    private FragmentMatchesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        MatchesViewModel matchesViewModel =
+                new ViewModelProvider(this).get(MatchesViewModel.class);
 
-        binding = FragmentBetsBinding.inflate(inflater, container, false);
+        binding = FragmentMatchesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textDashboard;
+        matchesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

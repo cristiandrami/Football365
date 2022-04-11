@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
-import com.cristiandrami.football365.RegistrationActivity;
+import com.cristiandrami.football365.ui.registration.RegistrationActivity;
 import com.cristiandrami.football365.model.Utilities;
 import com.cristiandrami.football365.model.login.UserLogin;
 import com.google.android.gms.tasks.OnCompleteListener;

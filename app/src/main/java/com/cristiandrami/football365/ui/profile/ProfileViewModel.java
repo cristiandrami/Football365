@@ -1,7 +1,6 @@
-package com.cristiandrami.football365;
+package com.cristiandrami.football365.ui.profile;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

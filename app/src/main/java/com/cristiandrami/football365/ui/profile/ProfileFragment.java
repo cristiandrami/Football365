@@ -1,27 +1,25 @@
-package com.cristiandrami.football365;
+package com.cristiandrami.football365.ui.profile;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.cristiandrami.football365.databinding.FragmentMatchesBinding;
+import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentProfileBinding;
-import com.cristiandrami.football365.model.registration.SignUpValidator;
 import com.cristiandrami.football365.model.user.User;
-import com.cristiandrami.football365.ui.dashboard.MatchesViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -40,7 +38,9 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel profileViewModel;
     private FragmentProfileBinding binding;
     private Button updateButton;
+    private Button dialogConfirmationButton;
 
+    private Dialog updatePopup;
     private TextInputEditText firstNameFieldEditTextProfileFragment;
     private TextInputEditText newPasswordFieldEditTextProfileFragment;
     private TextInputEditText oldPasswordFieldEditTextProfileFragment;
@@ -70,17 +70,19 @@ public class ProfileFragment extends Fragment {
 
 
 
+
+
         setBindInformation();
 
 
         setListenerOnUpdateButton();
-        setListenerOnNewPasswordEditText();
+        //setListenerOnNewPasswordEditText();
 
-        makeOldPasswordFieldsInvisible();
+        //makeOldPasswordFieldsInvisible();
         return root;
     }
 
-    private void setListenerOnNewPasswordEditText() {
+    /*private void setListenerOnNewPasswordEditText() {
         newPasswordFieldEditTextProfileFragment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -113,18 +115,40 @@ public class ProfileFragment extends Fragment {
         oldPasswordFieldLayoutProfileFragment.setVisibility(View.INVISIBLE);
     }
 
+
+
     private void makeOldPasswordFieldsVisible() {
         oldPasswordFieldEditTextProfileFragment.setVisibility(View.VISIBLE);
         oldPasswordFieldLayoutProfileFragment.setVisibility(View.VISIBLE);
     }
+    */
+
 
     private void setListenerOnUpdateButton() {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateInformation();
+                updatePopup= new Dialog(getContext());
+                updatePopup.setContentView(R.layout.profile_update_popup);
+                updatePopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogConfirmationButton=updatePopup.findViewById(R.id.confirmation_update_profile_button);
+                oldPasswordFieldEditTextProfileFragment=updatePopup.findViewById(R.id.old_password_field_edit_text_profile_fragment);
+                oldPasswordFieldLayoutProfileFragment=updatePopup.findViewById(R.id.old_password_field_layout);
+
+                //TODO validator fields if valid show
+
+                updatePopup.show();
+                dialogConfirmationButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        updateInformation();
+                        updatePopup.dismiss();
+                        newPasswordFieldEditTextProfileFragment.setText("");
+                    }
+                });
             }
         });
+
 
     }
 
@@ -140,11 +164,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setBindInformation() {
+
         firstNameFieldEditTextProfileFragment = binding.firstNameFieldEditTextProfileFragment;
         lastNameTextInputEditTextProfileFragment = binding.lastNameFieldEditTextProfileFragment;
         newPasswordFieldEditTextProfileFragment=binding.newPasswordFieldEditTextProfileFragment;
-        oldPasswordFieldEditTextProfileFragment=binding.oldPasswordFieldEditTextProfileFragment;
-        oldPasswordFieldLayoutProfileFragment=binding.oldPasswordFieldLayout;
         emailTextView= binding.profileEmail;
         fullNameTextView= binding.profileFullName;
 

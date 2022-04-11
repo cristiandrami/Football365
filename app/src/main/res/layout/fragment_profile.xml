@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.NewsFragment"
+    tools:context=".ui.news.NewsFragment"
     >
 
     <LinearLayout
@@ -112,24 +112,7 @@
                     android:drawableLeft="@drawable/ic_baseline_vpn_key_24"></com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/old_password_field_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textColorHint="@color/black"
-                android:hint="@string/old_password_hint"
 
-                android:layout_marginTop="5dp"
-
-                >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/old_password_field_edit_text_profile_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:drawableLeft="@drawable/ic_baseline_vpn_key_24"></com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/info_update__profile_button"
