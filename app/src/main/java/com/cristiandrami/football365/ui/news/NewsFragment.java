@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentNewsBinding;
+import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
+import com.cristiandrami.football365.model.internalDatabase.NewsDatabaseModel;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -26,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +37,14 @@ public class NewsFragment extends Fragment {
 
     private FragmentNewsBinding binding;
 
-    private final List<NewsRecyclerViewItemModel> recyclerViewItems = new ArrayList<>();
+    private List<NewsRecyclerViewItemModel> recyclerViewItems = new ArrayList<>();
     private NewsRecyclerViewHandler recyclerViewHandler;
     private RecyclerView recyclerViewNews;
     private LinearLayoutManager layoutNewsRecyclerViewManager;
     private View view;
+    private NewsViewModel newsViewModel;
+
+    private InternalDatabaseHandler internalDB;
 
     private boolean alreadyCalled = false;
 
@@ -69,14 +76,16 @@ public class NewsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NewsViewModel homeViewModel =
+         newsViewModel =
                 new ViewModelProvider(this).get(NewsViewModel.class);
 
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
 
+
         initData();
+
         initRecyclerView();
         return root;
     }
@@ -97,76 +106,48 @@ public class NewsFragment extends Fragment {
 
     }
 
-    private void initData() {
+    private void initData(){
+        internalDB=new InternalDatabaseHandler(getContext());
+        recyclerViewItems=newsViewModel.getNewsList(internalDB);
 
-        OkHttpClient client = new OkHttpClient();
-
-
-        Request request = new Request.Builder()
-                .url("https://api-football-v1.p.rapidapi.com/v3/leagues")
-                .get()
-                .addHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com")
-                .addHeader("x-rapidapi-key", "1f1c8c92c3msh6d7222e6dcfc7c0p1cb4cejsnfcd173de0933")
-                .build();
+            long millis=System.currentTimeMillis();
 
 
-        if (!alreadyCalled) {
-            Log.e("api:", "api called");
-            client.newCall(request).enqueue(new Callback() {
+            // creating a new object of the class Date
 
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    Toast.makeText(getContext(), "API error", Toast.LENGTH_SHORT).show();
-                    Log.e("api", "fail");
-                }
+             /*
+            NewsDatabaseModel newsToInsert= new NewsDatabaseModel();
+            newsToInsert.setNews("ciao");
+            newsToInsert.setDate(millis);
+            internalDB.insertDailyNews(newsToInsert);
+            */
 
-                @Override
-                public void onResponse(Response response) throws IOException {
+            //internalDB.createTableNews();
 
-                    if (response.isSuccessful()) {
+            //NewsDatabaseModel news= internalDB.getNews();
+            //NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel("", news.getNews(), new Date(news.getDate()).toString());
+            //recyclerViewItems.add(itemModel);
 
-                        //.toString doesn't work, .string() yes, why???
-                        final String newsData = response.body().string();
+          /*
+            Date date = new Date(millis);
+            Log.e("date", date.toString());
 
+            NewsDatabaseModel newsToInsert= new NewsDatabaseModel();
+            newsToInsert.setNews("ciao");
+            newsToInsert.setDate(millis);
+            internalDB.insertDailyNews(newsToInsert);
+            */
+            //internalDB.deleteNews();
+            //long millis=System.currentTimeMillis();
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    JSONArray jsonNewsDataArray = new JSONObject(newsData).getJSONArray("response");
-
-                                    for (int i = 0; i < 20; i++) {
-                                        JSONObject leagueObject = jsonNewsDataArray.getJSONObject(i).getJSONObject("league");
-
-                                        String name = String.valueOf(leagueObject.get("name"));
-                                        String image = String.valueOf(leagueObject.get("logo"));
-                                        String description = String.valueOf(leagueObject.get("type"));
-                                        NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel(image, name, description);
-
-                                        recyclerViewItems.add(itemModel);
-                                        Log.e("app", name);
+            //internalDB.dropTableNews();
 
 
-                                    }
-
-                                    //I have to notify the changing here, without it i have to lock and unlock mobile phone to see the Recycler list
-                                    recyclerViewHandler.notifyDataSetChanged();
-                                    alreadyCalled = true;
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        });
 
 
-                    }
+            // creating a new object of the class Date
 
-                }
-
-
-            });
-        }
+            //recyclerViewHandler.notifyDataSetChanged();
 
 
     }

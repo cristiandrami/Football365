@@ -29,4 +29,14 @@ public class Utilities {
     public static final String FIREBASE_DOCUMENT_FIELD_EMAIL = "email";
     public static final String FIREBASE_DOCUMENT_FIELD_FIRST_NAME = "firstName";
     public static final String FIREBASE_DOCUMENT_FIELD_LAST_NAME = "lastName";
+
+
+
+    public static final String INTERNAL_DATABASE_NAME ="football365_internal_database.db" ;
+    public static final String CREATE_NEWS_TABLE_INTERNAL_DATABASE ="CREATE TABLE \"news\" ( \"news_string\"\tTEXT, \"insertion_date\"\tNUMERIC, PRIMARY KEY(\"news_string\",\"insertion_date\") )";
+
+
+    public static final String NEWS_COLUMN_NEWS_NAME_INTERNAL_DATABASE = "news_string";
+    public static final String NEWS_COLUMN_DATE_NAME_INTERNAL_DATABASE = "insertion_date";
+    public static final String NEWS_TABLE_NAME_INTERNAL_DATABASE = "news";
 }
