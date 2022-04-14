@@ -43,5 +43,8 @@
     <string name="old_password_hint">Old Password</string>
     <string name="update_confirmation">Please confirm your changes...</string>
     <string name="update_confirmation_button_text">Confirm</string>
+    <string name="news_query">european+soccer+news</string>
+    <string name="news_country">US</string>
+    <string name="news_language">en</string>
 
 </resources>

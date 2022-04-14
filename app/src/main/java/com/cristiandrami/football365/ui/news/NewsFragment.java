@@ -82,11 +82,11 @@ public class NewsFragment extends Fragment {
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-
+        //i need before initData because i have to set from the database the news and then
+        //i can set the recycler view
         initData();
-
         initRecyclerView();
+
         return root;
     }
 
@@ -108,9 +108,11 @@ public class NewsFragment extends Fragment {
 
     private void initData(){
         internalDB=new InternalDatabaseHandler(getContext());
-        recyclerViewItems=newsViewModel.getNewsList(internalDB);
+        recyclerViewItems=newsViewModel.getNewsList(internalDB, getContext());
 
-            long millis=System.currentTimeMillis();
+        //recyclerViewHandler.notifyDataSetChanged();
+
+
 
 
             // creating a new object of the class Date
@@ -147,7 +149,7 @@ public class NewsFragment extends Fragment {
 
             // creating a new object of the class Date
 
-            //recyclerViewHandler.notifyDataSetChanged();
+
 
 
     }

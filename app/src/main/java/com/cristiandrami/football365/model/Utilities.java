@@ -39,4 +39,7 @@ public class Utilities {
     public static final String NEWS_COLUMN_NEWS_NAME_INTERNAL_DATABASE = "news_string";
     public static final String NEWS_COLUMN_DATE_NAME_INTERNAL_DATABASE = "insertion_date";
     public static final String NEWS_TABLE_NAME_INTERNAL_DATABASE = "news";
+
+    //every 8 hours The news will be updated
+    public static final long NEWS_FREQUENCY_UPDATE = 28800000;
 }
