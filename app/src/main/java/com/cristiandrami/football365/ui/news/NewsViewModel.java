@@ -32,21 +32,26 @@ public class NewsViewModel extends ViewModel {
 
 
     public List<NewsRecyclerViewItemModel> getNewsList(InternalDatabaseHandler internalDB, Context context) {
+        //internalDB.deleteNews();
         long currentTimeMillis = System.currentTimeMillis();
         Date currentDate = new Date(currentTimeMillis);
         NewsDatabaseModel newsFromDatabase = internalDB.getNews();
+
+        //internalDB.deleteNews();
 
         List<NewsRecyclerViewItemModel> newsList = new ArrayList<NewsRecyclerViewItemModel>();
 
         long millisDifferenceToUpdate = currentTimeMillis - newsFromDatabase.getDate();
         Log.e("data difference: ", String.valueOf(currentTimeMillis - newsFromDatabase.getDate()));
-        if (millisDifferenceToUpdate > Utilities.NEWS_FREQUENCY_UPDATE || newsFromDatabase.getDate()==0) {
+
+        Log.e("data from db", String.valueOf(newsFromDatabase.getDate()));
+        if (millisDifferenceToUpdate > Utilities.NEWS_FREQUENCY_UPDATE ||  newsFromDatabase.getDate()==0) {
             internalDB.deleteNews();
 
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-                    .url("https://google-news1.p.rapidapi.com/search?q=" + context.getString(R.string.news_query) + "&country=" + context.getString(R.string.news_country) + "&lang=" + context.getString(R.string.news_language) + "&limit=25&when=2d")
+                    .url("https://google-news1.p.rapidapi.com/search?q=" + context.getString(R.string.news_query) + "&country=" + context.getString(R.string.news_country) + "&lang=" + context.getString(R.string.news_language) + "&limit=30&when=2d")
                     .get()
                     .addHeader("X-RapidAPI-Host", "google-news1.p.rapidapi.com")
                     .addHeader("X-RapidAPI-Key", "1f1c8c92c3msh6d7222e6dcfc7c0p1cb4cejsnfcd173de0933")
@@ -55,7 +60,6 @@ public class NewsViewModel extends ViewModel {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
-
                     Log.e("api", e.toString());
                 }
 
@@ -72,9 +76,11 @@ public class NewsViewModel extends ViewModel {
                         newsToUpdate.setNews(newsData);
                         newsToUpdate.setDate(currentTimeMillis);
                         internalDB.insertDailyNews(newsToUpdate);
-
-
-
+                        try {
+                            wait(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }
@@ -83,7 +89,7 @@ public class NewsViewModel extends ViewModel {
             });
 
         }
-        updateNewsArray(newsList, internalDB);
+        updateNewsArray(newsList, internalDB, context);
 
 
 
@@ -92,24 +98,28 @@ public class NewsViewModel extends ViewModel {
 
     }
 
-    private void updateNewsArray(List<NewsRecyclerViewItemModel> newsList, InternalDatabaseHandler internalDB) {
+    private void updateNewsArray(List<NewsRecyclerViewItemModel> newsList, InternalDatabaseHandler internalDB, Context context) {
 
         String newsData= internalDB.getNews().getNews();
         //Log.e("news: ", newsData);
-
         try {
             JSONArray jsonNewsDataArray = new JSONObject(newsData).getJSONArray("articles");
 
             for (int i = 0; i < jsonNewsDataArray.length(); i++) {
-                JSONObject leagueObject = jsonNewsDataArray.getJSONObject(i);
-
-                Log.e("api ", leagueObject.toString());
-                String name = String.valueOf(leagueObject.get("title"));
+                JSONObject newsJSONObject = jsonNewsDataArray.getJSONObject(i);
+                JSONObject source = newsJSONObject.getJSONObject("source");
+                Log.e("api ", newsJSONObject.toString());
+                String name = String.valueOf(newsJSONObject.get("title"));
                 //String image = String.valueOf(leagueObject.get("thumbnail"));
-                String description = String.valueOf(leagueObject.get("published_date"));
+                //String description = String.valueOf(leagueObject.get("published_date"));
+                String description=context.getString(R.string.news_author)+" " +String.valueOf(source.get("title"));
+
+
+
 
                 // Log.e("title ", name);
-                NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel("", name, description);
+                NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel(null, name, description);
+                itemModel.setArticleLink(String.valueOf(newsJSONObject.get("link")));
 
                 newsList.add(itemModel);
                 // Log.e("app", name);

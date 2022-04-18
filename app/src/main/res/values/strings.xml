@@ -46,5 +46,6 @@
     <string name="news_query">european+soccer+news</string>
     <string name="news_country">US</string>
     <string name="news_language">en</string>
+    <string name="news_author">Author: </string>
 
 </resources>
