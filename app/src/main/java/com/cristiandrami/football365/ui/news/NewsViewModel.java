@@ -46,7 +46,7 @@ public class NewsViewModel extends ViewModel {
 
         Log.e("data from db", String.valueOf(newsFromDatabase.getDate()));
         if (millisDifferenceToUpdate > Utilities.NEWS_FREQUENCY_UPDATE ||  newsFromDatabase.getDate()==0) {
-            internalDB.deleteNews();
+
 
             OkHttpClient client = new OkHttpClient();
 
@@ -75,12 +75,8 @@ public class NewsViewModel extends ViewModel {
                         NewsDatabaseModel newsToUpdate= new NewsDatabaseModel();
                         newsToUpdate.setNews(newsData);
                         newsToUpdate.setDate(currentTimeMillis);
+                        internalDB.deleteNews();
                         internalDB.insertDailyNews(newsToUpdate);
-                        try {
-                            wait(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
 
                 }
@@ -118,7 +114,7 @@ public class NewsViewModel extends ViewModel {
 
 
                 // Log.e("title ", name);
-                NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel(null, name, description);
+                NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel(String.valueOf(newsJSONObject.get("link")), name, description);
                 itemModel.setArticleLink(String.valueOf(newsJSONObject.get("link")));
 
                 newsList.add(itemModel);
