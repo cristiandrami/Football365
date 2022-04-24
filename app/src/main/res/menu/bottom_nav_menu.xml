@@ -4,17 +4,17 @@
 
     <item
         android:id="@+id/navigation_news"
-        android:icon="@drawable/ic_baseline_article_24"
+        android:icon="@drawable/news_icon"
         android:title="@string/title_news" />
 
     <item
         android:id="@+id/navigation_matches"
-        android:icon="@drawable/ic_baseline_sports_soccer_24"
+        android:icon="@drawable/matches_icon"
         android:title="@string/title_matches" />
 
     <item
         android:id="@+id/navigation_bets"
-        android:icon="@drawable/ic_baseline_money_24"
+        android:icon="@drawable/bet_icon"
         android:title="@string/title_bets" />
     <item
         android:id="@+id/navigation_profile"

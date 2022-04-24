@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.ui.registration.RegistrationActivity;
-import com.cristiandrami.football365.model.Utilities;
+import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.login.UserLogin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         if(firebaseAuth.getCurrentUser()!=null) {
-            goToMainActivity();
+            switchToMainActivity();
             finish();
         }
         bindGraphicalObjects();
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
         UserLogin user= new UserLogin();
-        user.setEmail(emailTextField.getText().toString());
+        user.setEmail(emailTextField.getText().toString().trim());
         user.setPassword(passwordTextField.getText().toString());
 
 
@@ -82,17 +82,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("login: ", "signInWithEmail:success");
+
                     Toast.makeText(LoginActivity.this, "Welcome",
                             Toast.LENGTH_SHORT).show();
 
-                    goToMainActivity();
+                    switchToMainActivity();
                     finish();
 
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("login", "signInWithEmail:failure", task.getException());
-                    Toast.makeText(LoginActivity.this, Utilities.LOGIN_FAILED,
+                    Toast.makeText(LoginActivity.this, UtilitiesStrings.LOGIN_FAILED,
                             Toast.LENGTH_SHORT).show();
 
                 }
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void goToMainActivity() {
+    private void switchToMainActivity() {
        Intent switchToMainActivity = new Intent(LoginActivity.this, MainActivity.class);
        startActivity(switchToMainActivity);
     }

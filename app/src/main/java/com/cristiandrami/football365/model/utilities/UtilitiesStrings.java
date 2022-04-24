@@ -1,4 +1,4 @@
-package com.cristiandrami.football365.model;
+package com.cristiandrami.football365.model.utilities;
 
 import com.cristiandrami.football365.model.registration.ValidationUser;
 
@@ -8,7 +8,7 @@ import com.cristiandrami.football365.model.registration.ValidationUser;
  * @author Cristian D. Dramisino
  */
 
-public class Utilities {
+public class UtilitiesStrings {
 
     public static final String SPLASH_TRANSACTION_LOGO_NAME = "logo_image";
     public static final String SPLASH_TRANSACTION_TEXT_NAME = "welcome_text";
@@ -42,4 +42,13 @@ public class Utilities {
 
     //every 8 hours The news will be updated
     public static final long NEWS_FREQUENCY_UPDATE = 28800000;
+    public static final String API_JSON_ARTICLES_ARRAY_NAME ="articles" ;
+    public static final String API_JSON_SOURCE_OBJECT_NAME = "source";
+    public static final String API_JSON_ARTICLE_TITLE_FIELD = "title";
+    public static final String API_JSON_ARTICLE_IMAGE_FIELD ="urlToImage";
+    public static final String API_JSON_SOURCE_AUTHOR_FIELD = "name";
+    public static final String API_JSON_ARTICLE_URL_FIELD = "url";
+    public static final String API_ARTICLE_SORTING ="popularity" ;
+    public static final String API_JSON_CREATION_ARRAY_FILED = "{\"articles\" : ";
+    public static final String API_JSON_CREATION_ARRAY_CLOSING = "}";
 }

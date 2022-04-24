@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.cristiandrami.football365.model.Utilities;
+import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -69,9 +69,9 @@ public class ProfileViewModel extends ViewModel {
                         //Log.e("user", "DocumentSnapshot data: " + document.getData());
                         userInfo= document.getData();
 
-                        String emailObtained= (String) userInfo.get(Utilities.FIREBASE_DOCUMENT_FIELD_EMAIL);
-                        String firstNameObtained= (String) userInfo.get(Utilities.FIREBASE_DOCUMENT_FIELD_FIRST_NAME);
-                        String lastNameObtained= (String) userInfo.get(Utilities.FIREBASE_DOCUMENT_FIELD_LAST_NAME);
+                        String emailObtained= (String) userInfo.get(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_EMAIL);
+                        String firstNameObtained= (String) userInfo.get(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_FIRST_NAME);
+                        String lastNameObtained= (String) userInfo.get(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_LAST_NAME);
                         // Log.e("user auth email", emailObtained);
 
 
@@ -117,9 +117,9 @@ public class ProfileViewModel extends ViewModel {
 
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userEmail);
         Map<String, Object> user= new HashMap<>();
-        user.put(Utilities.FIREBASE_DOCUMENT_FIELD_EMAIL, newInformation.getEmail());
-        user.put(Utilities.FIREBASE_DOCUMENT_FIELD_FIRST_NAME, newInformation.getFirstName());
-        user.put(Utilities.FIREBASE_DOCUMENT_FIELD_LAST_NAME, newInformation.getLastName());
+        user.put(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_EMAIL, newInformation.getEmail());
+        user.put(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_FIRST_NAME, newInformation.getFirstName());
+        user.put(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_LAST_NAME, newInformation.getLastName());
         docRef.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

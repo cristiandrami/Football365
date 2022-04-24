@@ -6,19 +6,19 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 
 import com.cristiandrami.football365.R;
-import com.cristiandrami.football365.model.Utilities;
 import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
 import com.cristiandrami.football365.model.internalDatabase.NewsDatabaseModel;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
+import com.google.gson.Gson;
+import com.kwabenaberko.newsapilib.NewsApiClient;
+import com.kwabenaberko.newsapilib.models.Article;
+import com.kwabenaberko.newsapilib.models.request.EverythingRequest;
+import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,99 +32,96 @@ public class NewsViewModel extends ViewModel {
 
 
     public List<NewsRecyclerViewItemModel> getNewsList(InternalDatabaseHandler internalDB, Context context) {
-        //internalDB.deleteNews();
-        long currentTimeMillis = System.currentTimeMillis();
-        Date currentDate = new Date(currentTimeMillis);
-        NewsDatabaseModel newsFromDatabase = internalDB.getNews();
-
-        //internalDB.deleteNews();
 
         List<NewsRecyclerViewItemModel> newsList = new ArrayList<NewsRecyclerViewItemModel>();
+        executeAPINewsCallIfNeeded(internalDB, context, newsList);
+        setNewsGraphicalList(internalDB, context, newsList);
+        return newsList;
+    }
+
+    private void setNewsGraphicalList(InternalDatabaseHandler internalDB, Context context, List<NewsRecyclerViewItemModel> newsList) {
+        String databaseNewsString = getNewsStringFromDatabase(internalDB);
+        updateNewsArray(newsList, databaseNewsString, context);
+    }
+
+    private void executeAPINewsCallIfNeeded(InternalDatabaseHandler internalDB, Context context, List<NewsRecyclerViewItemModel> newsList) {
+        long currentTimeMillis = System.currentTimeMillis();
+        NewsDatabaseModel newsFromDatabase = internalDB.getNews();
 
         long millisDifferenceToUpdate = currentTimeMillis - newsFromDatabase.getDate();
-        Log.e("data difference: ", String.valueOf(currentTimeMillis - newsFromDatabase.getDate()));
-
-        Log.e("data from db", String.valueOf(newsFromDatabase.getDate()));
-        if (millisDifferenceToUpdate > Utilities.NEWS_FREQUENCY_UPDATE ||  newsFromDatabase.getDate()==0) {
+        NewsApiClient newsApiClient = new NewsApiClient("4ba69400af194410b9767bd4f83a013f");
 
 
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = new Request.Builder()
-                    .url("https://google-news1.p.rapidapi.com/search?q=" + context.getString(R.string.news_query) + "&country=" + context.getString(R.string.news_country) + "&lang=" + context.getString(R.string.news_language) + "&limit=30&when=2d")
-                    .get()
-                    .addHeader("X-RapidAPI-Host", "google-news1.p.rapidapi.com")
-                    .addHeader("X-RapidAPI-Key", "1f1c8c92c3msh6d7222e6dcfc7c0p1cb4cejsnfcd173de0933")
-                    .build();
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    Log.e("api", e.toString());
-                }
-
-                @Override
-                public void onResponse(Response response) throws IOException {
-
-                    if (response.isSuccessful()) {
-
-                        //.toString doesn't work, .string() yes, why???
-                        final String newsData = response.body().string();
+        if (millisDifferenceToUpdate > UtilitiesStrings.NEWS_FREQUENCY_UPDATE || newsFromDatabase.getDate() == 0) {
 
 
-                        NewsDatabaseModel newsToUpdate= new NewsDatabaseModel();
-                        newsToUpdate.setNews(newsData);
-                        newsToUpdate.setDate(currentTimeMillis);
-                        internalDB.deleteNews();
-                        internalDB.insertDailyNews(newsToUpdate);
-                    }
+                newsApiClient.getEverything(
+                        new EverythingRequest.Builder()
+                                .q(context.getString(R.string.news_query))
+                                .language(context.getString(R.string.news_language))
+                                .sortBy(UtilitiesStrings.API_ARTICLE_SORTING)
+                                .domains(context.getString(R.string.news_domains))
+                                .from(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000).toString())
+                                .build(),
+                        new NewsApiClient.ArticlesResponseCallback() {
+                            @Override
+                            public void onSuccess(ArticleResponse response) {
+                                List<Article> articles = response.getArticles();
 
-                }
+                                String newsToStoreJSON = "";
+                                StringBuilder stringBuilder = new StringBuilder(newsToStoreJSON);
+                                stringBuilder.append(UtilitiesStrings.API_JSON_CREATION_ARRAY_FILED);
+                                stringBuilder.append(new Gson().toJson(articles));
+                                stringBuilder.append(UtilitiesStrings.API_JSON_CREATION_ARRAY_CLOSING);
 
+                                NewsDatabaseModel newsToStore = new NewsDatabaseModel();
+                                newsToStore.setNews(stringBuilder.toString());
+                                newsToStore.setDate(currentTimeMillis);
 
-            });
+                                Log.e("api", "prima chiamata");
+                                internalDB.deleteNews();
+                                internalDB.insertDailyNews(newsToStore);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                System.out.println(throwable.getMessage());
+                            }
+                        }
+                );
 
         }
-        updateNewsArray(newsList, internalDB, context);
+    }
 
+    private void updateNewsArray(List<NewsRecyclerViewItemModel> newsList, String newsData, Context context) {
+        JSONObject newsJSONObject = null;
+        try {
+            newsJSONObject = new JSONObject(newsData);
+            JSONArray newsJSONArray = newsJSONObject.getJSONArray(UtilitiesStrings.API_JSON_ARTICLES_ARRAY_NAME);
+            if (newsJSONArray != null) {
+                for (int i = 0; i < newsJSONArray.length(); i++) {
+                    JSONObject article = (JSONObject) newsJSONArray.get(i);
+                    JSONObject source = (JSONObject) article.get(UtilitiesStrings.API_JSON_SOURCE_OBJECT_NAME);
 
+                    String title = (String) article.get(UtilitiesStrings.API_JSON_ARTICLE_TITLE_FIELD);
+                    String image = (String) article.get(UtilitiesStrings.API_JSON_ARTICLE_IMAGE_FIELD);
+                    String author = (String) source.get(UtilitiesStrings.API_JSON_SOURCE_AUTHOR_FIELD);
+                    String url = (String) article.get(UtilitiesStrings.API_JSON_ARTICLE_URL_FIELD);
 
+                    NewsRecyclerViewItemModel news = new NewsRecyclerViewItemModel(image, title, author);
+                    news.setArticleLink(url);
 
-        return newsList;
+                    newsList.add(news);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
-    private void updateNewsArray(List<NewsRecyclerViewItemModel> newsList, InternalDatabaseHandler internalDB, Context context) {
-
-        String newsData= internalDB.getNews().getNews();
-        //Log.e("news: ", newsData);
-        try {
-            JSONArray jsonNewsDataArray = new JSONObject(newsData).getJSONArray("articles");
-
-            for (int i = 0; i < jsonNewsDataArray.length(); i++) {
-                JSONObject newsJSONObject = jsonNewsDataArray.getJSONObject(i);
-                JSONObject source = newsJSONObject.getJSONObject("source");
-                Log.e("api ", newsJSONObject.toString());
-                String name = String.valueOf(newsJSONObject.get("title"));
-                //String image = String.valueOf(leagueObject.get("thumbnail"));
-                //String description = String.valueOf(leagueObject.get("published_date"));
-                String description=context.getString(R.string.news_author)+" " +String.valueOf(source.get("title"));
-
-
-
-
-                // Log.e("title ", name);
-                NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel(String.valueOf(newsJSONObject.get("link")), name, description);
-                itemModel.setArticleLink(String.valueOf(newsJSONObject.get("link")));
-
-                newsList.add(itemModel);
-                // Log.e("app", name);
-            }
-
-            //I have to notify the changing here, without it i have to lock and unlock mobile phone to see the Recycler list
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("app", e.toString());
-        }
+    private String getNewsStringFromDatabase(InternalDatabaseHandler internalDB) {
+        return internalDB.getNews().getNews();
     }
 }

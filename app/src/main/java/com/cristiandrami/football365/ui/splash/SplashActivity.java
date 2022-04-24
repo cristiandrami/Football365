@@ -8,14 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cristiandrami.football365.R;
-import com.cristiandrami.football365.model.Utilities;
+import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.ui.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
@@ -53,8 +52,8 @@ public class SplashActivity extends AppCompatActivity {
                 Intent switchingIntent= new Intent(SplashActivity.this, LoginActivity.class);
 
                 Pair[] pairs= new Pair[2];
-                pairs[0] = new Pair<View, String> (logoImage, Utilities.SPLASH_TRANSACTION_LOGO_NAME);
-                pairs[1] = new Pair<View, String> (descriptionText, Utilities.SPLASH_TRANSACTION_TEXT_NAME);
+                pairs[0] = new Pair<View, String> (logoImage, UtilitiesStrings.SPLASH_TRANSACTION_LOGO_NAME);
+                pairs[1] = new Pair<View, String> (descriptionText, UtilitiesStrings.SPLASH_TRANSACTION_TEXT_NAME);
 
                 ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this, pairs);
                 startActivity(switchingIntent, options.toBundle());
