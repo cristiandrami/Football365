@@ -51,4 +51,5 @@ public class UtilitiesStrings {
     public static final String API_ARTICLE_SORTING ="popularity" ;
     public static final String API_JSON_CREATION_ARRAY_FILED = "{\"articles\" : ";
     public static final String API_JSON_CREATION_ARRAY_CLOSING = "}";
+    public static final String NEWS_API_KEY = "4ba69400af194410b9767bd4f83a013f";
 }

@@ -24,44 +24,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsViewModel extends ViewModel {
+    private boolean firstCall= false;
+    private List<NewsRecyclerViewItemModel> newsList = new ArrayList<NewsRecyclerViewItemModel>();
+
+    private NewsRecyclerViewHandler recyclerViewHandler;
 
 
     public NewsViewModel() {
 
     }
 
-
     public List<NewsRecyclerViewItemModel> getNewsList(InternalDatabaseHandler internalDB, Context context) {
-
-        List<NewsRecyclerViewItemModel> newsList = new ArrayList<NewsRecyclerViewItemModel>();
         executeAPINewsCallIfNeeded(internalDB, context, newsList);
-        setNewsGraphicalList(internalDB, context, newsList);
+        if(!firstCall)
+            setNewsGraphicalList(internalDB, context, newsList);
         return newsList;
     }
 
-    private void setNewsGraphicalList(InternalDatabaseHandler internalDB, Context context, List<NewsRecyclerViewItemModel> newsList) {
+    private void setNewsGraphicalList(InternalDatabaseHandler internalDB, Context context, List<NewsRecyclerViewItemModel> newsList_) {
         String databaseNewsString = getNewsStringFromDatabase(internalDB);
         updateNewsArray(newsList, databaseNewsString, context);
     }
 
-    private void executeAPINewsCallIfNeeded(InternalDatabaseHandler internalDB, Context context, List<NewsRecyclerViewItemModel> newsList) {
+    private boolean executeAPINewsCallIfNeeded(InternalDatabaseHandler internalDB, Context context, List<NewsRecyclerViewItemModel> newsList_) {
         long currentTimeMillis = System.currentTimeMillis();
         NewsDatabaseModel newsFromDatabase = internalDB.getNews();
 
         long millisDifferenceToUpdate = currentTimeMillis - newsFromDatabase.getDate();
-        NewsApiClient newsApiClient = new NewsApiClient("4ba69400af194410b9767bd4f83a013f");
+        NewsApiClient newsApiClient = new NewsApiClient(UtilitiesStrings.NEWS_API_KEY);
+
 
 
         if (millisDifferenceToUpdate > UtilitiesStrings.NEWS_FREQUENCY_UPDATE || newsFromDatabase.getDate() == 0) {
 
+            firstCall=true;
+            long dayInMillis=24 * 60 * 60 * 1000;
 
-                newsApiClient.getEverything(
+            newsApiClient.getEverything(
                         new EverythingRequest.Builder()
                                 .q(context.getString(R.string.news_query))
                                 .language(context.getString(R.string.news_language))
                                 .sortBy(UtilitiesStrings.API_ARTICLE_SORTING)
                                 .domains(context.getString(R.string.news_domains))
-                                .from(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000).toString())
+                                .from(new Date(System.currentTimeMillis() - dayInMillis).toString())
                                 .build(),
                         new NewsApiClient.ArticlesResponseCallback() {
                             @Override
@@ -78,27 +83,38 @@ public class NewsViewModel extends ViewModel {
                                 newsToStore.setNews(stringBuilder.toString());
                                 newsToStore.setDate(currentTimeMillis);
 
-                                Log.e("api", "prima chiamata");
                                 internalDB.deleteNews();
                                 internalDB.insertDailyNews(newsToStore);
+
+                                setNewsGraphicalList(internalDB, context, newsList);
+                                Log.e("api", "end api call");
+                                firstCall=false;
+
                             }
 
                             @Override
                             public void onFailure(Throwable throwable) {
-                                System.out.println(throwable.getMessage());
+                               Log.e("api failure", throwable.getMessage());
                             }
                         }
                 );
 
+                return true;
+
         }
+        return false;
     }
 
-    private void updateNewsArray(List<NewsRecyclerViewItemModel> newsList, String newsData, Context context) {
+    private void updateNewsArray(List<NewsRecyclerViewItemModel> newsList_, String newsData, Context context) {
         JSONObject newsJSONObject = null;
+        //Log.e("data", newsData);
         try {
+
+
             newsJSONObject = new JSONObject(newsData);
             JSONArray newsJSONArray = newsJSONObject.getJSONArray(UtilitiesStrings.API_JSON_ARTICLES_ARRAY_NAME);
             if (newsJSONArray != null) {
+                newsList.clear();
                 for (int i = 0; i < newsJSONArray.length(); i++) {
                     JSONObject article = (JSONObject) newsJSONArray.get(i);
                     JSONObject source = (JSONObject) article.get(UtilitiesStrings.API_JSON_SOURCE_OBJECT_NAME);
@@ -113,6 +129,9 @@ public class NewsViewModel extends ViewModel {
 
                     newsList.add(news);
                 }
+
+                if(firstCall)
+                    recyclerViewHandler.notifyDataSetChanged();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -123,5 +142,9 @@ public class NewsViewModel extends ViewModel {
 
     private String getNewsStringFromDatabase(InternalDatabaseHandler internalDB) {
         return internalDB.getNews().getNews();
+    }
+
+    public void setHandler(NewsRecyclerViewHandler recyclerViewHandler) {
+        this.recyclerViewHandler=recyclerViewHandler;
     }
 }

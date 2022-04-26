@@ -61,7 +61,6 @@ public class NewsFragment extends Fragment {
 
 
 
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -71,13 +70,11 @@ public class NewsFragment extends Fragment {
 
 
 
-
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
          newsViewModel =
                 new ViewModelProvider(this).get(NewsViewModel.class);
+
 
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -86,6 +83,8 @@ public class NewsFragment extends Fragment {
         //i can set the recycler view
         initData();
         initRecyclerView();
+
+
 
         return root;
     }
@@ -104,11 +103,18 @@ public class NewsFragment extends Fragment {
         recyclerViewNews.setAdapter(recyclerViewHandler);
         //recyclerViewHandler.notifyDataSetChanged();
 
+        newsViewModel.setHandler(recyclerViewHandler);
+
     }
 
     private void initData(){
         internalDB=new InternalDatabaseHandler(getContext());
-        recyclerViewItems=newsViewModel.getNewsList(internalDB, getContext());
+        recyclerViewItems = newsViewModel.getNewsList(internalDB, getContext());
+
+        /*for (NewsRecyclerViewItemModel item: recyclerViewItems){
+            Log.e("test", item.getNewsTitle());
+        }
+        Log.e("test size",String.valueOf( recyclerViewItems.size()));*/
 
         //recyclerViewHandler.notifyDataSetChanged();
 
