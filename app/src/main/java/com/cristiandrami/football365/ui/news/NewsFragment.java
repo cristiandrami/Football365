@@ -1,12 +1,9 @@
 package com.cristiandrami.football365.ui.news;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,22 +11,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentNewsBinding;
 import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
-import com.cristiandrami.football365.model.internalDatabase.NewsDatabaseModel;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +93,7 @@ public class NewsFragment extends Fragment {
 
     private void initData(){
         internalDB=new InternalDatabaseHandler(getContext());
-        recyclerViewItems = newsViewModel.getNewsList(internalDB, getContext());
+        recyclerViewItems = newsViewModel.refreshNewsList(internalDB, getContext());
 
         /*for (NewsRecyclerViewItemModel item: recyclerViewItems){
             Log.e("test", item.getNewsTitle());

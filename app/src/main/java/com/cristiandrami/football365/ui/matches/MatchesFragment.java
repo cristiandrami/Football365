@@ -24,6 +24,8 @@ public class MatchesFragment extends Fragment {
         binding = FragmentMatchesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        //matchesViewModel.executeAPICall();
+
         final TextView textView = binding.textDashboard;
         matchesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
