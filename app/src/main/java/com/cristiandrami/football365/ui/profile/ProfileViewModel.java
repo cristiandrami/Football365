@@ -22,11 +22,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 /**
- * This class is the model object of the ProfileFragment class, in this class we retrieve information
+ * This class is the model object of the {@link ProfileFragment} class, in this class we retrieve information
  * about the current user logged from the Firestore Database.
  * We use the information to fill the graphical objects used in the Profile UI fragment
  *
- * @return      LiveData<String> objects used in the ProfileFragment class to set the graphical values dinamically
+ * @return      LiveData<String> objects used in the ProfileFragment class to set the graphical values dynamically
  * @see         ProfileFragment
  * @author      Cristian D. Dramisino
  *
@@ -54,6 +54,8 @@ public class ProfileViewModel extends ViewModel {
 
     }
 
+    /**
+     * This method is called to retrieve the user information from FirebaseDatabase*/
     private void fetchUserData() {
         String currentUserEmail= FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
@@ -110,6 +112,8 @@ public class ProfileViewModel extends ViewModel {
         return fullName;
     }
 
+    /**
+     * This method is called to update the user information in FirebaseDatabase*/
     public void updateInformation(User newInformation) {
         String userEmail=newInformation.getEmail();
 
@@ -154,9 +158,7 @@ public class ProfileViewModel extends ViewModel {
 
                        }
                    });
-               }
-               else
-               {
+               } else {
                    Log.e("update failed", "password not valid");
                }
 

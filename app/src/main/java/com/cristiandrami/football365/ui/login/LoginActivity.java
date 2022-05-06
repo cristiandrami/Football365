@@ -22,6 +22,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * This is the class that manages the Login activity, it is a graphical controller
+ *
+ * {@link FirebaseAuth} is used to manage the user authentication
+ * @see FirebaseAuth
+ * @author Cristian D. Dramisino
+ *
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -31,6 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     private Button registrationLinkButton;
     private TextInputEditText emailTextField;
     private TextInputEditText passwordTextField;
+
+
+    /**
+     * This method is called when we open the app, here we check if a user is already logged in,
+     * if a user is logged in the app switches directly to the MainActivity*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +85,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method used to do the login,
+     * if the email and password are correct the app switches to MainActivity
+     * if the email or the password are not correct the UI show the error to the user*/
     private void login() {
         UserLogin user= new UserLogin();
         user.setEmail(emailTextField.getText().toString().trim());
@@ -91,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("login", "signInWithEmail:failure", task.getException());
+                    //Log.w("login", "signInWithEmail:failure", task.getException());
                     Toast.makeText(LoginActivity.this, UtilitiesStrings.LOGIN_FAILED,
                             Toast.LENGTH_SHORT).show();
 

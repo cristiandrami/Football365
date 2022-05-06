@@ -13,10 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cristiandrami.football365.databinding.FragmentNewsBinding;
 import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
+import com.cristiandrami.football365.ui.profile.ProfileViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This class is used as a Controller for the News Fragment
+ * It contains all methods to manage the News Fragment Graphic.
+ * It contains an object used to manage the Model of News Fragment
+ *
+ * @see NewsViewModel
+ * @author Cristian D. Dramisino
+ *
+ */
 public class NewsFragment extends Fragment {
 
     private FragmentNewsBinding binding;
@@ -73,6 +82,10 @@ public class NewsFragment extends Fragment {
         return root;
     }
 
+    /**
+     * This method is used to setup the recycler view that will show the daily news
+     *
+     */
     private void initRecyclerView() {
 
         recyclerViewNews = binding.newsRecyclerViewInFragment;
@@ -91,6 +104,13 @@ public class NewsFragment extends Fragment {
 
     }
 
+
+    /**
+     * This method is used to create the internal database if it doesn't exists
+     * Then it retrieves the daily news from the internal database and sets the recycler view item list
+     * with the news item {@link NewsRecyclerViewItemModel}
+     *
+     */
     private void initData(){
         internalDB=new InternalDatabaseHandler(getContext());
         recyclerViewItems = newsViewModel.refreshNewsList(internalDB, getContext());

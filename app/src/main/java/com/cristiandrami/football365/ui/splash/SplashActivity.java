@@ -16,7 +16,12 @@ import android.widget.TextView;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.ui.login.LoginActivity;
-
+/**
+ * This class is used as a Controller for the Splash Activity
+ *
+ * @author Cristian D. Dramisino
+ *
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private Animation topAnimation, bottomAnimation;

@@ -1,5 +1,16 @@
 package com.cristiandrami.football365.model.registration;
 
+/**
+ * This class is used to store temporarily the information after a {@link RegistrationUser} is checked by
+ * {@link SignUpValidator}
+ * It contains all information about new users validation fields.
+ *
+ *
+ * @see SignUpValidator
+ * @see RegistrationUser
+ * @author Cristian D. Dramisino
+ *
+ */
 public class ValidationUser {
     private boolean firstName;
     private boolean lastName;

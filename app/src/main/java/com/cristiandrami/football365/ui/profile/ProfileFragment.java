@@ -159,7 +159,7 @@ public class ProfileFragment extends Fragment {
         newInformation.setEmail(emailTextView.getText().toString());
         profileViewModel.updateInformation(newInformation);
         profileViewModel.updateAuthentication(oldPasswordFieldEditTextProfileFragment.getText().toString(), newPasswordFieldEditTextProfileFragment.getText().toString());
-        setDynamicallyValues();
+        setGraphicalValuesDynamically();
 
     }
 
@@ -173,17 +173,15 @@ public class ProfileFragment extends Fragment {
 
         updateButton= binding.infoUpdateProfileButton;
 
-        setDynamicallyValues();
+        setGraphicalValuesDynamically();
 
     }
 
-    private void setDynamicallyValues() {
+    private void setGraphicalValuesDynamically() {
         profileViewModel.getEmail().observe(getViewLifecycleOwner(), emailTextView::setText);
         profileViewModel.getFirstName().observe(getViewLifecycleOwner(), firstNameFieldEditTextProfileFragment::setText);
         profileViewModel.getLastName().observe(getViewLifecycleOwner(), lastNameTextInputEditTextProfileFragment::setText);
         profileViewModel.getFullName().observe(getViewLifecycleOwner(), fullNameTextView::setText);
-
-
     }
 
     @Override
