@@ -1,14 +1,17 @@
 package com.cristiandrami.football365.ui.news;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
 import com.cristiandrami.football365.model.internalDatabase.NewsDatabaseModel;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.kwabenaberko.newsapilib.NewsApiClient;
 import com.kwabenaberko.newsapilib.models.Article;
@@ -39,6 +42,10 @@ public class NewsViewModel extends ViewModel {
     private boolean databaseUpdateNeeded = false;
     private List<NewsRecyclerViewItemModel> newsList = new ArrayList<NewsRecyclerViewItemModel>();
     private long currentTimeMillis=0;
+
+
+
+    private ShimmerFrameLayout shimmerFrameLayout;
     private NewsApiClient newsApiClient = new NewsApiClient(UtilitiesStrings.NEWS_API_KEY);
 
     private NewsRecyclerViewHandler recyclerViewHandler;
@@ -49,6 +56,7 @@ public class NewsViewModel extends ViewModel {
     }
 
     public List<NewsRecyclerViewItemModel> refreshNewsList(InternalDatabaseHandler internalDB, Context context) {
+        shimmerFrameLayout.startShimmer();
         APICallsManagement(internalDB, context);
         if(!isDatabaseUpdateNeeded())
             setNewsGraphicalList(internalDB);
@@ -58,6 +66,8 @@ public class NewsViewModel extends ViewModel {
     private void setNewsGraphicalList(InternalDatabaseHandler internalDB) {
         String databaseNewsString = getNewsStringFromDatabase(internalDB);
         updateNewsArray(databaseNewsString);
+        shimmerFrameLayout.setVisibility(View.GONE);
+        shimmerFrameLayout.stopShimmer();
     }
 
     private boolean APICallsManagement(InternalDatabaseHandler internalDB, Context context) {
@@ -68,6 +78,7 @@ public class NewsViewModel extends ViewModel {
 
         if (APICallIsNeeded(newsFromDatabase, datesMillisecondsDifference)) {
             databaseUpdateNeeded = true;
+            shimmerFrameLayout.startShimmer();
             executeNewsAPICall(internalDB, context);
             return true;
         }
@@ -193,4 +204,9 @@ public class NewsViewModel extends ViewModel {
     public List<NewsRecyclerViewItemModel> getNewsList() {
         return newsList;
     }
+
+    public void setShimmerFrameLayout(ShimmerFrameLayout shimmerFrameLayout) {
+        this.shimmerFrameLayout = shimmerFrameLayout;
+    }
+
 }

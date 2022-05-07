@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
+import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
 import com.cristiandrami.football365.ui.login.LoginActivity;
 /**
  * This class is used as a Controller for the Splash Activity
@@ -38,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-
+        setupAllApp();
 
         graphicalComponentsBind();
         setAnimations();
@@ -49,6 +50,10 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void setupAllApp() {
+        CompetitionsUtilities.getInstance();
     }
 
     private void switchToLoginActivity() {

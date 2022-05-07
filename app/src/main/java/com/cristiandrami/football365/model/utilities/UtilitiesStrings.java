@@ -50,4 +50,17 @@ public class UtilitiesStrings {
     public static final String COMPETITION_API_JSON_COMPETITION_AREA_NAME_FIELD = "name";
     public static final String COMPETITION_API_JSON_COMPETITION_ID_FIELD = "id";
     public static final String FIREBASE_USERS_COLLECTION_NAME = "users";
+
+
+
+    public static final String MATCHES_API_JSON_MATCHES_ARRAY_NAME = "matches";
+    public static final String MATCHES_API_JSON_COMPETITION_NAME = "competition";
+    public static final String MATCHES_API_JSON_COMPETITION_ID_FIELD ="id" ;
+    public static final String MATCHES_API_JSON_MATCH_STATUS = "status";
+    public static final String MATCHES_API_JSON_MATCH_DATE = "utcDate";
+    public static final String MATCHES_API_JSON_HOME_TEAM = "homeTeam";
+    public static final String MATCHES_API_JSON_HOME_TEAM_NAME ="name" ;
+    public static final String MATCHES_API_JSON_AWAY_TEAM = "awayTeam" ;
+    public static final String MATCHES_API_JSON_AWAY_TEAM_NAME = "name";
+    public static final String COMPETITION_API_JSON_COMPETITION_IMAGE_FIELD = "ensignUrl";
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cristiandrami.football365.databinding.FragmentNewsBinding;
 import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
 import com.cristiandrami.football365.ui.profile.ProfileViewModel;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.List;
 public class NewsFragment extends Fragment {
 
     private FragmentNewsBinding binding;
+    private ShimmerFrameLayout shimmerFrameLayoutRecyclerView;
 
     private List<NewsRecyclerViewItemModel> recyclerViewItems = new ArrayList<>();
     private NewsRecyclerViewHandler recyclerViewHandler;
@@ -72,11 +74,14 @@ public class NewsFragment extends Fragment {
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        shimmerFrameLayoutRecyclerView=binding.shimmerViewContainer;
+        newsViewModel.setShimmerFrameLayout(shimmerFrameLayoutRecyclerView);
+        shimmerFrameLayoutRecyclerView.startShimmer();
+
         //i need before initData because i have to set from the database the news and then
         //i can set the recycler view
         initData();
         initRecyclerView();
-
 
 
         return root;
@@ -102,6 +107,7 @@ public class NewsFragment extends Fragment {
 
         newsViewModel.setHandler(recyclerViewHandler);
 
+
     }
 
 
@@ -114,54 +120,6 @@ public class NewsFragment extends Fragment {
     private void initData(){
         internalDB=new InternalDatabaseHandler(getContext());
         recyclerViewItems = newsViewModel.refreshNewsList(internalDB, getContext());
-
-        /*for (NewsRecyclerViewItemModel item: recyclerViewItems){
-            Log.e("test", item.getNewsTitle());
-        }
-        Log.e("test size",String.valueOf( recyclerViewItems.size()));*/
-
-        //recyclerViewHandler.notifyDataSetChanged();
-
-
-
-
-            // creating a new object of the class Date
-
-             /*
-            NewsDatabaseModel newsToInsert= new NewsDatabaseModel();
-            newsToInsert.setNews("ciao");
-            newsToInsert.setDate(millis);
-            internalDB.insertDailyNews(newsToInsert);
-            */
-
-            //internalDB.createTableNews();
-
-            //NewsDatabaseModel news= internalDB.getNews();
-            //NewsRecyclerViewItemModel itemModel = new NewsRecyclerViewItemModel("", news.getNews(), new Date(news.getDate()).toString());
-            //recyclerViewItems.add(itemModel);
-
-          /*
-            Date date = new Date(millis);
-            Log.e("date", date.toString());
-
-            NewsDatabaseModel newsToInsert= new NewsDatabaseModel();
-            newsToInsert.setNews("ciao");
-            newsToInsert.setDate(millis);
-            internalDB.insertDailyNews(newsToInsert);
-            */
-            //internalDB.deleteNews();
-            //long millis=System.currentTimeMillis();
-
-            //internalDB.dropTableNews();
-
-
-
-
-            // creating a new object of the class Date
-
-
-
-
     }
 
     @Override

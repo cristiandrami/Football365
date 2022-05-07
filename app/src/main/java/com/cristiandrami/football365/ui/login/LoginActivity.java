@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
 import com.cristiandrami.football365.ui.registration.RegistrationActivity;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.login.UserLogin;
@@ -51,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
+        setupApplication();
+
         if(firebaseAuth.getCurrentUser()!=null) {
             switchToMainActivity();
             finish();
@@ -59,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
 
         setLoginButtonListener();
         setRegistrationButtonLinkListener();
+    }
+
+    private void setupApplication() {
+        CompetitionsUtilities.getInstance();
     }
 
     private void setRegistrationButtonLinkListener() {
