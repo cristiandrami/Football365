@@ -18,17 +18,22 @@ import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentMatchesBinding;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.Competition;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
+import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class MatchesFragment extends Fragment {
 
     private FragmentMatchesBinding binding;
     private LinearLayout linearLayout;
     private HashMap<String, Competition> competitionHashMap;
+    private HashMap<String, View> graphicCompetitionHashMap= new HashMap<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,15 +44,12 @@ public class MatchesFragment extends Fragment {
         View root = binding.getRoot();
         linearLayout= binding.matchesFragmentLinearLayout;
 
-
-
-        //matchesViewModel.executeAPICall();
-
-        //final TextView textView = binding.textDashboard;
-        //matchesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
         competitionHashMap= CompetitionsUtilities.getInstance().getCompetitions();
         Collection competitionsValues =competitionHashMap.values();
+
+        //TODO creare un mediator per la comunicazione
+
+        matchesViewModel.executeAPICall(this);
         Iterator i = competitionsValues.iterator();
         while (i.hasNext()) {
             View viewCompetition= getLayoutInflater().inflate(R.layout.competitions_matches_layout,null);
@@ -58,14 +60,25 @@ public class MatchesFragment extends Fragment {
 
             Competition competitionObject= (Competition) i.next();
             competitionInfo.setText(competitionObject.toString());
-            Log.e("image", competitionObject.getImageUrl());
+            //Log.e("image", competitionObject.getImageUrl());
             SvgLoader.pluck()
                     .with(getActivity()).setPlaceHolder(R.drawable.ic_baseline_sports_soccer_24, R.drawable.ic_baseline_sports_soccer_24)
                     .load(competitionObject.getImageUrl(), competitionIcon);
 
 
             linearLayout.addView(viewCompetition);
+
+            graphicCompetitionHashMap.put(competitionObject.getId(), viewCompetition );
+
         }
+
+
+
+
+
+        //final TextView textView = binding.textDashboard;
+        //matchesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
 
 
 
@@ -76,5 +89,31 @@ public class MatchesFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void refreshMatchesView(List<Match> matchesList) {
+        refreshView(matchesList);
+    }
+
+    private void refreshView(List<Match> matchesList) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for( Match matches: matchesList) {
+                    View matchesBanner = graphicCompetitionHashMap.get(matches.getCompetitionId());
+                    LinearLayout linearLayout = matchesBanner.findViewById(R.id.competition_matches_linear_layout);
+
+                    View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
+                    TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
+                    homeTeam.setText(matches.getHomeTeam());
+
+                    linearLayout.addView(matchView);
+                }
+
+            }
+        });
+
+
     }
 }

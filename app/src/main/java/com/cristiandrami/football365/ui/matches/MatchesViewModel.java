@@ -1,13 +1,19 @@
 package com.cristiandrami.football365.ui.matches;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
+import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
@@ -19,12 +25,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class MatchesViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
     private CompetitionsUtilities competitionsUtilities= CompetitionsUtilities.getInstance();
+
+    public List<Match> getMatchesList() {
+        return matchesList;
+    }
+
+    private List<Match> matchesList = new ArrayList<>();
 
     public MatchesViewModel() {
         mText = new MutableLiveData<>();
@@ -35,12 +50,12 @@ public class MatchesViewModel extends ViewModel {
         return mText;
     }
 
-    public void executeAPICall() {
+    public void executeAPICall(MatchesFragment matchesFragment) {
 
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://api.football-data.org/v2/matches?dateFrom=2022-05-02&&dateTo=2022-05-08")
+                .url("https://api.football-data.org/v2/matches?dateFrom=2022-05-04&&dateTo=2022-05-04")
                 .get()
                 .addHeader("X-Auth-Token", "c0c99cafe93949beb14871c37bacfa5f")
                 .build();
@@ -60,9 +75,12 @@ public class MatchesViewModel extends ViewModel {
                 if(response.isSuccessful()) {
                     JSONObject matchesJSONObject = null;
                     try {
+                        matchesList.clear();
                         matchesJSONObject = new JSONObject(response.body().string());
                         JSONArray matchesJSONArray = matchesJSONObject.getJSONArray(UtilitiesStrings.MATCHES_API_JSON_MATCHES_ARRAY_NAME);
+                        Log.e("matches length", String.valueOf(matchesJSONArray.length()));
                         for(int i=0; i<matchesJSONArray.length();i++){
+                            Match match= new Match();
                             JSONObject singleMatchJSONObject=(JSONObject) matchesJSONArray.get(i);
                             String matchStatus=singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS);
                             String matchDate=singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_DATE);
@@ -76,8 +94,41 @@ public class MatchesViewModel extends ViewModel {
                             JSONObject awayTeam= (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
                             String awayTeamName= awayTeam.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM_NAME);
 
+                            //String minute= singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MINUTE);
+
+
+                            JSONObject score= (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_SCORE);
+
+                            JSONObject halfTimeJSON= (JSONObject) score.get(UtilitiesStrings.MATCHES_API_JSON_HALF_TIME);
+                            String halfTimeHomeTeamScore= halfTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM);
+                            String halfTimeAwayTeamScore= halfTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
+
+                            JSONObject fullTimeJSON= (JSONObject) score.get(UtilitiesStrings.MATCHES_API_JSON_FULL_TIME);
+                            String fullTimeHomeTeamScore= fullTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM);
+                            String fullTimeAwayTeamScore= fullTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
+
+                            match.setAwayTeam(awayTeamName);
+                            match.setHomeTeam(homeTeamName);
+                            match.setCompetitionId(competitionId);
+                            match.setDate(matchDate);
+                            match.setStatus(matchStatus);
+                            match.setFullTimeAwayTeamScore(fullTimeAwayTeamScore);
+                            match.setFullTimeHomeTeamScore(fullTimeHomeTeamScore);
+                            match.setHalfTimeAwayTeamScore(halfTimeAwayTeamScore);
+                            match.setHalfTimeHomeTeamScore(halfTimeHomeTeamScore);
+
+
+                            matchesList.add(match);
+
+
+
+
 
                         }
+
+                        Log.e("matches list length", String.valueOf(matchesList.size()));
+                        matchesFragment.refreshMatchesView(matchesList);
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -89,4 +140,5 @@ public class MatchesViewModel extends ViewModel {
             }
         });
     }
+
 }

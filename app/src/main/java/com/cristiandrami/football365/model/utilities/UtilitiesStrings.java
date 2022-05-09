@@ -63,4 +63,8 @@ public class UtilitiesStrings {
     public static final String MATCHES_API_JSON_AWAY_TEAM = "awayTeam" ;
     public static final String MATCHES_API_JSON_AWAY_TEAM_NAME = "name";
     public static final String COMPETITION_API_JSON_COMPETITION_IMAGE_FIELD = "ensignUrl";
+    public static final String MATCHES_API_JSON_MINUTE = "minute";
+    public static final String MATCHES_API_JSON_SCORE = "score";
+    public static final String MATCHES_API_JSON_HALF_TIME = "halfTime";
+    public static final String MATCHES_API_JSON_FULL_TIME = "fullTime";
 }
