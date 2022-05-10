@@ -67,4 +67,10 @@ public class UtilitiesStrings {
     public static final String MATCHES_API_JSON_SCORE = "score";
     public static final String MATCHES_API_JSON_HALF_TIME = "halfTime";
     public static final String MATCHES_API_JSON_FULL_TIME = "fullTime";
+    public static final String MATCHES_STATUS_FINISHED = "FINISHED";
+    public static final String MATCHES_STATUS_SCHEDULED ="SCHEDULED" ;
+
+    public static final String MATCHES_STATUS_PAUSED = "PAUSED";
+    public static final String MATCHES_STATUS_CANCELED = "CANCELED";
+    public static final String MATCHES_STATUS_SUSPENDED = "SUSPENDED";
 }

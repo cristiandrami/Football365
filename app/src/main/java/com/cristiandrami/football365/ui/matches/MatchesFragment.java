@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ahmadrosid.svgloader.SvgLoader;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentMatchesBinding;
+import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.Competition;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,6 +35,8 @@ public class MatchesFragment extends Fragment {
     private HashMap<String, Competition> competitionHashMap;
     private HashMap<String, View> graphicCompetitionHashMap= new HashMap<>();
 
+    private ProgressBar progressBar;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         MatchesViewModel matchesViewModel =
@@ -43,6 +45,10 @@ public class MatchesFragment extends Fragment {
         binding = FragmentMatchesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         linearLayout= binding.matchesFragmentLinearLayout;
+        progressBar=binding.matchesFragmentProgressBar;
+
+        linearLayout.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         competitionHashMap= CompetitionsUtilities.getInstance().getCompetitions();
         Collection competitionsValues =competitionHashMap.values();
@@ -107,12 +113,59 @@ public class MatchesFragment extends Fragment {
                     View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
                     TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
                     homeTeam.setText(matches.getHomeTeam());
+                    TextView awayTeam = matchView.findViewById(R.id.single_match_away_team);
+                    awayTeam.setText(matches.getAwayTeam());
+                    TextView status = matchView.findViewById(R.id.single_match_status);
+                    TextView currentTime = matchView.findViewById(R.id.single_match_current_time);
+                    switch(matches.getStatus()){
+                        case UtilitiesStrings.MATCHES_STATUS_FINISHED:
+                            status.setText(matches.getFullTimeHomeTeamScore()+" - "+ matches.getFullTimeAwayTeamScore());
+                            currentTime.setText(getString(R.string.match_current_time_finished));
+                            break;
+                        case UtilitiesStrings.MATCHES_STATUS_PAUSED:
+                            status.setText(matches.getHalfTimeHomeTeamScore()+" - "+ matches.getHalfTimeAwayTeamScore());
+                            currentTime.setText(getString(R.string.match_current_time_paused));
+                            break;
+                        case UtilitiesStrings.MATCHES_STATUS_CANCELED:
+                            currentTime.setText(getString(R.string.match_current_time_canceled));
+                            break;
+                        case UtilitiesStrings.MATCHES_STATUS_SUSPENDED:
+                            currentTime.setText(getString(R.string.match_current_time_suspended));
+                            break;
+                        case UtilitiesStrings.MATCHES_STATUS_SCHEDULED:
+                            Log.e("date", matches.getDate());
+
+                            String date=matches.getDate();
+                            date = date.substring(date.indexOf("T") + 1);
+                            date = date.substring(0, date.indexOf("Z")-3);
+
+                            status.setText(date);
+                            currentTime.setText("");
+
+                            break;
+                            //TODO live case
+
+                    }
 
                     linearLayout.addView(matchView);
                 }
+                Collection competitionsViews =graphicCompetitionHashMap.values();
+                Iterator i = competitionsViews.iterator();
+                while (i.hasNext()) {
+                    View competitionView=(View) i.next();
+                    if(((ViewGroup) competitionView).getChildCount()<2){
+                       linearLayout.removeView(competitionView);
+
+                    }
+
+                }
+
+                progressBar.setVisibility(View.INVISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
 
             }
         });
+
 
 
     }

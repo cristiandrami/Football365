@@ -55,7 +55,7 @@ public class MatchesViewModel extends ViewModel {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://api.football-data.org/v2/matches?dateFrom=2022-05-04&&dateTo=2022-05-04")
+                .url("https://api.football-data.org/v2/matches?dateFrom=2022-05-11&&dateTo=2022-05-13")
                 .get()
                 .addHeader("X-Auth-Token", "c0c99cafe93949beb14871c37bacfa5f")
                 .build();
@@ -126,7 +126,7 @@ public class MatchesViewModel extends ViewModel {
 
                         }
 
-                        Log.e("matches list length", String.valueOf(matchesList.size()));
+                        //Log.e("matches list length", String.valueOf(matchesList.size()));
                         matchesFragment.refreshMatchesView(matchesList);
 
 

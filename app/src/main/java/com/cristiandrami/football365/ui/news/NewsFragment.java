@@ -74,7 +74,7 @@ public class NewsFragment extends Fragment {
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        shimmerFrameLayoutRecyclerView=binding.shimmerViewContainer;
+        shimmerFrameLayoutRecyclerView=binding.shimmerViewContainerNewsFragment;
         newsViewModel.setShimmerFrameLayout(shimmerFrameLayoutRecyclerView);
         shimmerFrameLayoutRecyclerView.startShimmer();
 
