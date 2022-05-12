@@ -14,6 +14,7 @@ import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
+import com.cristiandrami.football365.model.utilities.matchesUtilities.MatchesComparator;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
@@ -25,8 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,12 +54,15 @@ public class MatchesViewModel extends ViewModel {
         return mText;
     }
 
-    public void executeAPICall(MatchesFragment matchesFragment) {
+    public void updateMatchesList(MatchesFragment matchesFragment) {
 
         OkHttpClient client = new OkHttpClient();
 
+        Date currentDate= new Date(System.currentTimeMillis());
+        Date finalDate= new Date(System.currentTimeMillis()+(7*24*60*60*1000));
+
         Request request = new Request.Builder()
-                .url("https://api.football-data.org/v2/matches?dateFrom=2022-05-11&&dateTo=2022-05-13")
+                .url("https://api.football-data.org/v2/matches?dateFrom="+currentDate.toString()+"&&dateTo="+finalDate.toString())
                 .get()
                 .addHeader("X-Auth-Token", "c0c99cafe93949beb14871c37bacfa5f")
                 .build();
@@ -117,16 +124,11 @@ public class MatchesViewModel extends ViewModel {
                             match.setHalfTimeAwayTeamScore(halfTimeAwayTeamScore);
                             match.setHalfTimeHomeTeamScore(halfTimeHomeTeamScore);
 
-
                             matchesList.add(match);
-
-
-
-
 
                         }
 
-                        //Log.e("matches list length", String.valueOf(matchesList.size()));
+                        Collections.sort(matchesList, new MatchesComparator());
                         matchesFragment.refreshMatchesView(matchesList);
 
 
