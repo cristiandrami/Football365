@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
 import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
@@ -59,7 +60,7 @@ public class MatchesViewModel extends ViewModel {
         OkHttpClient client = new OkHttpClient();
 
         Date currentDate= new Date(System.currentTimeMillis());
-        Date finalDate= new Date(System.currentTimeMillis()+(7*24*60*60*1000));
+        Date finalDate= new Date(System.currentTimeMillis()+(UtilitiesNumbers.MATCHES_DAYS *UtilitiesNumbers.DAY_IN_MILLISECONDS));
 
         Request request = new Request.Builder()
                 .url("https://api.football-data.org/v2/matches?dateFrom="+currentDate.toString()+"&&dateTo="+finalDate.toString())
@@ -91,6 +92,11 @@ public class MatchesViewModel extends ViewModel {
                             JSONObject singleMatchJSONObject=(JSONObject) matchesJSONArray.get(i);
                             String matchStatus=singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS);
                             String matchDate=singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_DATE);
+                            String startTime = matchDate.substring(matchDate.indexOf("T") + 1);
+                            startTime = startTime.substring(0, startTime.indexOf("Z") - 3);
+
+                            matchDate = matchDate.substring(0, matchDate.indexOf("T"));
+                            Log.e("date ", matchDate);
 
                             JSONObject competitionJSONObject= (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_NAME);
                             String competitionId= competitionJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_ID_FIELD);
@@ -114,6 +120,11 @@ public class MatchesViewModel extends ViewModel {
                             String fullTimeHomeTeamScore= fullTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM);
                             String fullTimeAwayTeamScore= fullTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
 
+
+                            String matchId= singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_ID);
+
+
+
                             match.setAwayTeam(awayTeamName);
                             match.setHomeTeam(homeTeamName);
                             match.setCompetitionId(competitionId);
@@ -123,6 +134,8 @@ public class MatchesViewModel extends ViewModel {
                             match.setFullTimeHomeTeamScore(fullTimeHomeTeamScore);
                             match.setHalfTimeAwayTeamScore(halfTimeAwayTeamScore);
                             match.setHalfTimeHomeTeamScore(halfTimeHomeTeamScore);
+                            match.setMatchId(matchId);
+                            match.setStartTime(startTime);
 
                             matchesList.add(match);
 
@@ -143,4 +156,11 @@ public class MatchesViewModel extends ViewModel {
         });
     }
 
+    public void setPositionDatesMap(HashMap<Integer, String> datesPositionMap) {
+        Date currentDate= new Date(System.currentTimeMillis());
+        for(int i = 0; i<UtilitiesNumbers.MATCHES_DAYS; i++){
+            datesPositionMap.put(i, currentDate.toString());
+            currentDate=new Date(currentDate.getTime()+ UtilitiesNumbers.DAY_IN_MILLISECONDS);
+        }
+    }
 }

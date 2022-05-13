@@ -52,5 +52,7 @@
     <string name="match_current_time_paused">INT</string>
     <string name="match_current_time_canceled">CAN</string>
     <string name="match_current_time_suspended">SUSP</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

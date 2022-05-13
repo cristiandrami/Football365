@@ -98,7 +98,7 @@ public class NewsViewModel extends ViewModel {
                         .language(context.getString(R.string.news_language))
                         .sortBy(UtilitiesStrings.NEWS_API_ARTICLE_SORTING)
                         .domains(context.getString(R.string.news_domains))
-                        .from(new Date(System.currentTimeMillis() - UtilitiesNumbers.dayInMilliseconds).toString())
+                        .from(new Date(System.currentTimeMillis() - UtilitiesNumbers.DAY_IN_MILLISECONDS).toString())
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override

@@ -73,4 +73,5 @@ public class UtilitiesStrings {
     public static final String MATCHES_STATUS_PAUSED = "PAUSED";
     public static final String MATCHES_STATUS_CANCELED = "CANCELED";
     public static final String MATCHES_STATUS_SUSPENDED = "SUSPENDED";
+    public static final String MATCHES_API_JSON_MATCH_ID = "id";
 }
