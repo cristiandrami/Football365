@@ -40,6 +40,7 @@ public class MatchesFragment extends Fragment {
     private static final int maxPosition= UtilitiesNumbers.MATCHES_DAYS;
 
     private List<Match> matchList;
+    
     private final HashMap<String, View> graphicMatchesHashMap = new HashMap<>();
 
     private TextView leftArrow;
