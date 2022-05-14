@@ -1,7 +1,6 @@
 package com.cristiandrami.football365.ui.matches;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +23,16 @@ import com.cristiandrami.football365.model.utilities.matchesUtilities.Competitio
 import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
 
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MatchesFragment extends Fragment {
 
+    private MatchesViewModel matchesViewModel;
     private FragmentMatchesBinding binding;
-    private LinearLayout linearLayout;
+    private LinearLayout matchFragmentLinearLayout;
     private HashMap<String, Competition> competitionHashMap;
     private final HashMap<String, View> graphicCompetitionHashMap = new HashMap<>();
     private HashMap<Integer, String> datesPositionMap= new HashMap<>();
@@ -40,7 +40,7 @@ public class MatchesFragment extends Fragment {
     private static final int maxPosition= UtilitiesNumbers.MATCHES_DAYS;
 
     private List<Match> matchList;
-    
+
     private final HashMap<String, View> graphicMatchesHashMap = new HashMap<>();
 
     private TextView leftArrow;
@@ -50,17 +50,19 @@ public class MatchesFragment extends Fragment {
 
     private ProgressBar progressBar;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        MatchesViewModel matchesViewModel =
+
+        matchesViewModel =
                 new ViewModelProvider(this).get(MatchesViewModel.class);
 
         binding = FragmentMatchesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        linearLayout = binding.matchesFragmentLinearLayout;
+        matchFragmentLinearLayout = binding.matchesFragmentLinearLayout;
         progressBar = binding.matchesFragmentProgressBar;
 
-        linearLayout.setVisibility(View.INVISIBLE);
+        matchFragmentLinearLayout.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         leftArrow=binding.matchesFragmentLeftArrow;
         rightArrow=binding.matchesFragmentRightArrow;
@@ -76,77 +78,30 @@ public class MatchesFragment extends Fragment {
 
         competitionHashMap = CompetitionsUtilities.getInstance().getCompetitions();
 
-        matchesViewModel.updateMatchesList(this);
+        //matchesViewModel.updateMatchesList(this);
 
-
-
-
-
+        matchesViewModel.updateMatchesListV2(this, datesPositionMap.get(currentPosition), getContext());
 
         //final TextView textView = binding.textDashboard;
         //matchesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        updateMatchesEachMinute();
 
 
         return root;
     }
 
-    private void setRightArrowClickListener() {
-        rightArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentPosition++;
-                setCurrentDateCardViewInfo();
-                setMatchesViewInfo();
+    private void updateMatchesEachMinute() {
+        int delay = 5000;   // delay for 5 sec.
+        int period = 1000*60;  // repeat every sec.
+        Timer timer = new Timer();
+        MatchesFragment fragment=this;
 
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
             }
-        });
-    }
-
-    private void setMatchesViewInfo() {
-        for(Match match: matchList){
-            Log.e("match datecurrent date", match.getDate()+" "+ datesPositionMap.get(currentPosition));
-            if(match.getDate().equals(datesPositionMap.get(currentPosition))){
-                graphicMatchesHashMap.get(match.getMatchId()).setVisibility(View.VISIBLE);
-            }else{
-                graphicMatchesHashMap.get(match.getMatchId()).setVisibility(View.GONE);
-            }
-        }
-
-
-
-
-    }
-
-    private void setLeftArrowClickListener() {
-        leftArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentPosition--;
-                setCurrentDateCardViewInfo();
-                setMatchesViewInfo();
-            }
-        });
-    }
-
-    private void setCurrentDateCardViewInfo() {
-        switch(currentPosition){
-            case 0:
-                leftArrow.setVisibility(View.INVISIBLE);
-                rightArrow.setVisibility(View.VISIBLE);
-                currentDateTextView.setText(datesPositionMap.get(currentPosition));
-                break;
-            case maxPosition-1:
-                leftArrow.setVisibility(View.VISIBLE);
-                rightArrow.setVisibility(View.INVISIBLE);
-                currentDateTextView.setText(datesPositionMap.get(currentPosition));
-                break;
-            default:
-                leftArrow.setVisibility(View.VISIBLE);
-                rightArrow.setVisibility(View.VISIBLE);
-                currentDateTextView.setText(datesPositionMap.get(currentPosition));
-                break;
-
-        }
+        }, delay, period);
     }
 
 
@@ -157,102 +112,250 @@ public class MatchesFragment extends Fragment {
     }
 
 
-    public void refreshMatchesView(List<Match> matchesList) {
-        this.matchList=matchesList;
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (Match matches : matchList) {
-
-                    if (graphicCompetitionHashMap.get(matches.getCompetitionId()) == null) {
-                        createCompetitionView(matches.getCompetitionId());
-                    }
-
-                    View matchesBanner = graphicCompetitionHashMap.get(matches.getCompetitionId());
-                    LinearLayout linearLayout = matchesBanner.findViewById(R.id.competition_matches_linear_layout);
-
-                    View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
-                    TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
-                    homeTeam.setText(matches.getHomeTeam());
-                    TextView awayTeam = matchView.findViewById(R.id.single_match_away_team);
-                    awayTeam.setText(matches.getAwayTeam());
-                    TextView status = matchView.findViewById(R.id.single_match_status);
-                    TextView currentTime = matchView.findViewById(R.id.single_match_current_time);
-
-                    switch (matches.getStatus()) {
-                        case UtilitiesStrings.MATCHES_STATUS_FINISHED:
-                            status.setText(matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore());
-                            currentTime.setText(getString(R.string.match_current_time_finished));
-                            break;
-                        case UtilitiesStrings.MATCHES_STATUS_PAUSED:
-                            status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
-                            currentTime.setText(getString(R.string.match_current_time_paused));
-                            break;
-                        case UtilitiesStrings.MATCHES_STATUS_CANCELED:
-                            currentTime.setText(getString(R.string.match_current_time_canceled));
-                            break;
-                        case UtilitiesStrings.MATCHES_STATUS_SUSPENDED:
-                            currentTime.setText(getString(R.string.match_current_time_suspended));
-                            break;
-                        case UtilitiesStrings.MATCHES_STATUS_SCHEDULED:
-                            Log.e("date", matches.getDate());
-
-                            /*String date = matches.getDate();
-                            date = date.substring(date.indexOf("T") + 1);
-                            date = date.substring(0, date.indexOf("Z") - 3);*/
-
-                            status.setText(matches.getStartTime());
-                            currentTime.setText("");
-
-                            break;
-                        //TODO live case
-
-                    }
-
-
-
-                    linearLayout.addView(matchView);
-                    graphicMatchesHashMap.put(matches.getMatchId(), matchView);
-                }
-
-                setMatchesViewInfo();
-
-
-
-
-
-                progressBar.setVisibility(View.INVISIBLE);
-                linearLayout.setVisibility(View.VISIBLE);
-
-            }
-        });
-
-
-    }
 
 
 
     private void createCompetitionView(String competitionId) {
 
-
         Competition competition = competitionHashMap.get(competitionId);
 
         if (competition != null) {
-            View viewCompetition = getLayoutInflater().inflate(R.layout.competitions_matches_layout, null);
+            try{
+                View viewCompetition = getLayoutInflater().inflate(R.layout.competitions_matches_layout, null);
 
-            TextView competitionInfo = viewCompetition.findViewById(R.id.competition_matches_info_text);
-            ImageView competitionIcon = viewCompetition.findViewById(R.id.competition_matches_icon);
+                TextView competitionInfo = viewCompetition.findViewById(R.id.competition_matches_info_text);
+                ImageView competitionIcon = viewCompetition.findViewById(R.id.competition_matches_icon);
 
+                competitionInfo.setText(competition.toString());
+                ImageUtilities.loadSVGInImageView(getActivity(), competition.getImageUrl(), competitionIcon);
 
-            competitionInfo.setText(competition.toString());
-            //Log.e("image", competitionObject.getImageUrl());
-            ImageUtilities.loadSVGInImageView(getActivity(), competition.getImageUrl(), competitionIcon);
+                /**
+                 * adding the competition banner to the matches fragment */
+                matchFragmentLinearLayout.addView(viewCompetition);
+                /**
+                 * store competition view in an HashMap (key = competition id)  */
+                graphicCompetitionHashMap.put(competition.getId(), viewCompetition);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
 
-            linearLayout.addView(viewCompetition);
-
-            graphicCompetitionHashMap.put(competition.getId(), viewCompetition);
         }
 
     }
+
+    public void refreshMatchesViewV2(List<Match> matchesList) {
+        this.matchList=matchesList;
+
+        try{
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    /**
+                     * data structures that contain views and information have to be cleaned each time the application
+                     * updates the graphics*/
+                    matchFragmentLinearLayout.removeAllViews();
+                    graphicMatchesHashMap.clear();
+                    graphicCompetitionHashMap.clear();
+                    for (int i=0; i<matchesList.size(); i++) {
+                        Match matches= matchesList.get(i);
+
+                        if (graphicCompetitionHashMap.get(matches.getCompetitionId()) == null) {
+                            createCompetitionView(matches.getCompetitionId());
+                        }
+
+                        /**
+                         * getting section in which the app will put the matches, for each competition*/
+
+                        View competitionSection = graphicCompetitionHashMap.get(matches.getCompetitionId());
+                        LinearLayout competitionSectionLinearLayout = competitionSection.findViewById(R.id.competition_matches_linear_layout);
+
+
+                        /**
+                         * new single match creation*/
+                        View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
+
+                        TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
+                        homeTeam.setText(matches.getHomeTeam());
+
+                        TextView awayTeam = matchView.findViewById(R.id.single_match_away_team);
+                        awayTeam.setText(matches.getAwayTeam());
+
+                        TextView status = matchView.findViewById(R.id.single_match_status);
+                        TextView currentTime = matchView.findViewById(R.id.single_match_current_time);
+
+                        /**
+                         * new single match graphical values setting, this is based on the match current status*/
+                        setMatchesGraphicValuesFromStatus(matches, status, currentTime);
+
+
+                        /**
+                         * adding a the single match to the competition section layout*/
+                        competitionSectionLinearLayout.addView(matchView);
+                        graphicMatchesHashMap.put(matches.getMatchId(), matchView);
+                    }
+
+                    //setMatchesViewInfo();
+
+
+
+
+                    /**
+                     * show competitions and matches and hide progressbar*/
+                    setGraphicalWaitingEffect(View.INVISIBLE, View.VISIBLE);
+
+                }
+            });
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setMatchesGraphicValuesFromStatus(Match matches, TextView status, TextView currentTime) {
+        switch (matches.getStatus()) {
+            /**
+             * when the match is over, the status have to show the final score*/
+            case UtilitiesStrings.MATCHES_STATUS_FINISHED:
+                status.setText(matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore());
+                currentTime.setText(getString(R.string.match_current_time_finished));
+                break;
+            /**
+             * when the match is paused (end of first time), the status have to show the half time score*/
+            case UtilitiesStrings.MATCHES_STATUS_PAUSED:
+                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
+                currentTime.setText(getString(R.string.match_current_time_paused));
+                break;
+            /**
+             * when the match is cancelled , the match current time have to show a label to allow user to know that is cancelled*/
+            case UtilitiesStrings.MATCHES_STATUS_CANCELED:
+                currentTime.setText(getString(R.string.match_current_time_canceled));
+                break;
+            /**
+             * when the match is suspended , the match current time have to show a label to allow user to know that is suspended*/
+            case UtilitiesStrings.MATCHES_STATUS_SUSPENDED:
+                currentTime.setText(getString(R.string.match_current_time_suspended));
+                break;
+            /**
+             * when the match is scheduled , the status have to be replaced with the match start time
+             * in it is considered the local time zone*/
+            case UtilitiesStrings.MATCHES_STATUS_SCHEDULED:
+                String startTime= matches.getStartTime();
+                status.setText(startTime);
+                currentTime.setText("");
+
+                break;
+
+            /**
+             * default case */
+            //TODO set current score (payment to API needed)
+            case UtilitiesStrings.MATCHES_STATUS_IN_PLAY:
+                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
+                //currentTime.setText(getString(R.string.match_current_time_paused));
+                break;
+            /**
+             * default case */
+            default:
+                break;
+            //TODO live case
+
+        }
+    }
+
+
+
+    private void setLeftArrowClickListener() {
+        MatchesFragment fragment= this;
+        leftArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /**
+                 *we are going back to previous date, the current position have to be decreased */
+                currentPosition--;
+
+                /**
+                 * current date card view updating */
+                setCurrentDateCardViewInfo();
+
+                /**
+                 * matches updating calling the API  */
+                setGraphicalWaitingEffect(View.VISIBLE, View.INVISIBLE);
+
+                matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
+
+                //setMatchesViewInfo();
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+    private void setRightArrowClickListener() {
+        MatchesFragment fragment= this;
+        rightArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /**
+                 *we are going back to previous date, the current position have to be increased */
+                currentPosition++;
+
+                /**
+                 * current date card view updating */
+                setCurrentDateCardViewInfo();
+
+                /**
+                 * matches updating calling the API  */
+                setGraphicalWaitingEffect(View.VISIBLE, View.INVISIBLE);
+                matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
+                //setMatchesViewInfo();
+
+            }
+        });
+    }
+
+
+    private void setGraphicalWaitingEffect(int visible, int invisible) {
+        progressBar.setVisibility(visible);
+        matchFragmentLinearLayout.setVisibility(invisible);
+    }
+
+
+
+
+
+    private void setCurrentDateCardViewInfo() {
+        /**
+         * switch over current date position */
+        switch(currentPosition){
+            /**
+             * first date position, doesn't allow to go back, left arrow is hidden */
+            case 0:
+                leftArrow.setVisibility(View.INVISIBLE);
+                rightArrow.setVisibility(View.VISIBLE);
+                break;
+            /**
+             * last date position, doesn't allow to go to next date, right arrow is hidden */
+            case maxPosition-1:
+                leftArrow.setVisibility(View.VISIBLE);
+                rightArrow.setVisibility(View.INVISIBLE);
+                break;
+            /**
+             * default case: both arrows are visible */
+            default:
+                leftArrow.setVisibility(View.VISIBLE);
+                rightArrow.setVisibility(View.VISIBLE);
+                break;
+
+        }
+
+        currentDateTextView.setText(datesPositionMap.get(currentPosition));
+    }
+
 }

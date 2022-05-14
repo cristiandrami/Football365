@@ -69,9 +69,14 @@ public class UtilitiesStrings {
     public static final String MATCHES_API_JSON_FULL_TIME = "fullTime";
     public static final String MATCHES_STATUS_FINISHED = "FINISHED";
     public static final String MATCHES_STATUS_SCHEDULED ="SCHEDULED" ;
+    public static final String MATCHES_STATUS_IN_PLAY ="IN_PLAY" ;
 
     public static final String MATCHES_STATUS_PAUSED = "PAUSED";
     public static final String MATCHES_STATUS_CANCELED = "CANCELED";
     public static final String MATCHES_STATUS_SUSPENDED = "SUSPENDED";
     public static final String MATCHES_API_JSON_MATCH_ID = "id";
+    public static final String MATCHES_MIDNIGHT_HOUR = "00";
+    public static final String MATCHES_MIDNIGHT_HOUR_IN_24 = "24";
+    public static final String MATCH_TIME_ZONE_0 = "0";
+
 }

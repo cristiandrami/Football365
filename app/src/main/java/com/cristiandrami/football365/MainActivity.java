@@ -1,6 +1,7 @@
 package com.cristiandrami.football365;
 
 import android.os.Bundle;
+import android.view.Window;
 
 import com.cristiandrami.football365.ui.bets.BetsFragment;
 import com.cristiandrami.football365.ui.matches.MatchesFragment;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getSupportActionBar().hide();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
