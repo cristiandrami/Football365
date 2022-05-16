@@ -76,7 +76,7 @@ public class UtilitiesStrings {
     public static final String MATCHES_STATUS_SUSPENDED = "SUSPENDED";
     public static final String MATCHES_API_JSON_MATCH_ID = "id";
     public static final String MATCHES_MIDNIGHT_HOUR = "00";
-    public static final String MATCHES_MIDNIGHT_HOUR_IN_24 = "24";
+    public static final String MATCHES_MIDNIGHT_HOUR_0 = "0";
     public static final String MATCH_TIME_ZONE_0 = "0";
 
 }

@@ -11,6 +11,7 @@ import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHand
 import com.cristiandrami.football365.model.internalDatabase.NewsDatabaseModel;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
+import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.kwabenaberko.newsapilib.NewsApiClient;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -42,6 +44,7 @@ public class NewsViewModel extends ViewModel {
     private boolean databaseUpdateNeeded = false;
     private List<NewsRecyclerViewItemModel> newsList = new ArrayList<NewsRecyclerViewItemModel>();
     private long currentTimeMillis=0;
+
 
 
 

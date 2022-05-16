@@ -80,15 +80,35 @@ public class MatchesFragment extends Fragment {
 
         //matchesViewModel.updateMatchesList(this);
 
+
         matchesViewModel.updateMatchesListV2(this, datesPositionMap.get(currentPosition), getContext());
 
+        rightArrow.setVisibility(View.INVISIBLE);
+        matchesViewModel.updateNextMatches(maxPosition, datesPositionMap, getContext(), this);
         //final TextView textView = binding.textDashboard;
         //matchesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         updateMatchesEachMinute();
 
 
+
         return root;
+    }
+
+    public void makeRightArrowVisible() {
+        try{
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    rightArrow.setVisibility(View.VISIBLE);
+
+                }
+            });
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void updateMatchesEachMinute() {
@@ -150,58 +170,7 @@ public class MatchesFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    /**
-                     * data structures that contain views and information have to be cleaned each time the application
-                     * updates the graphics*/
-                    matchFragmentLinearLayout.removeAllViews();
-                    graphicMatchesHashMap.clear();
-                    graphicCompetitionHashMap.clear();
-                    for (int i=0; i<matchesList.size(); i++) {
-                        Match matches= matchesList.get(i);
-
-                        if (graphicCompetitionHashMap.get(matches.getCompetitionId()) == null) {
-                            createCompetitionView(matches.getCompetitionId());
-                        }
-
-                        /**
-                         * getting section in which the app will put the matches, for each competition*/
-
-                        View competitionSection = graphicCompetitionHashMap.get(matches.getCompetitionId());
-                        LinearLayout competitionSectionLinearLayout = competitionSection.findViewById(R.id.competition_matches_linear_layout);
-
-
-                        /**
-                         * new single match creation*/
-                        View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
-
-                        TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
-                        homeTeam.setText(matches.getHomeTeam());
-
-                        TextView awayTeam = matchView.findViewById(R.id.single_match_away_team);
-                        awayTeam.setText(matches.getAwayTeam());
-
-                        TextView status = matchView.findViewById(R.id.single_match_status);
-                        TextView currentTime = matchView.findViewById(R.id.single_match_current_time);
-
-                        /**
-                         * new single match graphical values setting, this is based on the match current status*/
-                        setMatchesGraphicValuesFromStatus(matches, status, currentTime);
-
-
-                        /**
-                         * adding a the single match to the competition section layout*/
-                        competitionSectionLinearLayout.addView(matchView);
-                        graphicMatchesHashMap.put(matches.getMatchId(), matchView);
-                    }
-
-                    //setMatchesViewInfo();
-
-
-
-
-                    /**
-                     * show competitions and matches and hide progressbar*/
-                    setGraphicalWaitingEffect(View.INVISIBLE, View.VISIBLE);
+                    showMatchesList(matchesList);
 
                 }
             });
@@ -210,6 +179,59 @@ public class MatchesFragment extends Fragment {
             e.printStackTrace();
         }
 
+    }
+
+    private void showMatchesList(List<Match> matchesList) {
+        /**
+         * data structures that contain views and information have to be cleaned each time the application
+         * updates the graphics*/
+        matchFragmentLinearLayout.removeAllViews();
+        graphicMatchesHashMap.clear();
+        graphicCompetitionHashMap.clear();
+        for (int i = 0; i< matchesList.size(); i++) {
+            Match matches= matchesList.get(i);
+
+            if (graphicCompetitionHashMap.get(matches.getCompetitionId()) == null) {
+                createCompetitionView(matches.getCompetitionId());
+            }
+
+            /**
+             * getting section in which the app will put the matches, for each competition*/
+
+            View competitionSection = graphicCompetitionHashMap.get(matches.getCompetitionId());
+            LinearLayout competitionSectionLinearLayout = competitionSection.findViewById(R.id.competition_matches_linear_layout);
+
+
+            /**
+             * new single match creation*/
+            View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
+
+            TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
+            homeTeam.setText(matches.getHomeTeam());
+
+            TextView awayTeam = matchView.findViewById(R.id.single_match_away_team);
+            awayTeam.setText(matches.getAwayTeam());
+
+            TextView status = matchView.findViewById(R.id.single_match_status);
+            TextView currentTime = matchView.findViewById(R.id.single_match_current_time);
+
+            /**
+             * new single match graphical values setting, this is based on the match current status*/
+            setMatchesGraphicValuesFromStatus(matches, status, currentTime);
+
+
+            /**
+             * adding a the single match to the competition section layout*/
+            competitionSectionLinearLayout.addView(matchView);
+            graphicMatchesHashMap.put(matches.getMatchId(), matchView);
+        }
+
+        //setMatchesViewInfo();
+
+
+        /**
+         * show competitions and matches and hide progressbar*/
+        setGraphicalWaitingEffect(View.INVISIBLE, View.VISIBLE);
     }
 
     private void setMatchesGraphicValuesFromStatus(Match matches, TextView status, TextView currentTime) {
@@ -281,20 +303,23 @@ public class MatchesFragment extends Fragment {
                  * matches updating calling the API  */
                 setGraphicalWaitingEffect(View.VISIBLE, View.INVISIBLE);
 
-                matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
+                updateViewOnDateChanging(fragment);
+
 
                 //setMatchesViewInfo();
             }
         });
     }
 
-
-
-
-
-
-
-
+    private void updateViewOnDateChanging(MatchesFragment fragment) {
+        matchFragmentLinearLayout.removeAllViews();
+        if(currentPosition==0){
+            matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
+        }else{
+            List<Match> nextMatches=matchesViewModel.getNextMatchesList(datesPositionMap.get(currentPosition));
+            showMatchesList(nextMatches);
+        }
+    }
 
 
     private void setRightArrowClickListener() {
@@ -313,7 +338,7 @@ public class MatchesFragment extends Fragment {
                 /**
                  * matches updating calling the API  */
                 setGraphicalWaitingEffect(View.VISIBLE, View.INVISIBLE);
-                matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
+                updateViewOnDateChanging(fragment);
                 //setMatchesViewInfo();
 
             }
