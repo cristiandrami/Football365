@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cristiandrami.football365.model.registration.PasswordValidator;
+import com.cristiandrami.football365.model.registration.SignUpValidator;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +37,6 @@ public class ProfileViewModel extends ViewModel {
 
 
     private Map<String, Object> userInfo;
-    private User currentUser;
 
     private final MutableLiveData<String> firstName;
     private final MutableLiveData<String> fullName;
@@ -43,7 +44,6 @@ public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<String> email;
 
     public ProfileViewModel() {
-        currentUser=new User();
         firstName = new MutableLiveData<>();
         lastName = new MutableLiveData<>();
         fullName = new MutableLiveData<>();
@@ -59,7 +59,6 @@ public class ProfileViewModel extends ViewModel {
     private void fetchUserData() {
         String currentUserEmail= FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-        //Log.e("user auth email", currentUserEmail);
 
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(currentUserEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -68,21 +67,17 @@ public class ProfileViewModel extends ViewModel {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        //Log.e("user", "DocumentSnapshot data: " + document.getData());
                         userInfo= document.getData();
 
                         String emailObtained= (String) userInfo.get(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_EMAIL);
                         String firstNameObtained= (String) userInfo.get(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_FIRST_NAME);
                         String lastNameObtained= (String) userInfo.get(UtilitiesStrings.FIREBASE_DOCUMENT_FIELD_LAST_NAME);
-                        // Log.e("user auth email", emailObtained);
 
 
                         email.setValue(emailObtained);
                         firstName.setValue(firstNameObtained);
                         lastName.setValue(lastNameObtained);
                         fullName.setValue(firstNameObtained+ " " + lastNameObtained);
-                        //Log.e("user", currentUser.getEmail());
-                        //Log.e("email", email.getValue().toString());
 
                     } else {
                         Log.d("user", "No such document");
@@ -114,7 +109,35 @@ public class ProfileViewModel extends ViewModel {
 
     /**
      * This method is called to update the user information in FirebaseDatabase*/
-    public void updateInformation(User newInformation) {
+    public void updateInformation(User newInformation, String oldPassword, String newPassword, ProfileFragment profileFragment) {
+
+
+        Log.e("update", "in method");
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        AuthCredential oldCredential = EmailAuthProvider.getCredential(user.getEmail(),oldPassword);
+        user.reauthenticate(oldCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.e("update", "logged");
+                    updateDocumentInformation(newInformation);
+                    if(!newPassword.isEmpty()){
+                        updatePassword(user, newPassword, profileFragment);
+                    }else{
+                        Log.e("dismissing", "dismiss");
+                        profileFragment.dismissPopup();
+                    }
+                } else {
+                    profileFragment.setErrorOnOldPassword();
+                }
+
+            }
+        });
+
+
+
+    }
+    private void updateDocumentInformation(User newInformation){
         String userEmail=newInformation.getEmail();
 
         Log.e("update", userEmail);
@@ -132,8 +155,22 @@ public class ProfileViewModel extends ViewModel {
                     firstName.setValue(newInformation.getFirstName());
                     lastName.setValue(newInformation.getLastName());
                     fullName.setValue(newInformation.getFirstName()+ " " + newInformation.getLastName());
+
                 }
 
+            }
+        });
+    }
+
+
+    private void updatePassword(FirebaseUser user, String newPassword, ProfileFragment profileFragment) {
+        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.e("password", "updated " + newPassword);
+                    profileFragment.dismissPopup();
+                }
             }
         });
     }
@@ -150,12 +187,9 @@ public class ProfileViewModel extends ViewModel {
                    user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                        @Override
                        public void onComplete(@NonNull Task<Void> task) {
-
                            if(task.isSuccessful()){
                                Log.e("password", "updated "+ newPassword);
-                               return;
                            }
-
                        }
                    });
                } else {

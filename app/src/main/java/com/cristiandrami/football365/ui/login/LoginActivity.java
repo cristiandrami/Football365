@@ -5,14 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
-import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
+import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.ui.registration.RegistrationActivity;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.login.UserLogin;
@@ -21,7 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * This is the class that manages the Login activity, it is a graphical controller
@@ -35,7 +33,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
 
-    private FirebaseUser currentUser;
     private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
     private Button loginButton;
     private Button registrationLinkButton;
@@ -49,8 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+        this.getSupportActionBar().hide();
 
         setupApplication();
 
@@ -116,7 +113,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     // If sign in fails, display a message to the user.
-                    //Log.w("login", "signInWithEmail:failure", task.getException());
                     Toast.makeText(LoginActivity.this, UtilitiesStrings.LOGIN_FAILED,
                             Toast.LENGTH_SHORT).show();
 

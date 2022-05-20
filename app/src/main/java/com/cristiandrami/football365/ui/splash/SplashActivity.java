@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
-import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
+import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.ui.login.LoginActivity;
 /**
  * This class is used as a Controller for the Splash Activity
@@ -25,9 +25,11 @@ import com.cristiandrami.football365.ui.login.LoginActivity;
  */
 public class SplashActivity extends AppCompatActivity {
 
-    private Animation topAnimation, bottomAnimation;
+    private Animation topAnimation;
+    private Animation   bottomAnimation;
     private ImageView logoImage;
-    private TextView appName, descriptionText;
+    private TextView appName;
+    private TextView descriptionText;
 
 
     //This variable sets the delay time before pass on login activity
@@ -37,7 +39,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         setupAllApp();
 

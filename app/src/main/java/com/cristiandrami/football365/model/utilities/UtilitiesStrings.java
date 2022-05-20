@@ -10,6 +10,7 @@ import com.cristiandrami.football365.model.registration.ValidationUser;
  */
 
 public class UtilitiesStrings {
+    private UtilitiesStrings(){}
 
     public static final String SPLASH_TRANSACTION_LOGO_NAME = "logo_image";
     public static final String SPLASH_TRANSACTION_TEXT_NAME = "welcome_text";

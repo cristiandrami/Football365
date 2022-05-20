@@ -16,6 +16,7 @@ public class BetsFragment extends Fragment {
 
     private FragmentBetsBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         BetsViewModel betsViewModel =

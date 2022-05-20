@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.View;
 
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.cristiandrami.football365.R;
-import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
-import com.cristiandrami.football365.model.internalDatabase.NewsDatabaseModel;
+import com.cristiandrami.football365.model.internal_database.InternalDatabaseHandler;
+import com.cristiandrami.football365.model.internal_database.NewsDatabaseModel;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
-import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.kwabenaberko.newsapilib.NewsApiClient;
@@ -25,7 +23,6 @@ import org.json.JSONObject;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -42,13 +39,14 @@ import java.util.List;
 
 public class NewsViewModel extends ViewModel {
     private boolean databaseUpdateNeeded = false;
-    private List<NewsRecyclerViewItemModel> newsList = new ArrayList<NewsRecyclerViewItemModel>();
+    private List<NewsRecyclerViewItemModel> newsList = new ArrayList<>();
     private long currentTimeMillis=0;
 
 
 
 
     private ShimmerFrameLayout shimmerFrameLayout;
+
     private NewsApiClient newsApiClient = new NewsApiClient(UtilitiesStrings.NEWS_API_KEY);
 
     private NewsRecyclerViewHandler recyclerViewHandler;
@@ -56,11 +54,12 @@ public class NewsViewModel extends ViewModel {
 
     public NewsViewModel() {
 
+        /**This is an empty constructor*/
     }
 
     public List<NewsRecyclerViewItemModel> refreshNewsList(InternalDatabaseHandler internalDB, Context context) {
         shimmerFrameLayout.startShimmer();
-        APICallsManagement(internalDB, context);
+        apiCallsManagement(internalDB, context);
         if(!isDatabaseUpdateNeeded())
             setNewsGraphicalList(internalDB);
         return newsList;
@@ -69,17 +68,22 @@ public class NewsViewModel extends ViewModel {
     private void setNewsGraphicalList(InternalDatabaseHandler internalDB) {
         String databaseNewsString = getNewsStringFromDatabase(internalDB);
         updateNewsArray(databaseNewsString);
-        shimmerFrameLayout.setVisibility(View.GONE);
-        shimmerFrameLayout.stopShimmer();
+        try{
+            shimmerFrameLayout.setVisibility(View.GONE);
+            shimmerFrameLayout.stopShimmer();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
-    private boolean APICallsManagement(InternalDatabaseHandler internalDB, Context context) {
+    private boolean apiCallsManagement(InternalDatabaseHandler internalDB, Context context) {
         currentTimeMillis = System.currentTimeMillis();
         NewsDatabaseModel newsFromDatabase = internalDB.getNews();
 
         long datesMillisecondsDifference = currentTimeMillis - newsFromDatabase.getDate();
 
-        if (APICallIsNeeded(newsFromDatabase, datesMillisecondsDifference)) {
+        if (apiCallIsNeeded(newsFromDatabase, datesMillisecondsDifference)) {
             databaseUpdateNeeded = true;
             shimmerFrameLayout.startShimmer();
             executeNewsAPICall(internalDB, context);
@@ -101,7 +105,7 @@ public class NewsViewModel extends ViewModel {
                         .language(context.getString(R.string.news_language))
                         .sortBy(UtilitiesStrings.NEWS_API_ARTICLE_SORTING)
                         .domains(context.getString(R.string.news_domains))
-                        .from(new Date(System.currentTimeMillis() - UtilitiesNumbers.DAY_IN_MILLISECONDS).toString())
+                        .from(new Date(System.currentTimeMillis() - (UtilitiesNumbers.DAY_IN_MILLISECONDS)*3).toString())
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override
@@ -114,7 +118,7 @@ public class NewsViewModel extends ViewModel {
 
                     @Override
                     public void onFailure(Throwable throwable) {
-
+                        throwable.printStackTrace();
                     }
                 }
         );
@@ -126,7 +130,7 @@ public class NewsViewModel extends ViewModel {
      * An API call is needed if the database doesn't contains yet news or the last news stored
      * were stored more than 8 hours before
      */
-    private boolean APICallIsNeeded(NewsDatabaseModel newsFromDatabase, long datesMillisecondsDifference) {
+    private boolean apiCallIsNeeded(NewsDatabaseModel newsFromDatabase, long datesMillisecondsDifference) {
         return datesMillisecondsDifference > UtilitiesNumbers.NEWS_FREQUENCY_UPDATE || newsFromDatabase.getDate() == 0;
     }
 

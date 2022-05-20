@@ -2,8 +2,6 @@ package com.cristiandrami.football365.ui.matches;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -13,9 +11,9 @@ import androidx.lifecycle.ViewModel;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
-import com.cristiandrami.football365.model.utilities.matchesUtilities.CompetitionsUtilities;
-import com.cristiandrami.football365.model.utilities.matchesUtilities.Match;
-import com.cristiandrami.football365.model.utilities.matchesUtilities.MatchesComparator;
+import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
+import com.cristiandrami.football365.model.utilities.matches_utilities.Match;
+import com.cristiandrami.football365.model.utilities.matches_utilities.MatchesComparator;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
@@ -41,7 +39,7 @@ public class MatchesViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
     private final CompetitionsUtilities competitionsUtilities = CompetitionsUtilities.getInstance();
     private final List<Match> matchesList = new ArrayList<>();
-    private HashMap<String, List<Match>> nextMatches= new HashMap<>();
+    private final HashMap<String, List<Match>> nextMatches = new HashMap<>();
 
     public MatchesViewModel() {
         mText = new MutableLiveData<>();
@@ -57,12 +55,12 @@ public class MatchesViewModel extends ViewModel {
     }
 
 
-
-    public void setPositionDatesMap(HashMap<Integer, String> datesPositionMap) {
-        Date currentDate = new Date(System.currentTimeMillis());
-        for (int i = 0; i < UtilitiesNumbers.MATCHES_DAYS; i++) {
-            datesPositionMap.put(i, currentDate.toString());
-            currentDate = new Date(currentDate.getTime() + UtilitiesNumbers.DAY_IN_MILLISECONDS);
+    public void setPositionDatesMap(int minPosition, int maxPosition, HashMap<Integer, String> datesPositionMap) {
+        Date currentDate = new Date(System.currentTimeMillis()+(UtilitiesNumbers.DAY_IN_MILLISECONDS*minPosition));
+        for (int i = minPosition; i < maxPosition; i++) {
+                datesPositionMap.put(i, currentDate.toString());
+                Log.e("position ", i+" "+currentDate.toString());
+                currentDate = new Date(currentDate.getTime() + UtilitiesNumbers.DAY_IN_MILLISECONDS);
         }
     }
 
@@ -100,16 +98,12 @@ public class MatchesViewModel extends ViewModel {
                             Match match = setMatchesFromJSONArray(matchesJSONArray, i, context);
 
 
+                            try {
+                                addTimeZoneOnStartTime(match, context);
+                            } catch (Exception e) {
 
-
-                            if(!context.getString(R.string.match_time_zone).equals(UtilitiesStrings.MATCH_TIME_ZONE_0)){
-                                if(!addTimeZoneToStartTime( context, match)){
-                                    addNextMatch(match);
-                                }else {
-                                    matchesList.add(match);
-                                }
+                                e.printStackTrace();
                             }
-
 
 
                         }
@@ -129,6 +123,16 @@ public class MatchesViewModel extends ViewModel {
         });
     }
 
+    private void addTimeZoneOnStartTime(Match match, Context context) {
+        if (!context.getString(R.string.match_time_zone).equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
+            if (!addTimeZoneToStartTime(context, match)) {
+                addNextMatch(match);
+            } else {
+                matchesList.add(match);
+            }
+        }
+    }
+
     @NonNull
     private Match setMatchesFromJSONArray(JSONArray matchesJSONArray, int i, Context context) throws JSONException {
         Match match = new Match();
@@ -139,9 +143,9 @@ public class MatchesViewModel extends ViewModel {
         startTime = startTime.substring(0, startTime.indexOf("Z") - 3);
 
 
-
         matchDate = matchDate.substring(0, matchDate.indexOf("T"));
 
+        Log.e("match", singleMatchJSONObject.toString());
 
         JSONObject competitionJSONObject = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_NAME);
         String competitionId = competitionJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_ID_FIELD);
@@ -151,9 +155,6 @@ public class MatchesViewModel extends ViewModel {
 
         JSONObject awayTeam = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
         String awayTeamName = awayTeam.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM_NAME);
-
-        //String minute= singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MINUTE);
-
 
         JSONObject score = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_SCORE);
 
@@ -186,19 +187,20 @@ public class MatchesViewModel extends ViewModel {
     }
 
     private void addNextMatch(Match match) {
-        if(nextMatches.get(match.getDate())==null){
-            List<Match> matchesDate= new ArrayList<>();
+        if (nextMatches.get(match.getDate()) == null) {
+            List<Match> matchesDate = new ArrayList<>();
             nextMatches.put(match.getDate(), matchesDate);
         }
 
-        nextMatches.get(match.getDate()).add(match);
+        if(!nextMatches.get(match.getDate()).contains(match))
+            nextMatches.get(match.getDate()).add(match);
     }
 
 
     @NonNull
     public boolean addTimeZoneToStartTime(Context context, Match match) {
-        boolean currentDate=true;
-        String startTime=match.getStartTime();
+        boolean currentDate = true;
+        String startTime = match.getStartTime();
         String hour = startTime.substring(0, startTime.indexOf(":"));
         String minute = startTime.substring(startTime.indexOf(":"));
         int intHour = Integer.parseInt(hour);
@@ -210,16 +212,16 @@ public class MatchesViewModel extends ViewModel {
             try {
                 java.util.Date date = formatter.parse(match.getDate());
                 long milliseconds = date.getTime();
-                milliseconds+=UtilitiesNumbers.DAY_IN_MILLISECONDS;
-                Date sqlDate= new Date(milliseconds);
+                milliseconds += UtilitiesNumbers.DAY_IN_MILLISECONDS;
+                Date sqlDate = new Date(milliseconds);
                 match.setDate(sqlDate.toString());
 
 
-
             } catch (ParseException e) {
+                e.printStackTrace();
             }
 
-            currentDate=false;
+            currentDate = false;
         }
         hour = String.valueOf(intHour);
         if (hour.equals(UtilitiesStrings.MATCHES_MIDNIGHT_HOUR_0)) {
@@ -231,59 +233,58 @@ public class MatchesViewModel extends ViewModel {
         return currentDate;
     }
 
-    public void updateNextMatches(int maxPosition, HashMap<Integer, String> datesPositionMap, Context context, MatchesFragment fragment) {
+    public void updateNextAndPreviousMatches(int minPosition, int maxPosition, HashMap<Integer, String> datesPositionMap, Context context, MatchesFragment fragment) {
 
 
-            OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient();
 
-            Request request = new Request.Builder()
-                    .url("https://api.football-data.org/v2/matches?dateFrom=" + datesPositionMap.get(1) + "&&dateTo=" + datesPositionMap.get(maxPosition-1))
-                    .get()
-                    .addHeader("X-Auth-Token", "c0c99cafe93949beb14871c37bacfa5f")
-                    .build();
-            client.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
+        Request request = new Request.Builder()
+                .url("https://api.football-data.org/v2/matches?dateFrom=" + datesPositionMap.get(minPosition) + "&&dateTo=" + datesPositionMap.get(maxPosition - 1))
+                .get()
+                .addHeader("X-Auth-Token", "c0c99cafe93949beb14871c37bacfa5f")
+                .build();
+        client.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
 
-            client.newCall(request).enqueue(new Callback() {
-
-
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    Log.e("api", e.toString());
-
-                }
-
-                @Override
-                public void onResponse(Response response) throws IOException {
-
-                    if (response.isSuccessful()) {
-                        JSONObject matchesJSONObject = null;
-                        try {
-                            matchesJSONObject = new JSONObject(response.body().string());
-                            JSONArray matchesJSONArray = matchesJSONObject.getJSONArray(UtilitiesStrings.MATCHES_API_JSON_MATCHES_ARRAY_NAME);
-
-                            for (int i = 0; i < matchesJSONArray.length(); i++) {
-                                Match match = setMatchesFromJSONArray(matchesJSONArray, i, context);
+        client.newCall(request).enqueue(new Callback() {
 
 
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.e("api", e.toString());
 
-                                if(!context.getString(R.string.match_time_zone).equals(UtilitiesStrings.MATCH_TIME_ZONE_0)){
-                                    addTimeZoneToStartTime(context,match);
-                                    addNextMatch(match);
-                                }
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+                    nextMatches.clear();
+                    JSONObject matchesJSONObject = null;
+                    try {
+                        matchesJSONObject = new JSONObject(response.body().string());
+                        JSONArray matchesJSONArray = matchesJSONObject.getJSONArray(UtilitiesStrings.MATCHES_API_JSON_MATCHES_ARRAY_NAME);
+
+                        for (int i = 0; i < matchesJSONArray.length(); i++) {
+                            Match match = setMatchesFromJSONArray(matchesJSONArray, i, context);
+
+
+                            if (!context.getString(R.string.match_time_zone).equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
+                                addTimeZoneToStartTime(context, match);
+                                addNextMatch(match);
                             }
-                            fragment.makeRightArrowVisible();
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                        fragment.notifyNextAndPreviousMatchesUpdateFinished();
 
-                    } else {
-                        Log.e("api ok", response.body().string());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
+                } else {
+                    Log.e("api ok", response.body().string());
                 }
-            });
+            }
+        });
 
 
     }

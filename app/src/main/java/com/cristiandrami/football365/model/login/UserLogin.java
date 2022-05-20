@@ -6,6 +6,7 @@ public class UserLogin {
     private String password;
 
     public UserLogin() {
+        /**This is an empty constructor*/
     }
 
     public String getEmail() {

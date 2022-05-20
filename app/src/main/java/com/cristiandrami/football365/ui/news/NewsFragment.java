@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cristiandrami.football365.databinding.FragmentNewsBinding;
-import com.cristiandrami.football365.model.internalDatabase.InternalDatabaseHandler;
-import com.cristiandrami.football365.ui.profile.ProfileViewModel;
+import com.cristiandrami.football365.model.internal_database.InternalDatabaseHandler;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
@@ -65,6 +64,7 @@ public class NewsFragment extends Fragment {
 
 
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
          newsViewModel =
@@ -103,7 +103,6 @@ public class NewsFragment extends Fragment {
         recyclerViewHandler = new NewsRecyclerViewHandler(recyclerViewItems, this.getContext());
 
         recyclerViewNews.setAdapter(recyclerViewHandler);
-        //recyclerViewHandler.notifyDataSetChanged();
 
         newsViewModel.setHandler(recyclerViewHandler);
 
