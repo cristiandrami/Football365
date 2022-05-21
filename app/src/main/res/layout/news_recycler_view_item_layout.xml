@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/news_recycler_view_item_layout">
+
+    <!-- I put in it another relative layout that iis the real item
+         i will give a fixed height to the item (90 dp)-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <!-- Now i put an image (card view )-->
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/news_card_view_recycler_view_item"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="n">
+
+            <ImageView
+                android:id="@+id/news_image_recycler_view_item"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+
+                ></ImageView>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/news_title_recycler_view_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/news_card_view_recycler_view_item"
+            android:maxHeight="100dp"
+            android:maxWidth="280dp"
+            android:textSize="15sp"
+            app:autoSizeTextType="uniform"
+            android:layout_marginLeft="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/news_card_view_recycler_view_item"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.16"></TextView>
+
+        <TextView
+            android:id="@+id/news_description_recycler_view_item"
+            android:layout_width="120dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/news_title_recycler_view_item"
+            android:layout_toRightOf="@+id/news_card_view_recycler_view_item"
+            android:textSize="3sp"
+            android:textAlignment="center"
+            android:layout_marginLeft="0dp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/news_card_view_recycler_view_item"
+            app:layout_constraintTop_toBottomOf="@+id/news_title_recycler_view_item"
+            app:layout_constraintVertical_bias="0.843"></TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

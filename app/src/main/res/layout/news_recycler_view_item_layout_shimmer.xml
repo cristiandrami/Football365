@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/news_recycler_view_item_layout">
+
+    <!-- I put in it another relative layout that iis the real item
+         i will give a fixed height to the item (90 dp)-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        >
+
+        <!-- Now i put an image (card view )-->
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/news_card_view_recycler_view_item"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+
+            app:cardBackgroundColor="@color/grey"
+            tools:targetApi="n">
+
+            <ImageView
+                android:id="@+id/news_image_recycler_view_item"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+
+                ></ImageView>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/news_title_recycler_view_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/news_card_view_recycler_view_item"
+            android:maxHeight="100dp"
+            android:textSize="15sp"
+            app:autoSizeTextType="uniform"
+            android:background="@color/grey"></TextView>
+
+        <TextView
+            android:id="@+id/news_description_recycler_view_item"
+            android:layout_width="120dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/news_title_recycler_view_item"
+            android:layout_marginLeft="171dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/news_card_view_recycler_view_item"
+            android:textSize="3sp"
+            app:autoSizeTextType="uniform"
+            android:background="@color/grey"></TextView>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

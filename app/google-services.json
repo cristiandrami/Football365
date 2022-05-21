@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "446753630334",
+    "project_id": "football365-f08c6",
+    "storage_bucket": "football365-f08c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446753630334:android:72a0071c5b0dc7a38d902f",
+        "android_client_info": {
+          "package_name": "com.cristiandrami.football365"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446753630334-q1v17mj9jipkjpfpoodj3bf8a2qsn35c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgUbrDoCePbFjs5H_waefBNvQDrEu2jHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446753630334-q1v17mj9jipkjpfpoodj3bf8a2qsn35c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
