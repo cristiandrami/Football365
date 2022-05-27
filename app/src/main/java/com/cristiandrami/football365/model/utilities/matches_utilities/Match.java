@@ -1,5 +1,9 @@
 package com.cristiandrami.football365.model.utilities.matches_utilities;
 
+import com.cristiandrami.football365.model.detailed_match.comment.CommentItem;
+import com.cristiandrami.football365.model.detailed_match.line_up.Player;
+
+import java.util.List;
 import java.util.Objects;
 
 public class Match {
@@ -15,6 +19,15 @@ public class Match {
     private String fullTimeHomeTeamScore;
     private String fullTimeAwayTeamScore;
     private String matchId;
+
+
+
+    private List<Player> homePlayers;
+    private List<Player> awayPlayers;
+
+    private List<CommentItem> commentItemList;
+
+
 
     public Match(){
         /**this is an empty constructor*/
@@ -106,6 +119,29 @@ public class Match {
 
     public void setFullTimeAwayTeamScore(String fullTimeAwayTeamScore) {
         this.fullTimeAwayTeamScore = fullTimeAwayTeamScore;
+    }
+    public List<Player> getHomePlayers() {
+        return homePlayers;
+    }
+
+    public void setHomePlayers(List<Player> homePlayers) {
+        this.homePlayers = homePlayers;
+    }
+
+    public List<Player> getAwayPlayers() {
+        return awayPlayers;
+    }
+
+    public void setAwayPlayers(List<Player> awayPlayers) {
+        this.awayPlayers = awayPlayers;
+    }
+
+    public List<CommentItem> getCommentItemList() {
+        return commentItemList;
+    }
+
+    public void setCommentItemList(List<CommentItem> commentItemList) {
+        this.commentItemList = commentItemList;
     }
 
     @Override

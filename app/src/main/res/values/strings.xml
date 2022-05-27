@@ -58,5 +58,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="password_not_correct">The inserted password is not correct</string>
+    <string name="match_comment_title">COMMENT</string>
+    <string name="match_line_up_title">LINE UP</string>
+
 
 </resources>

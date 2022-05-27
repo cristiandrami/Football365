@@ -1,5 +1,6 @@
 package com.cristiandrami.football365.ui.matches;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentMatchesBinding;
 import com.cristiandrami.football365.model.utilities.ImageUtilities;
@@ -21,6 +23,8 @@ import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.Competition;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.model.utilities.matches_utilities.Match;
+import com.cristiandrami.football365.ui.detailed_match.DetailedMatchActivity;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
@@ -225,6 +229,8 @@ public class MatchesFragment extends Fragment {
                     setMatchesGraphicValuesFromStatus(matches, status, currentTime);
 
 
+                    addSwitchToDetailedActivityListenerToMatch(matchView, matches);
+
                     /**
                      * adding a the single match to the competition section layout*/
                     competitionSectionLinearLayout.addView(matchView);
@@ -245,7 +251,18 @@ public class MatchesFragment extends Fragment {
 
         /**
          * show competitions and matches and hide progressbar*/
-        setGraphicalWaitingEffect(View.VISIBLE, View.INVISIBLE);
+        hideWaitingEffect(View.VISIBLE, View.INVISIBLE);
+    }
+
+    private void addSwitchToDetailedActivityListenerToMatch(View matchView, Match match) {
+        matchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent switchToDetailedMatchActivity= new Intent(getActivity(), DetailedMatchActivity.class);
+                switchToDetailedMatchActivity.putExtra("match", new Gson().toJson(match));
+                startActivity(switchToDetailedMatchActivity);
+            }
+        });
     }
 
     private void setMatchesGraphicValuesFromStatus(Match matches, TextView status, TextView currentTime) {
@@ -314,7 +331,7 @@ public class MatchesFragment extends Fragment {
 
                 /**
                  * matches updating calling the API  */
-                setGraphicalWaitingEffect(View.VISIBLE, View.INVISIBLE);
+                showWaitingEffect(View.VISIBLE, View.INVISIBLE);
 
                 updateViewOnDateChanging(fragment);
 
@@ -324,7 +341,7 @@ public class MatchesFragment extends Fragment {
     }
 
     private void updateViewOnDateChanging(MatchesFragment fragment) {
-        matchFragmentLinearLayout.removeAllViews();
+        //matchFragmentLinearLayout.removeAllViews();
         if (currentPosition == 0) {
             matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
         } else {
@@ -349,7 +366,7 @@ public class MatchesFragment extends Fragment {
 
                 /**
                  * matches updating calling the API  */
-                setGraphicalWaitingEffect(View.VISIBLE, View.INVISIBLE);
+                showWaitingEffect(View.VISIBLE, View.INVISIBLE);
                 updateViewOnDateChanging(fragment);
 
             }
@@ -357,7 +374,12 @@ public class MatchesFragment extends Fragment {
     }
 
 
-    private void setGraphicalWaitingEffect(int visible, int invisible) {
+    private void hideWaitingEffect(int visible, int invisible) {
+        progressBar.setVisibility(invisible);
+        matchFragmentLinearLayout.setVisibility(visible);
+    }
+
+    private void showWaitingEffect(int visible, int invisible) {
         progressBar.setVisibility(visible);
         matchFragmentLinearLayout.setVisibility(invisible);
     }

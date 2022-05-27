@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.model.detailed_match.comment.CommentItemsListTest;
+import com.cristiandrami.football365.model.detailed_match.line_up.PlayersListTest;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.ui.login.LoginActivity;
@@ -55,6 +57,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void setupAllApp() {
         CompetitionsUtilities.getInstance();
+        PlayersListTest.getInstance();
+        CommentItemsListTest.getInstance();
+
     }
 
     private void switchToLoginActivity() {

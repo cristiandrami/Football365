@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.model.detailed_match.comment.CommentItemsListTest;
+import com.cristiandrami.football365.model.detailed_match.line_up.PlayersListTest;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
@@ -108,6 +110,7 @@ public class MatchesViewModel extends ViewModel {
 
                         }
 
+                        Log.e("api ", "refresh");
                         Collections.sort(matchesList, new MatchesComparator());
                         matchesFragment.refreshMatchesViewV2(matchesList);
 
@@ -181,6 +184,9 @@ public class MatchesViewModel extends ViewModel {
         match.setHalfTimeHomeTeamScore(halfTimeHomeTeamScore);
         match.setMatchId(matchId);
         match.setStartTime(startTime);
+        match.setHomePlayers(PlayersListTest.getInstance().getHomePlayers());
+        match.setAwayPlayers(PlayersListTest.getInstance().getAwayPlayers());
+        match.setCommentItemList(CommentItemsListTest.getInstance().getCommentList());
 
 
         return match;
