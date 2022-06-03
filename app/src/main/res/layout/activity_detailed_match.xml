@@ -13,8 +13,8 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/detailed_match_score_card_view"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:minHeight="75dp"
+            android:layout_height="110dp"
+            android:minHeight="80dp"
             app:cardBackgroundColor="@color/yellow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,15 +32,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="home"
+                    android:textSize="12sp"
                     android:fontFamily="@font/bungee_regular"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/detailed_match_current_score"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:maxWidth="150dp"
+                    android:maxWidth="130dp"
                     app:autoSizeTextType="uniform"
+                    android:layout_marginRight="20dp"
                     app:layout_constraintHorizontal_bias="0.0"
                     android:layout_marginLeft="10dp"
+                    android:textAlignment="textStart"
 
                     >
 
@@ -53,29 +56,50 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bungee_regular"
                     android:text="vs"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="24sp"
 
-                    ></TextView>
 
+
+                    app:layout_constraintVertical_bias="0.40"></TextView>
+
+                <TextView
+                    android:id="@+id/detailed_match_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textSize="8sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.50"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailed_match_current_score"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:layout_marginTop="-15dp"
+                    >
+
+                </TextView>
 
                 <TextView
                     android:id="@+id/detailed_match_away_team_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
                     android:fontFamily="@font/bungee_regular"
-                    android:maxWidth="150dp"
+                    android:maxWidth="130dp"
                     android:text="away"
+                    android:textSize="12sp"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/detailed_match_current_score"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginRight="10dp"></TextView>
+                    android:textAlignment="textEnd"></TextView>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -171,7 +195,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp">
 
                     <View
                         android:id="@+id/detailed_match_activity_line_up_left_divider"
@@ -237,6 +262,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -250,37 +276,35 @@
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/line_up_module_icon"
-                            >
+                            android:src="@drawable/line_up_module_icon">
 
                         </ImageView>
-
 
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_home_defenders_number"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginLeft="5dp"
                             android:textSize="18sp"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_home_midfielder_number"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:layout_marginRight="5dp"
                             android:textSize="18sp"></TextView>
 
                         <TextView
@@ -294,50 +318,48 @@
                     </LinearLayout>
 
 
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0">
-
+                        app:layout_constraintTop_toTopOf="parent">
 
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_away_defenders_number"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:layout_marginRight="5dp"
                             android:textSize="18sp"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_away_midfielder_number"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:layout_marginRight="5dp"
                             android:textSize="18sp"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_away_strikers_number"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:layout_marginRight="5dp"
                             android:textSize="18sp"></TextView>
+
                         <ImageView
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:src="@drawable/line_up_module_icon"
-                            >
+                            android:src="@drawable/line_up_module_icon">
 
                         </ImageView>
 
@@ -348,9 +370,79 @@
             </androidx.cardview.widget.CardView>
 
 
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/detailed_match_activity_referees_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+
+            android:minHeight="100dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailed_match_activity_line_up_linear_layout"
+            tools:layout_editor_absoluteX="6dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp">
+
+                    <View
+                        android:id="@+id/detailed_match_activity_referees_left_divider"
+                        android:layout_width="100dp"
+                        android:layout_height="2dp"
+                        android:background="@android:color/background_dark"
+
+
+                        android:minWidth="100dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/detailed_match_activity_referees_title"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/detailed_match_activity_referees_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bungee_regular"
+                        android:text="@string/match_referees_title"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+
+                    <View
+                        android:id="@+id/detailed_match_activity_referees_right_divider"
+                        android:layout_width="100dp"
+                        android:layout_height="2dp"
+                        android:background="@android:color/background_dark"
+                        android:minWidth="100dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+
+                        app:layout_constraintStart_toEndOf="@+id/detailed_match_activity_referees_title"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.52" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
 
         </LinearLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

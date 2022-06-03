@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="60dp">
 
     <ImageView
         android:id="@+id/detailed_match_comment_item_icon"
@@ -11,10 +11,28 @@
         android:layout_height="34dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        ></ImageView>
+
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginBottom="3dp"></ImageView>
+
+    <TextView
+        android:id="@+id/detailed_match_comment_item_away_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee_regular"
+        android:maxWidth="155dp"
+        android:text=""
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintStart_toEndOf="@+id/detailed_match_comment_item_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginBottom="3dp"></TextView>
 
     <TextView
         android:id="@+id/detailed_match_comment_item_minute"
@@ -27,34 +45,24 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"></TextView>
+        app:layout_constraintVertical_bias="1.0"
+        ></TextView>
 
     <TextView
         android:id="@+id/detailed_match_comment_item_home_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bungee_regular"
+        android:maxWidth="155dp"
         android:text=""
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/detailed_match_comment_item_icon"
-        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:maxWidth="150dp"></TextView>
-
-    <TextView
-        android:id="@+id/detailed_match_comment_item_away_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/detailed_match_comment_item_icon"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/bungee_regular"
-        app:autoSizeTextType="uniform"
-        android:maxWidth="150dp"></TextView>
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginBottom="3dp"></TextView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

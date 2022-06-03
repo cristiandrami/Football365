@@ -26,6 +26,7 @@ public class Match {
     private List<Player> awayPlayers;
 
     private List<CommentItem> commentItemList;
+    private List<String> refereesList;
 
 
 
@@ -142,6 +143,14 @@ public class Match {
 
     public void setCommentItemList(List<CommentItem> commentItemList) {
         this.commentItemList = commentItemList;
+    }
+
+    public List<String> getRefereesList() {
+        return refereesList;
+    }
+
+    public void setRefereesList(List<String> refereesList) {
+        this.refereesList = refereesList;
     }
 
     @Override

@@ -10,6 +10,9 @@ import com.cristiandrami.football365.model.registration.ValidationUser;
  */
 
 public class UtilitiesStrings {
+    public static final String EMPTY_STRING ="" ;
+    public static final String MATCHES_SCORE_WAITING = "Waiting" ;
+
     private UtilitiesStrings(){}
 
     public static final String SPLASH_TRANSACTION_LOGO_NAME = "logo_image";

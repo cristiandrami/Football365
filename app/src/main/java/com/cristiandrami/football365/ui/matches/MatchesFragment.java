@@ -14,12 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentMatchesBinding;
 import com.cristiandrami.football365.model.utilities.ImageUtilities;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
-import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.Competition;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.model.utilities.matches_utilities.Match;
@@ -34,14 +32,14 @@ import java.util.TimerTask;
 public class MatchesFragment extends Fragment {
 
     private static final int maxPosition = UtilitiesNumbers.MATCHES_DAYS;
-    private static final int minPosition = (UtilitiesNumbers.MATCHES_PREVIOUS_DAYS*-1);
+    private static final int minPosition = (UtilitiesNumbers.MATCHES_PREVIOUS_DAYS * -1);
     private final HashMap<String, View> graphicCompetitionHashMap = new HashMap<>();
     private final HashMap<String, View> graphicMatchesHashMap = new HashMap<>();
+    private final HashMap<Integer, String> datesPositionMap = new HashMap<>();
     private MatchesViewModel matchesViewModel;
     private FragmentMatchesBinding binding;
     private LinearLayout matchFragmentLinearLayout;
     private HashMap<String, Competition> competitionHashMap;
-    private final HashMap<Integer, String> datesPositionMap = new HashMap<>();
     private List<Match> matchList;
     private int currentPosition = 0;
 
@@ -82,13 +80,11 @@ public class MatchesFragment extends Fragment {
         competitionHashMap = CompetitionsUtilities.getInstance().getCompetitions();
 
 
-
         matchesViewModel.updateMatchesListV2(this, datesPositionMap.get(currentPosition), getContext());
 
         rightArrow.setVisibility(View.INVISIBLE);
         leftArrow.setVisibility(View.INVISIBLE);
         matchesViewModel.updateNextAndPreviousMatches(minPosition, maxPosition, datesPositionMap, getContext(), this);
-
 
 
         updateMatchesEachMinute();
@@ -99,7 +95,7 @@ public class MatchesFragment extends Fragment {
 
     public void notifyNextAndPreviousMatchesUpdateFinished() {
         try {
-            Runnable showArrowsRunnable=new Runnable() {
+            Runnable showArrowsRunnable = new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -196,57 +192,11 @@ public class MatchesFragment extends Fragment {
         matchFragmentLinearLayout.removeAllViews();
         graphicMatchesHashMap.clear();
         graphicCompetitionHashMap.clear();
-        if(matchesList!=null){
-            for (int i = 0; i < matchesList.size(); i++) {
-                Match matches = matchesList.get(i);
-
-                if (graphicCompetitionHashMap.get(matches.getCompetitionId()) == null) {
-                    createCompetitionView(matches.getCompetitionId());
-                }
-
-                /**
-                 * getting section in which the app will put the matches, for each competition*/
-
-                View competitionSection = graphicCompetitionHashMap.get(matches.getCompetitionId());
-                LinearLayout competitionSectionLinearLayout;
-                try{
-                    competitionSectionLinearLayout = competitionSection.findViewById(R.id.competition_matches_linear_layout);
-                    /**
-                     * new single match creation*/
-                    View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
-
-                    TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
-                    homeTeam.setText(matches.getHomeTeam());
-
-                    TextView awayTeam = matchView.findViewById(R.id.single_match_away_team);
-                    awayTeam.setText(matches.getAwayTeam());
-
-                    TextView status = matchView.findViewById(R.id.single_match_status);
-                    TextView currentTime = matchView.findViewById(R.id.single_match_current_time);
-
-                    /**
-                     * new single match graphical values setting, this is based on the match current status*/
-                    setMatchesGraphicValuesFromStatus(matches, status, currentTime);
-
-
-                    addSwitchToDetailedActivityListenerToMatch(matchView, matches);
-
-                    /**
-                     * adding a the single match to the competition section layout*/
-                    competitionSectionLinearLayout.addView(matchView);
-                    graphicMatchesHashMap.put(matches.getMatchId(), matchView);
-                }catch (Exception e){
-                    e.printStackTrace();
-
-                }
-        }
-
-
-
+        if (matchesList != null) {
+            showMatchesFromMatchList(matchesList);
 
 
         }
-
 
 
         /**
@@ -254,11 +204,57 @@ public class MatchesFragment extends Fragment {
         hideWaitingEffect(View.VISIBLE, View.INVISIBLE);
     }
 
+    private void showMatchesFromMatchList(List<Match> matchesList) {
+        for (int i = 0; i < matchesList.size(); i++) {
+            Match matches = matchesList.get(i);
+
+            if (graphicCompetitionHashMap.get(matches.getCompetitionId()) == null) {
+                createCompetitionView(matches.getCompetitionId());
+            }
+
+            /**
+             * getting section in which the app will put the matches, for each competition*/
+
+            View competitionSection = graphicCompetitionHashMap.get(matches.getCompetitionId());
+            LinearLayout competitionSectionLinearLayout;
+            try {
+                competitionSectionLinearLayout = competitionSection.findViewById(R.id.competition_matches_linear_layout);
+                /**
+                 * new single match creation*/
+                View matchView = getLayoutInflater().inflate(R.layout.single_match_layout, null);
+
+                TextView homeTeam = matchView.findViewById(R.id.single_match_home_team);
+                homeTeam.setText(matches.getHomeTeam());
+
+                TextView awayTeam = matchView.findViewById(R.id.single_match_away_team);
+                awayTeam.setText(matches.getAwayTeam());
+
+                TextView status = matchView.findViewById(R.id.single_match_status);
+                TextView currentTime = matchView.findViewById(R.id.single_match_current_time);
+
+                /**
+                 * new single match graphical values setting, this is based on the match current status*/
+                setMatchesGraphicValuesFromStatus(matches, status, currentTime);
+
+
+                addSwitchToDetailedActivityListenerToMatch(matchView, matches);
+
+                /**
+                 * adding a the single match to the competition section layout*/
+                competitionSectionLinearLayout.addView(matchView);
+                graphicMatchesHashMap.put(matches.getMatchId(), matchView);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        }
+    }
+
     private void addSwitchToDetailedActivityListenerToMatch(View matchView, Match match) {
         matchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent switchToDetailedMatchActivity= new Intent(getActivity(), DetailedMatchActivity.class);
+                Intent switchToDetailedMatchActivity = new Intent(getActivity(), DetailedMatchActivity.class);
                 switchToDetailedMatchActivity.putExtra("match", new Gson().toJson(match));
                 startActivity(switchToDetailedMatchActivity);
             }
@@ -266,53 +262,7 @@ public class MatchesFragment extends Fragment {
     }
 
     private void setMatchesGraphicValuesFromStatus(Match matches, TextView status, TextView currentTime) {
-        switch (matches.getStatus()) {
-            /**
-             * when the match is over, the status have to show the final score*/
-            case UtilitiesStrings.MATCHES_STATUS_FINISHED:
-                status.setText(matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore());
-                currentTime.setText(getString(R.string.match_current_time_finished));
-                break;
-            /**
-             * when the match is paused (end of first time), the status have to show the half time score*/
-            case UtilitiesStrings.MATCHES_STATUS_PAUSED:
-                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
-                currentTime.setText(getString(R.string.match_current_time_paused));
-                break;
-            /**
-             * when the match is cancelled , the match current time have to show a label to allow user to know that is cancelled*/
-            case UtilitiesStrings.MATCHES_STATUS_CANCELED:
-                currentTime.setText(getString(R.string.match_current_time_canceled));
-                break;
-            /**
-             * when the match is suspended , the match current time have to show a label to allow user to know that is suspended*/
-            case UtilitiesStrings.MATCHES_STATUS_SUSPENDED:
-                currentTime.setText(getString(R.string.match_current_time_suspended));
-                break;
-            /**
-             * when the match is scheduled , the status have to be replaced with the match start time
-             * in it is considered the local time zone*/
-            case UtilitiesStrings.MATCHES_STATUS_SCHEDULED:
-                String startTime = matches.getStartTime();
-                status.setText(startTime);
-                currentTime.setText("");
-
-                break;
-
-            /**
-             * default case */
-            //TODO set current score (payment to API needed)
-            case UtilitiesStrings.MATCHES_STATUS_IN_PLAY:
-                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
-
-                break;
-            /**
-             * default case */
-            default:
-                break;
-            //TODO live case
-
-        }
+        matchesViewModel.setMatchGraphicsFromStatus(matches, status, currentTime, getContext());
     }
 
 
@@ -391,7 +341,7 @@ public class MatchesFragment extends Fragment {
         switch (currentPosition) {
             /**
              * first date position, doesn't allow to go back, left arrow is hidden */
-            case minPosition+1:
+            case minPosition + 1:
                 leftArrow.setVisibility(View.INVISIBLE);
                 rightArrow.setVisibility(View.VISIBLE);
                 break;

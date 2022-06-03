@@ -2,6 +2,7 @@ package com.cristiandrami.football365.ui.matches;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.detailed_match.comment.CommentItemsListTest;
 import com.cristiandrami.football365.model.detailed_match.line_up.PlayersListTest;
+import com.cristiandrami.football365.model.detailed_match.referees.RefereesItemsListTest;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
@@ -38,23 +40,20 @@ import java.util.List;
 
 public class MatchesViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
     private final CompetitionsUtilities competitionsUtilities = CompetitionsUtilities.getInstance();
     private final List<Match> matchesList = new ArrayList<>();
     private final HashMap<String, List<Match>> nextMatches = new HashMap<>();
 
     public MatchesViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        /***
+         * This is an empty constructor
+         */
     }
 
     public List<Match> getMatchesList() {
         return matchesList;
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
 
 
     public void setPositionDatesMap(int minPosition, int maxPosition, HashMap<Integer, String> datesPositionMap) {
@@ -187,6 +186,7 @@ public class MatchesViewModel extends ViewModel {
         match.setHomePlayers(PlayersListTest.getInstance().getHomePlayers());
         match.setAwayPlayers(PlayersListTest.getInstance().getAwayPlayers());
         match.setCommentItemList(CommentItemsListTest.getInstance().getCommentList());
+        match.setRefereesList(RefereesItemsListTest.getInstance().getReferees());
 
 
         return match;
@@ -298,4 +298,57 @@ public class MatchesViewModel extends ViewModel {
     public List<Match> getNextMatchesList(String date) {
         return nextMatches.get(date);
     }
+
+
+
+    public void setMatchGraphicsFromStatus(Match matches, TextView status, TextView currentTime, Context context) {
+        switch (matches.getStatus()) {
+            /**
+             * when the match is over, the status have to show the final score*/
+            case UtilitiesStrings.MATCHES_STATUS_FINISHED:
+                status.setText(matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore());
+                currentTime.setText(context.getString(R.string.match_current_time_finished));
+                break;
+            /**
+             * when the match is paused (end of first time), the status have to show the half time score*/
+            case UtilitiesStrings.MATCHES_STATUS_PAUSED:
+                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
+                currentTime.setText(context.getString(R.string.match_current_time_paused));
+                break;
+            /**
+             * when the match is cancelled , the match current time have to show a label to allow user to know that is cancelled*/
+            case UtilitiesStrings.MATCHES_STATUS_CANCELED:
+                currentTime.setText(context.getString(R.string.match_current_time_canceled));
+                break;
+            /**
+             * when the match is suspended , the match current time have to show a label to allow user to know that is suspended*/
+            case UtilitiesStrings.MATCHES_STATUS_SUSPENDED:
+                currentTime.setText(context.getString(R.string.match_current_time_suspended));
+                break;
+            /**
+             * when the match is scheduled , the status have to be replaced with the match start time
+             * in it is considered the local time zone*/
+            case UtilitiesStrings.MATCHES_STATUS_SCHEDULED:
+                String startTime = matches.getStartTime();
+                status.setText(startTime);
+                currentTime.setText("");
+
+                break;
+
+            /**
+             * default case */
+            //TODO set current score (payment to API needed)
+            case UtilitiesStrings.MATCHES_STATUS_IN_PLAY:
+                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
+
+                break;
+            /**
+             * default case */
+            default:
+                break;
+            //TODO live case
+
+        }
+    }
+
 }

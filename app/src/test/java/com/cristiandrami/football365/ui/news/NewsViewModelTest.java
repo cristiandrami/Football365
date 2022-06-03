@@ -35,7 +35,7 @@ class NewsViewModelTest {
         context=Mockito.mock(Context.class);
     }
 
-    @DisplayName("updateNewsArray should return a list of size of the corrisponding news number if there are news in JSON object")
+    @DisplayName("updateNewsArray should return a list of size of the corresponding news number if there are news in JSON object")
     @ParameterizedTest
     @MethodSource("newsDatabaseModelParametrizedObjects")
      void should_updateNewsArray_returns_a_list_of_size_one_when_thereIs_onlyOneNew(int expectedSize, NewsDatabaseModel newsToTest) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
