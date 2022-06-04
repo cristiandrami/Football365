@@ -8,8 +8,8 @@ package com.cristiandrami.football365.model.utilities;
  */
 public class UtilitiesNumbers {
     private UtilitiesNumbers(){}
-    public static final int MATCHES_DAYS = 7 ;
-    public static final int MATCHES_PREVIOUS_DAYS = 3;
+    public static final int MATCHES_DAYS = 7;
+    public static final int MATCHES_PREVIOUS_DAYS = 4;
     public static long DAY_IN_MILLISECONDS= 24 * 60 * 60 * 1000;
 
 

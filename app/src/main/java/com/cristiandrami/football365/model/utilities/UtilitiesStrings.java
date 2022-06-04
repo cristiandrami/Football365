@@ -12,6 +12,7 @@ import com.cristiandrami.football365.model.registration.ValidationUser;
 public class UtilitiesStrings {
     public static final String EMPTY_STRING ="" ;
     public static final String MATCHES_SCORE_WAITING = "Waiting" ;
+    public static final String DEBUG_ERROR = "error:: ";
 
     private UtilitiesStrings(){}
 

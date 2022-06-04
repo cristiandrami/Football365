@@ -5,8 +5,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cristiandrami.football365.R;
@@ -41,8 +39,11 @@ import java.util.List;
 public class MatchesViewModel extends ViewModel {
 
     private final CompetitionsUtilities competitionsUtilities = CompetitionsUtilities.getInstance();
-    private final List<Match> matchesList = new ArrayList<>();
-    private final HashMap<String, List<Match>> nextMatches = new HashMap<>();
+    private final List<Match> matchesOfTheDayList = new ArrayList<>();
+
+
+
+    private final HashMap<String, List<Match>> matchesOfOtherDaysMap = new HashMap<>();
 
     public MatchesViewModel() {
         /***
@@ -50,19 +51,40 @@ public class MatchesViewModel extends ViewModel {
          */
     }
 
-    public List<Match> getMatchesList() {
-        return matchesList;
-    }
 
 
 
+    /***
+     * This method is used to fill the HashMap with the dates for the different match days
+     * Position 0 contains the current date (today)
+     * Position -1 contains the date of yesterday
+     * Position 1 contains the date of tomorrow
+     *
+     * With the for instruction we fill the dates from the minimum position to the maximum position
+     *
+     * minPosition has to be <= 0 to work properly
+     *
+     * @param minPosition
+     * @param maxPosition
+     * @param datesPositionMap
+     */
     public void setPositionDatesMap(int minPosition, int maxPosition, HashMap<Integer, String> datesPositionMap) {
-        Date currentDate = new Date(System.currentTimeMillis()+(UtilitiesNumbers.DAY_IN_MILLISECONDS*minPosition));
-        for (int i = minPosition; i < maxPosition; i++) {
+
+        if(minPosition<=0){
+
+            /**
+             *  This allow us to start with the date that corresponds to the minimum position, if min position is -1 the date
+             *  is today date-1 (yesterday)
+             *  if max position is
+             */
+            Date currentDate = new Date(System.currentTimeMillis()+(UtilitiesNumbers.DAY_IN_MILLISECONDS*minPosition));
+
+            for (int i = minPosition; i <= maxPosition; i++) {
                 datesPositionMap.put(i, currentDate.toString());
-                Log.e("position ", i+" "+currentDate.toString());
                 currentDate = new Date(currentDate.getTime() + UtilitiesNumbers.DAY_IN_MILLISECONDS);
+            }
         }
+
     }
 
     public void updateMatchesListV2(MatchesFragment matchesFragment, String date, Context context) {
@@ -91,27 +113,19 @@ public class MatchesViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     JSONObject matchesJSONObject = null;
                     try {
-                        matchesList.clear();
+                        matchesOfTheDayList.clear();
                         matchesJSONObject = new JSONObject(response.body().string());
                         JSONArray matchesJSONArray = matchesJSONObject.getJSONArray(UtilitiesStrings.MATCHES_API_JSON_MATCHES_ARRAY_NAME);
 
                         for (int i = 0; i < matchesJSONArray.length(); i++) {
-                            Match match = setMatchesFromJSONArray(matchesJSONArray, i, context);
-
-
-                            try {
-                                addTimeZoneOnStartTime(match, context);
-                            } catch (Exception e) {
-
-                                e.printStackTrace();
-                            }
-
-
+                            Match match = setMatchesFromJSONArray(matchesJSONArray, i);
+                            addTimeZoneOnStartTime(match, context.getString(R.string.match_time_zone));
                         }
+                        /** This sorts the matches from their geographic areas (alphabetic sorting) */
+                        Collections.sort(matchesOfTheDayList, new MatchesComparator());
 
-                        Log.e("api ", "refresh");
-                        Collections.sort(matchesList, new MatchesComparator());
-                        matchesFragment.refreshMatchesViewV2(matchesList);
+                        /** This notifies the fragment the correct matches update and passes to it the updated list*/
+                        matchesFragment.refreshMatchesViewV2(matchesOfTheDayList);
 
 
                     } catch (JSONException e) {
@@ -119,24 +133,36 @@ public class MatchesViewModel extends ViewModel {
                     }
 
                 } else {
-                    Log.e("api ok", response.body().string());
+
+                    Log.e("[updateMatchesListV2]", UtilitiesStrings.DEBUG_ERROR +response.body().string());
                 }
             }
         });
     }
 
-    private void addTimeZoneOnStartTime(Match match, Context context) {
-        if (!context.getString(R.string.match_time_zone).equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
-            if (!addTimeZoneToStartTime(context, match)) {
-                addNextMatch(match);
+    /***
+     * This method is used to add a match in his correct data structure
+     *
+     * If the return of the the method {@link #changeStartTimeAndDateIfNeeded(Match, String)} is true
+     * we have to add the match to the map of the matches that aren't of the day
+     * in other case we add it on the daily matches
+     * @param match
+     * @param currentTimeZone
+     */
+    private void addTimeZoneOnStartTime(Match match, String currentTimeZone) {
+        if (!currentTimeZone.equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
+            System.out.println(currentTimeZone);
+            if (changeStartTimeAndDateIfNeeded( match, currentTimeZone)) {
+                addMatchOnTheOtherDaysMap(match);
             } else {
-                matchesList.add(match);
+                matchesOfTheDayList.add(match);
+
             }
         }
     }
 
     @NonNull
-    private Match setMatchesFromJSONArray(JSONArray matchesJSONArray, int i, Context context) throws JSONException {
+    private Match setMatchesFromJSONArray(JSONArray matchesJSONArray, int i) throws JSONException {
         Match match = new Match();
         JSONObject singleMatchJSONObject = (JSONObject) matchesJSONArray.get(i);
         String matchStatus = singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS);
@@ -192,29 +218,62 @@ public class MatchesViewModel extends ViewModel {
         return match;
     }
 
-    private void addNextMatch(Match match) {
-        if (nextMatches.get(match.getDate()) == null) {
+    /**
+     * This method is used to add a match in the matchesOfOtherDaysMap, that contains for each
+     * date string a list of matches, is used to store all matches that are not dailies matches
+     *
+     * @param match
+     */
+    private void addMatchOnTheOtherDaysMap(Match match) {
+        /** if there is a List for the match date key this part of code is responsible to
+         * create a list and store it with a key == match date
+         */
+        if (matchesOfOtherDaysMap.get(match.getDate()) == null) {
             List<Match> matchesDate = new ArrayList<>();
-            nextMatches.put(match.getDate(), matchesDate);
+            matchesOfOtherDaysMap.put(match.getDate(), matchesDate);
         }
 
-        if(!nextMatches.get(match.getDate()).contains(match))
-            nextMatches.get(match.getDate()).add(match);
+        /** if the match is not already in the list it is added
+         */
+        if(!matchesOfOtherDaysMap.get(match.getDate()).contains(match))
+            matchesOfOtherDaysMap.get(match.getDate()).add(match);
     }
 
 
-    @NonNull
-    public boolean addTimeZoneToStartTime(Context context, Match match) {
-        boolean currentDate = true;
+    /**
+     *This method is used to add to the start time of a match the current time zone
+     *It is responsible to add to the start time the hours ot the System Time Zone, if for example
+     *the time zone is 2 it has to add 2 hours to the start time
+     *
+     * it returns true if the date is changed within the start time
+     * it returns false if the date is still the same original date
+     *
+     * @param match
+     * @param currentTimeZone
+     */
+    public boolean changeStartTimeAndDateIfNeeded(Match match, String currentTimeZone) {
+        boolean dateChanged = false;
         String startTime = match.getStartTime();
+
+        /** getting hour and minute form the start time*/
         String hour = startTime.substring(0, startTime.indexOf(":"));
         String minute = startTime.substring(startTime.indexOf(":"));
+
+        /** parsing hour string to a int*/
         int intHour = Integer.parseInt(hour);
-        intHour += Integer.parseInt(context.getString(R.string.match_time_zone));
+
+        /** adding the time zone int value to the original hours*/
+        intHour += Integer.parseInt(currentTimeZone);
+
+        /** if the new hour is >=24 we have to switch the date to the next day */
         if (intHour >= 24) {
+
+            /** getting the correct new hour */
             intHour -= 24;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
+
+            /** creating the new date and converting it in a String */
             try {
                 java.util.Date date = formatter.parse(match.getDate());
                 long milliseconds = date.getTime();
@@ -227,16 +286,21 @@ public class MatchesViewModel extends ViewModel {
                 e.printStackTrace();
             }
 
-            currentDate = false;
+            /** the date has been changed */
+            dateChanged = true;
         }
+
+        /** if date is 0 here is changed to 00 */
         hour = String.valueOf(intHour);
         if (hour.equals(UtilitiesStrings.MATCHES_MIDNIGHT_HOUR_0)) {
             hour = UtilitiesStrings.MATCHES_MIDNIGHT_HOUR;
         }
+
+        /** reassembling the hours and minutes as a string  */
         startTime = hour + minute;
         match.setStartTime(startTime);
 
-        return currentDate;
+        return dateChanged;
     }
 
     public void updateNextAndPreviousMatches(int minPosition, int maxPosition, HashMap<Integer, String> datesPositionMap, Context context, MatchesFragment fragment) {
@@ -264,19 +328,19 @@ public class MatchesViewModel extends ViewModel {
             public void onResponse(Response response) throws IOException {
 
                 if (response.isSuccessful()) {
-                    nextMatches.clear();
+                    matchesOfOtherDaysMap.clear();
                     JSONObject matchesJSONObject = null;
                     try {
                         matchesJSONObject = new JSONObject(response.body().string());
                         JSONArray matchesJSONArray = matchesJSONObject.getJSONArray(UtilitiesStrings.MATCHES_API_JSON_MATCHES_ARRAY_NAME);
 
                         for (int i = 0; i < matchesJSONArray.length(); i++) {
-                            Match match = setMatchesFromJSONArray(matchesJSONArray, i, context);
+                            Match match = setMatchesFromJSONArray(matchesJSONArray, i);
 
 
                             if (!context.getString(R.string.match_time_zone).equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
-                                addTimeZoneToStartTime(context, match);
-                                addNextMatch(match);
+                                changeStartTimeAndDateIfNeeded( match, context.getString(R.string.match_time_zone));
+                                addMatchOnTheOtherDaysMap(match);
                             }
                         }
                         fragment.notifyNextAndPreviousMatchesUpdateFinished();
@@ -295,9 +359,6 @@ public class MatchesViewModel extends ViewModel {
 
     }
 
-    public List<Match> getNextMatchesList(String date) {
-        return nextMatches.get(date);
-    }
 
 
 
@@ -349,6 +410,19 @@ public class MatchesViewModel extends ViewModel {
             //TODO live case
 
         }
+    }
+
+
+    public HashMap<String, List<Match>> getMatchesOfOtherDaysMap() {
+        return matchesOfOtherDaysMap;
+    }
+
+    public List<Match> getMatchesOfTheDayList() {
+        return matchesOfTheDayList;
+    }
+
+    public List<Match> getMatchesListFromDate(String date) {
+        return matchesOfOtherDaysMap.get(date);
     }
 
 }

@@ -295,7 +295,7 @@ public class MatchesFragment extends Fragment {
         if (currentPosition == 0) {
             matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
         } else {
-            List<Match> nextMatches = matchesViewModel.getNextMatchesList(datesPositionMap.get(currentPosition));
+            List<Match> nextMatches = matchesViewModel.getMatchesListFromDate(datesPositionMap.get(currentPosition));
             showMatchesList(nextMatches);
         }
     }

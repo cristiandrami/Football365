@@ -60,7 +60,7 @@
     <string name="password_not_correct">The inserted password is not correct</string>
     <string name="match_comment_title">COMMENT</string>
     <string name="match_line_up_title">LINE UP</string>
-    <string name="match_referees_title">Referees</string>
+    <string name="match_referees_title">REFEREES</string>
 
 
 </resources>
