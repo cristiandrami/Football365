@@ -271,7 +271,7 @@ public class MatchesViewModel extends ViewModel {
             /** getting the correct new hour */
             intHour -= 24;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            
+
             /** creating the new date and converting it in a String */
             try {
                 java.util.Date date = formatter.parse(match.getDate());
