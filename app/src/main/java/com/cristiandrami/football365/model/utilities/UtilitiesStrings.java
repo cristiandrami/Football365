@@ -13,6 +13,7 @@ public class UtilitiesStrings {
     public static final String EMPTY_STRING ="" ;
     public static final String MATCHES_SCORE_WAITING = "Waiting" ;
     public static final String DEBUG_ERROR = "error:: ";
+    public static final String MATCHES_API_JSON_MATCH_CURRENT_TIME ="currentTime" ;
 
     private UtilitiesStrings(){}
 

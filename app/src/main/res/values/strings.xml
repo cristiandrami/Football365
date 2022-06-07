@@ -51,6 +51,7 @@
     <string name="match_current_time_finished">END</string>
     <string name="match_current_time_paused">INT</string>
     <string name="match_current_time_canceled">CAN</string>
+    <string name="match_current_time_live">LIVE</string>
     <string name="match_current_time_suspended">SUSP</string>
 
     <string name="match_time_zone">0</string>

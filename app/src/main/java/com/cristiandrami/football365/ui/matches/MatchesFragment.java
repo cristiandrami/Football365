@@ -18,6 +18,7 @@ import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentMatchesBinding;
 import com.cristiandrami.football365.model.utilities.ImageUtilities;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
+import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.Competition;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.model.utilities.matches_utilities.Match;
@@ -194,8 +195,6 @@ public class MatchesFragment extends Fragment {
         graphicCompetitionHashMap.clear();
         if (matchesList != null) {
             showMatchesFromMatchList(matchesList);
-
-
         }
 
 
@@ -262,7 +261,19 @@ public class MatchesFragment extends Fragment {
     }
 
     private void setMatchesGraphicValuesFromStatus(Match matches, TextView status, TextView currentTime) {
-        matchesViewModel.setMatchGraphicsFromStatus(matches, status, currentTime, getContext());
+        HashMap<String,String> graphicMapValues=matchesViewModel.getGraphicValuesFromStatus(matches);
+        String statusString= graphicMapValues.get(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS);
+        String currentTimeString= graphicMapValues.get(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME);
+
+
+        status.setText(statusString);
+
+        if(currentTimeString!=null){
+            Integer currentTimeID= Integer.valueOf(currentTimeString);
+            currentTime.setText(getString(currentTimeID));
+        }
+
+
     }
 
 

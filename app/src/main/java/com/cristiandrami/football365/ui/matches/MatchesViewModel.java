@@ -173,8 +173,6 @@ public class MatchesViewModel extends ViewModel {
 
         matchDate = matchDate.substring(0, matchDate.indexOf("T"));
 
-        Log.e("match", singleMatchJSONObject.toString());
-
         JSONObject competitionJSONObject = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_NAME);
         String competitionId = competitionJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_ID_FIELD);
 
@@ -359,56 +357,83 @@ public class MatchesViewModel extends ViewModel {
     }
 
 
+    /**
+     * This method is used to return an HashMap that contains the value for the match status and the match time
+     * the app has to show to the user
+     *
+     * @param matches
+     * @return
+     */
+    public HashMap<String, String> getGraphicValuesFromStatus(Match matches) {
 
-
-    public void setMatchGraphicsFromStatus(Match matches, TextView status, TextView currentTime, Context context) {
+        /**
+         * This is the HashMap the method will return, it has a string for the key and a string for the
+         * value
+         *
+         * The value of current time is also a String but it represent the string value of an integer, that
+         * is the id associated to a string that depends on application settings ( language )
+         */
+        HashMap<String, String> statusAndCurrentTime= new HashMap<>();
         switch (matches.getStatus()) {
             /**
              * when the match is over, the status have to show the final score*/
             case UtilitiesStrings.MATCHES_STATUS_FINISHED:
-                status.setText(matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore());
-                currentTime.setText(context.getString(R.string.match_current_time_finished));
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore() );
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_finished));
+
                 break;
             /**
-             * when the match is paused (end of first time), the status have to show the half time score*/
+             * when the match is paused (end of first time), the status has to contain the half time score
+             **/
             case UtilitiesStrings.MATCHES_STATUS_PAUSED:
-                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
-                currentTime.setText(context.getString(R.string.match_current_time_paused));
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_paused));
                 break;
             /**
              * when the match is cancelled , the match current time have to show a label to allow user to know that is cancelled*/
             case UtilitiesStrings.MATCHES_STATUS_CANCELED:
-                currentTime.setText(context.getString(R.string.match_current_time_canceled));
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, "");
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_canceled));
                 break;
             /**
              * when the match is suspended , the match current time have to show a label to allow user to know that is suspended*/
             case UtilitiesStrings.MATCHES_STATUS_SUSPENDED:
-                currentTime.setText(context.getString(R.string.match_current_time_suspended));
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, "");
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_suspended));
+
                 break;
             /**
              * when the match is scheduled , the status have to be replaced with the match start time
              * in it is considered the local time zone*/
             case UtilitiesStrings.MATCHES_STATUS_SCHEDULED:
                 String startTime = matches.getStartTime();
-                status.setText(startTime);
-                currentTime.setText("");
+
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, startTime);
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, null);
 
                 break;
 
-            /**
-             * default case */
+
             //TODO set current score (payment to API needed)
             case UtilitiesStrings.MATCHES_STATUS_IN_PLAY:
-                status.setText(matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_live));
+
 
                 break;
             /**
              * default case */
             default:
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, "");
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, null);
                 break;
-            //TODO live case
+
+
+            //TODO live case (payment to API needed)
 
         }
+
+        return statusAndCurrentTime;
     }
 
 
