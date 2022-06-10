@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cristiandrami.football365.R;
@@ -32,11 +33,12 @@ public class SplashActivity extends AppCompatActivity {
     private ImageView logoImage;
     private TextView appName;
     private TextView descriptionText;
+    private ProgressBar progressBar;
 
 
     //This variable sets the delay time before pass on login activity
     //In this case we wait 3 seconds
-    private static int SPLASH_SCREEN = 500;
+    private static int SPLASH_SCREEN = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +51,6 @@ public class SplashActivity extends AppCompatActivity {
         setAnimations();
 
         switchToLoginActivity();
-
-
-
-
 
     }
 
@@ -87,12 +85,14 @@ public class SplashActivity extends AppCompatActivity {
         logoImage.setAnimation(topAnimation);
         appName.setAnimation(bottomAnimation);
         descriptionText.setAnimation(bottomAnimation);
+        progressBar.setAnimation(bottomAnimation);
     }
 
     private void graphicalComponentsBind() {
         logoImage= findViewById(R.id.app_logo_splash);
         appName=findViewById(R.id.app_name_splash);
         descriptionText=findViewById(R.id.description_splash_text);
+        progressBar= findViewById(R.id.activity_splash_progressBar);
     }
 
 }

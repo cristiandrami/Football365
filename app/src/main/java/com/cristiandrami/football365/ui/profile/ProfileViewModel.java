@@ -112,27 +112,30 @@ public class ProfileViewModel extends ViewModel {
     public void updateInformation(User newInformation, String oldPassword, String newPassword, ProfileFragment profileFragment) {
 
 
-        Log.e("update", "in method");
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        AuthCredential oldCredential = EmailAuthProvider.getCredential(user.getEmail(),oldPassword);
-        user.reauthenticate(oldCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Log.e("update", "logged");
-                    updateDocumentInformation(newInformation);
-                    if(!newPassword.isEmpty()){
-                        updatePassword(user, newPassword, profileFragment);
-                    }else{
-                        Log.e("dismissing", "dismiss");
-                        profileFragment.dismissPopup();
+        if(oldPassword!= null && !oldPassword.isEmpty()) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            AuthCredential oldCredential = EmailAuthProvider.getCredential(user.getEmail(), oldPassword);
+            user.reauthenticate(oldCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.e("update", "logged");
+                        updateDocumentInformation(newInformation);
+                        if (!newPassword.isEmpty()) {
+                            updatePassword(user, newPassword, profileFragment);
+                        } else {
+                            Log.e("dismissing", "dismiss");
+                            profileFragment.dismissPopup();
+                        }
+                    } else {
+                        profileFragment.setErrorOnOldPassword();
                     }
-                } else {
-                    profileFragment.setErrorOnOldPassword();
-                }
 
-            }
-        });
+                }
+            });
+        }else{
+            profileFragment.setErrorOnOldPassword();
+        }
 
 
 

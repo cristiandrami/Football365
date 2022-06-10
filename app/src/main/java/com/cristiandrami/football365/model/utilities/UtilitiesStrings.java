@@ -14,6 +14,9 @@ public class UtilitiesStrings {
     public static final String MATCHES_SCORE_WAITING = "Waiting" ;
     public static final String DEBUG_ERROR = "error:: ";
     public static final String MATCHES_API_JSON_MATCH_CURRENT_TIME ="currentTime" ;
+    public static final String FIREBASE_LIKED_NEWS_USERS_COLLECTION = "liked_news_users";
+    public static final String FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION = "news";
+
 
     private UtilitiesStrings(){}
 
@@ -30,11 +33,17 @@ public class UtilitiesStrings {
 
     public static final String INTERNAL_DATABASE_NAME ="football365_internal_database.db" ;
     public static final String CREATE_NEWS_TABLE_INTERNAL_DATABASE ="CREATE TABLE \"news\" ( \"news_string\"\tTEXT, \"insertion_date\"\tNUMERIC, PRIMARY KEY(\"news_string\",\"insertion_date\") )";
-
+    public static final String CREATE_LIKED_NEWS_TABLE_INTERNAL_DATABASE = "CREATE TABLE \"liked_news\" (\n" +
+            "\t\"id\"\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+            "\t\"articleJSON\"\tTEXT\n" +
+            ")";
 
     public static final String NEWS_COLUMN_NEWS_NAME_INTERNAL_DATABASE = "news_string";
     public static final String NEWS_COLUMN_DATE_NAME_INTERNAL_DATABASE = "insertion_date";
     public static final String NEWS_TABLE_NAME_INTERNAL_DATABASE = "news";
+    public static final String LIKED_NEWS_TABLE_NAME_INTERNAL_DATABASE ="liked_news" ;
+    public static final String LIKED_NEWS_COLUMN_NEWS_NAME_FIRESTORE = "articleJSON";
+
 
     public static final String NEWS_API_JSON_ARTICLES_ARRAY_NAME ="articles" ;
     public static final String NEWS_API_JSON_SOURCE_OBJECT_NAME = "source";

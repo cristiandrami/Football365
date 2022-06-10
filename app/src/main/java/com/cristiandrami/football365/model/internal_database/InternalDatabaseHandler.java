@@ -9,6 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class is used to implement an internal SQL database, that is used to store on device some useful information
  * On Database creation all SQL tables needed will be created.
@@ -36,6 +40,7 @@ public class InternalDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(UtilitiesStrings.CREATE_NEWS_TABLE_INTERNAL_DATABASE);
+        sqLiteDatabase.execSQL(UtilitiesStrings.CREATE_LIKED_NEWS_TABLE_INTERNAL_DATABASE);
     }
 
     /**this is called when the database version number is called.
@@ -67,6 +72,8 @@ public class InternalDatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+
+
     /**
      * This method is used to retrieve the football news stored on internal DB, it returns
      * an object {@link NewsDatabaseModel}
@@ -89,6 +96,8 @@ public class InternalDatabaseHandler extends SQLiteOpenHelper {
 
         return news;
     }
+
+
 
     /**
      * This method is used to delete the football news stored on internal DB */

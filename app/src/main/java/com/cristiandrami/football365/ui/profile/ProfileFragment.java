@@ -126,10 +126,17 @@ public class ProfileFragment extends Fragment {
 
                 //TODO validator fields if valid show
                 String newPassword=newPasswordFieldEditTextProfileFragment.getText().toString().trim();
+                String firstName=firstNameFieldEditTextProfileFragment.getText().toString().trim();
+                String lastName=lastNameTextInputEditTextProfileFragment.getText().toString().trim();
                 if (!newPassword.isEmpty() && !PasswordValidator.validatePassword(newPassword)) {
                     Log.e("new pass", newPasswordFieldEditTextProfileFragment.getText().toString());
                     setErrorOnNewPassword();
-                }else{
+                }else if(lastName==null || lastName.isEmpty()){
+                    setErrorOnLastName();
+                }else if(firstName==null || firstName.isEmpty()){
+                    setErrorOnFirstName();
+                }
+                else{
                     updatePopup.show();
                 }
             }
@@ -151,6 +158,13 @@ public class ProfileFragment extends Fragment {
 
 
 
+    }
+
+    private void setErrorOnLastName() {
+        lastNameTextInputEditTextProfileFragment.setError(getActivity().getString(R.string.last_name_empty));
+    }
+    private void setErrorOnFirstName() {
+        firstNameFieldEditTextProfileFragment.setError(getActivity().getString(R.string.first_name_empty));
     }
 
     public void dismissPopup() {

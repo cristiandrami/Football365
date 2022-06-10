@@ -44,6 +44,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     android:layout_marginLeft="10dp"
                     android:textAlignment="textStart"
+                    android:textColor="@color/black"
 
                     >
 
@@ -56,13 +57,12 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bungee_regular"
                     android:text="vs"
-                    android:textSize="20sp"
+                    android:textSize="30sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-
-
+                    android:textColor="@color/black"
 
                     app:layout_constraintVertical_bias="0.40"></TextView>
 
@@ -70,15 +70,15 @@
                     android:id="@+id/detailed_match_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="test"
-                    android:textSize="8sp"
+                    android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.50"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detailed_match_current_score"
                     app:layout_constraintVertical_bias="0.0"
-                    android:layout_marginTop="-15dp"
+                    android:layout_marginTop="-20dp"
+                    android:textColor="@color/black"
                     >
 
                 </TextView>
@@ -99,7 +99,8 @@
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/detailed_match_current_score"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:textAlignment="textEnd"></TextView>
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"></TextView>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -149,6 +150,7 @@
                         android:fontFamily="@font/bungee_regular"
                         android:text="@string/match_comment_title"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        android:textColor="@color/black"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -221,7 +223,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="@color/black"></TextView>
 
 
                     <View
@@ -296,7 +299,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"></TextView>
+                            android:textSize="18sp"
+                            android:textColor="@color/black"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_home_midfielder_number"
@@ -305,7 +309,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"></TextView>
+                            android:textSize="18sp"
+                            android:textColor="@color/black"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_home_strikers_number"
@@ -313,7 +318,8 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"></TextView>
+                            android:textSize="18sp"
+                            android:textColor="@color/black"></TextView>
 
                     </LinearLayout>
 
@@ -336,7 +342,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"></TextView>
+                            android:textSize="18sp"
+                            android:textColor="@color/black"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_away_midfielder_number"
@@ -345,7 +352,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"></TextView>
+                            android:textSize="18sp"
+                            android:textColor="@color/black"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_away_strikers_number"
@@ -354,7 +362,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"></TextView>
+                            android:textSize="18sp"
+                            android:textColor="@color/black"></TextView>
 
                         <ImageView
                             android:layout_width="36dp"
@@ -419,7 +428,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="@color/black"></TextView>
 
 
                     <View

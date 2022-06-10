@@ -2,7 +2,6 @@ package com.cristiandrami.football365.ui.matches;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -42,7 +41,6 @@ public class MatchesViewModel extends ViewModel {
     private final List<Match> matchesOfTheDayList = new ArrayList<>();
 
 
-
     private final HashMap<String, List<Match>> matchesOfOtherDaysMap = new HashMap<>();
 
     public MatchesViewModel() {
@@ -50,8 +48,6 @@ public class MatchesViewModel extends ViewModel {
          * This is an empty constructor
          */
     }
-
-
 
 
     /***
@@ -70,14 +66,14 @@ public class MatchesViewModel extends ViewModel {
      */
     public void setPositionDatesMap(int minPosition, int maxPosition, HashMap<Integer, String> datesPositionMap) {
 
-        if(minPosition<=0){
+        if (minPosition <= 0) {
 
             /**
              *  This allow us to start with the date that corresponds to the minimum position, if min position is -1 the date
              *  is today date-1 (yesterday)
              *  if max position is
              */
-            Date currentDate = new Date(System.currentTimeMillis()+(UtilitiesNumbers.DAY_IN_MILLISECONDS*minPosition));
+            Date currentDate = new Date(System.currentTimeMillis() + (UtilitiesNumbers.DAY_IN_MILLISECONDS * minPosition));
 
             for (int i = minPosition; i <= maxPosition; i++) {
                 datesPositionMap.put(i, currentDate.toString());
@@ -116,11 +112,14 @@ public class MatchesViewModel extends ViewModel {
                         matchesOfTheDayList.clear();
                         matchesJSONObject = new JSONObject(response.body().string());
                         JSONArray matchesJSONArray = matchesJSONObject.getJSONArray(UtilitiesStrings.MATCHES_API_JSON_MATCHES_ARRAY_NAME);
+                        Log.e("match string", matchesJSONArray.toString());
 
                         for (int i = 0; i < matchesJSONArray.length(); i++) {
                             Match match = setMatchesFromJSONArray(matchesJSONArray, i);
                             addTimeZoneOnStartTime(match, context.getString(R.string.match_time_zone));
+
                         }
+
                         /** This sorts the matches from their geographic areas (alphabetic sorting) */
                         Collections.sort(matchesOfTheDayList, new MatchesComparator());
 
@@ -134,7 +133,7 @@ public class MatchesViewModel extends ViewModel {
 
                 } else {
 
-                    Log.e("[updateMatchesListV2]", UtilitiesStrings.DEBUG_ERROR +response.body().string());
+                    Log.e("[updateMatchesListV2]", UtilitiesStrings.DEBUG_ERROR + response.body().string());
                 }
             }
         });
@@ -152,7 +151,7 @@ public class MatchesViewModel extends ViewModel {
     private void addTimeZoneOnStartTime(Match match, String currentTimeZone) {
         if (!currentTimeZone.equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
             System.out.println(currentTimeZone);
-            if (changeStartTimeAndDateIfNeeded( match, currentTimeZone)) {
+            if (changeStartTimeAndDateIfNeeded(match, currentTimeZone)) {
                 addMatchOnTheOtherDaysMap(match);
             } else {
                 matchesOfTheDayList.add(match);
@@ -163,8 +162,11 @@ public class MatchesViewModel extends ViewModel {
 
     @NonNull
     private Match setMatchesFromJSONArray(JSONArray matchesJSONArray, int i) throws JSONException {
-        Match match = new Match();
-        JSONObject singleMatchJSONObject = (JSONObject) matchesJSONArray.get(i);
+        Match match = null;
+        JSONObject singleMatchJSONObject = null;
+
+        match = new Match();
+        singleMatchJSONObject = (JSONObject) matchesJSONArray.get(i);
         String matchStatus = singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS);
         String matchDate = singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_DATE);
         String startTime = matchDate.substring(matchDate.indexOf("T") + 1);
@@ -174,26 +176,27 @@ public class MatchesViewModel extends ViewModel {
         matchDate = matchDate.substring(0, matchDate.indexOf("T"));
 
         JSONObject competitionJSONObject = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_NAME);
-        String competitionId = competitionJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_ID_FIELD);
+        System.out.println(competitionJSONObject);
+        String competitionId = String.valueOf(competitionJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_ID_FIELD));
 
         JSONObject homeTeam = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM);
-        String homeTeamName = homeTeam.getString(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM_NAME);
+        String homeTeamName = String.valueOf(homeTeam.get(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM_NAME));
 
         JSONObject awayTeam = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
-        String awayTeamName = awayTeam.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM_NAME);
+        String awayTeamName = String.valueOf(awayTeam.get(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM_NAME));
 
         JSONObject score = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_SCORE);
 
         JSONObject halfTimeJSON = (JSONObject) score.get(UtilitiesStrings.MATCHES_API_JSON_HALF_TIME);
-        String halfTimeHomeTeamScore = halfTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM);
-        String halfTimeAwayTeamScore = halfTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
+        String halfTimeHomeTeamScore = String.valueOf(halfTimeJSON.get(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM));
+        String halfTimeAwayTeamScore = String.valueOf(halfTimeJSON.get(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM));
 
         JSONObject fullTimeJSON = (JSONObject) score.get(UtilitiesStrings.MATCHES_API_JSON_FULL_TIME);
-        String fullTimeHomeTeamScore = fullTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM);
-        String fullTimeAwayTeamScore = fullTimeJSON.getString(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM);
+        String fullTimeHomeTeamScore = String.valueOf(fullTimeJSON.get(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM));
+        String fullTimeAwayTeamScore = String.valueOf(fullTimeJSON.get(UtilitiesStrings.MATCHES_API_JSON_AWAY_TEAM));
 
 
-        String matchId = singleMatchJSONObject.getString(UtilitiesStrings.MATCHES_API_JSON_MATCH_ID);
+        String matchId = String.valueOf(singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_MATCH_ID));
 
 
         match.setAwayTeam(awayTeamName);
@@ -233,16 +236,16 @@ public class MatchesViewModel extends ViewModel {
 
         /** if the match is not already in the list it is added
          */
-        if(!matchesOfOtherDaysMap.get(match.getDate()).contains(match))
+        if (!matchesOfOtherDaysMap.get(match.getDate()).contains(match))
             matchesOfOtherDaysMap.get(match.getDate()).add(match);
     }
 
 
     /**
-     *This method is used to add to the start time of a match the current time zone
-     *It is responsible to add to the start time the hours ot the System Time Zone, if for example
-     *the time zone is 2 it has to add 2 hours to the start time
-     *
+     * This method is used to add to the start time of a match the current time zone
+     * It is responsible to add to the start time the hours ot the System Time Zone, if for example
+     * the time zone is 2 it has to add 2 hours to the start time
+     * <p>
      * it returns true if the date is changed within the start time
      * it returns false if the date is still the same original date
      *
@@ -336,7 +339,7 @@ public class MatchesViewModel extends ViewModel {
 
 
                             if (!context.getString(R.string.match_time_zone).equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
-                                changeStartTimeAndDateIfNeeded( match, context.getString(R.string.match_time_zone));
+                                changeStartTimeAndDateIfNeeded(match, context.getString(R.string.match_time_zone));
                                 addMatchOnTheOtherDaysMap(match);
                             }
                         }
@@ -373,12 +376,12 @@ public class MatchesViewModel extends ViewModel {
          * The value of current time is also a String but it represent the string value of an integer, that
          * is the id associated to a string that depends on application settings ( language )
          */
-        HashMap<String, String> statusAndCurrentTime= new HashMap<>();
+        HashMap<String, String> statusAndCurrentTime = new HashMap<>();
         switch (matches.getStatus()) {
             /**
              * when the match is over, the status have to show the final score*/
             case UtilitiesStrings.MATCHES_STATUS_FINISHED:
-                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore() );
+                statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, matches.getFullTimeHomeTeamScore() + " - " + matches.getFullTimeAwayTeamScore());
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_finished));
 
                 break;
@@ -400,17 +403,15 @@ public class MatchesViewModel extends ViewModel {
             case UtilitiesStrings.MATCHES_STATUS_SUSPENDED:
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, "");
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_suspended));
-
                 break;
+
             /**
              * when the match is scheduled , the status have to be replaced with the match start time
              * in it is considered the local time zone*/
             case UtilitiesStrings.MATCHES_STATUS_SCHEDULED:
                 String startTime = matches.getStartTime();
-
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, startTime);
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, null);
-
                 break;
 
 
@@ -418,8 +419,6 @@ public class MatchesViewModel extends ViewModel {
             case UtilitiesStrings.MATCHES_STATUS_IN_PLAY:
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, matches.getHalfTimeHomeTeamScore() + " - " + matches.getHalfTimeAwayTeamScore());
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, String.valueOf(R.string.match_current_time_live));
-
-
                 break;
             /**
              * default case */
@@ -427,7 +426,6 @@ public class MatchesViewModel extends ViewModel {
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_STATUS, "");
                 statusAndCurrentTime.put(UtilitiesStrings.MATCHES_API_JSON_MATCH_CURRENT_TIME, null);
                 break;
-
 
             //TODO live case (payment to API needed)
 

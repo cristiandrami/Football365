@@ -3,11 +3,13 @@ package com.cristiandrami.football365.ui.news;
 import android.content.Context;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.internal_database.InternalDatabaseHandler;
 import com.cristiandrami.football365.model.internal_database.NewsDatabaseModel;
+import com.cristiandrami.football365.model.news.NewsUtilities;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -174,15 +176,7 @@ public class NewsViewModel extends ViewModel {
                 newsList.clear();
                 for (int i = 0; i < newsJSONArray.length(); i++) {
                     JSONObject article = (JSONObject) newsJSONArray.get(i);
-                    JSONObject source = (JSONObject) article.get(UtilitiesStrings.NEWS_API_JSON_SOURCE_OBJECT_NAME);
-
-                    String title = (String) article.get(UtilitiesStrings.NEWS_API_JSON_ARTICLE_TITLE_FIELD);
-                    String image = (String) article.get(UtilitiesStrings.NEWS_API_JSON_ARTICLE_IMAGE_FIELD);
-                    String author =(String) source.get(UtilitiesStrings.NEWS_API_JSON_SOURCE_AUTHOR_FIELD);
-                    String url = (String) article.get(UtilitiesStrings.NEWS_API_JSON_ARTICLE_URL_FIELD);
-
-                    NewsRecyclerViewItemModel news = new NewsRecyclerViewItemModel(image, title, author);
-                    news.setArticleLink(url);
+                    NewsRecyclerViewItemModel news = NewsUtilities.getNewsObjectFromJSON(article);
                     newsList.add(news);
                 }
                 if(databaseUpdateNeeded) {
@@ -195,6 +189,8 @@ public class NewsViewModel extends ViewModel {
 
 
     }
+
+
 
     private String getNewsStringFromDatabase(InternalDatabaseHandler internalDB) {
         return internalDB.getNews().getDailyNews();

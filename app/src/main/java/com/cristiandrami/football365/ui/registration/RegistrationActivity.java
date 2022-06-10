@@ -108,12 +108,14 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void addToDatabase(Map<String, Object> user, String email) {
+
         firestoneFirestoreDB.collection(UtilitiesStrings.FIREBASE_USERS_COLLECTION_NAME).document(email).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Log.i("user","user added");
+
                     switchToMainActivity();
+                    finish();
                 }
             }
         });

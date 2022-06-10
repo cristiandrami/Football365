@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.news.NewsFragment"
-    >
+    tools:context=".ui.news.NewsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
         <!--to avoid the font padding is used android:includeFontPadding="false" -->
 
         <RelativeLayout
@@ -35,6 +33,7 @@
                 android:layout_toRightOf="@id/profile_image"
                 android:fontFamily="@font/bungee_regular"
                 android:includeFontPadding="false"
+                android:textColor="@color/black"
                 android:textSize="20sp"></TextView>
 
             <TextView
@@ -45,6 +44,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/profile_image"
                 android:includeFontPadding="false"
+                android:textColor="@color/black"
                 android:textSize="14sp"></TextView>
 
             <androidx.cardview.widget.CardView
@@ -56,60 +56,85 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp"
             android:layout_marginBottom="20dp"
             android:orientation="vertical"
-           >
+            android:padding="20dp"
+            android:layout_marginTop="50dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/first_name_field_layout_profile_fragment"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:hint="@string/first_name_hint"
-                android:layout_marginBottom="5dp"
-                android:textColorHint="@color/black">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/first_name_field_edit_text_profile_fragment"
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/first_name_field_layout_profile_fragment"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_baseline_person_24"></com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginBottom="5dp"
+                    android:hint="@string/first_name_hint"
+                    android:textColorHint="@color/black"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/first_name_field_edit_text_profile_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_baseline_person_24"
+                        android:textSize="18sp"
+
+                       >
+
+                    </com.google.android.material.textfield.TextInputEditText>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/last_name_field_layout_profile_fragment"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:hint="@string/first_name_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:hint="@string/last_name_hint"
                 android:textColorHint="@color/black">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/last_name_field_edit_text_profile_fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_baseline_person_24"></com.google.android.material.textfield.TextInputEditText>
+                    android:drawableStart="@drawable/ic_baseline_person_24"
+                    android:textSize="18sp"
+                    ></com.google.android.material.textfield.TextInputEditText>
 
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
+
+
+
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/new_password_field_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textColorHint="@color/black"
-                android:hint="@string/new_password_hint"
-
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
 
+                android:hint="@string/new_password_hint"
+                android:textColorHint="@color/black"
+                app:passwordToggleEnabled="true"
+
                 >
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_password_field_edit_text_profile_fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:drawableLeft="@drawable/ic_baseline_vpn_key_24"></com.google.android.material.textfield.TextInputEditText>
+                    android:drawableStart="@drawable/ic_baseline_vpn_key_24"
+                    android:textSize="18sp"></com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -118,15 +143,16 @@
                 android:id="@+id/info_update__profile_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/update_hint"
-                android:textColor="@color/white"
                 android:layout_gravity="right"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:background="@color/black"
                 android:elevation="0dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"></Button>
+                android:text="@string/update_hint"
+                android:textColor="@color/white"
+               ></Button>
 
 
         </LinearLayout>
