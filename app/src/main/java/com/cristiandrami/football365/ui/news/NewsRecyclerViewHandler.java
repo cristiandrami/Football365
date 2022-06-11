@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cristiandrami.football365.R;
-import com.cristiandrami.football365.model.internal_database.InternalDatabaseHandler;
 import com.cristiandrami.football365.model.news.News;
+import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.listener_commands.LinkOpenerOnBrowserCommandOnClick;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,12 +50,13 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String image = items.get(position).getNewsImage();
-        String title = items.get(position).getNewsTitle();
-        String description = items.get(position).getNewsDescription();
-        String link = items.get(position).getArticleLink();
+        String image = items.get(position).getImage();
+        String title = items.get(position).getTitle();
+        String description = items.get(position).getDescription();
+        String link = items.get(position).getLink();
+        int type = items.get(position).getType();
 
-        holder.setData(image, title, description, link);
+        holder.setData(image, title, description, link, type);
 
     }
 
@@ -85,7 +86,7 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
             likedArticleView = itemView.findViewById(R.id.news_fragment_liked_news_view);
         }
 
-        public void setData(String image, String title, String description, String link) {
+        public void setData(String image, String title, String description, String link, int type) {
 
             itemTitle.setText(title);
             itemDescription.setText(description);
@@ -95,7 +96,10 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
                 itemImage.setImageResource(R.drawable.news_item_icon);
             }
             setClickListenerOnItem(link);
-            setClickListenerOnLikedView(image, title, description, link);
+            if(type==UtilitiesNumbers.LIKED_NEWS_TYPE)
+                likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_24));
+
+            setClickListenerOnLikedView(image, title, description, link, type);
 
         }
 
@@ -103,7 +107,7 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
             itemLayout.setOnClickListener(new LinkOpenerOnBrowserCommandOnClick(link, context));
         }
 
-        private void setClickListenerOnLikedView(String image, String title, String description, String link) {
+        private void setClickListenerOnLikedView(String image, String title, String description, String link, int type) {
             likedArticleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -114,19 +118,32 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
                     currentNew.setLink(link);
                     currentNew.setTitle(title);
                     String newJSON = new Gson().toJson(currentNew);
-                    if (likedArticleView.getBackground().getConstantState().equals(context.getDrawable(R.drawable.ic_baseline_star_24).getConstantState())) {
-                        likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_border_24));
+                    if(type== UtilitiesNumbers.LIKED_NEWS_TYPE){
+                        items.remove(getAdapterPosition());
+                        notifyItemRemoved(getAdapterPosition());
+                        notifyItemRangeChanged(getAdapterPosition(), items.size());
                         FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
                                 document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION).
                                 document(title).delete();
-                    } else {
-                        likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_24));
-                        Map<String, Object> newToStore = new HashMap<>();
-                        newToStore.put(UtilitiesStrings.LIKED_NEWS_COLUMN_NEWS_NAME_FIRESTORE, newJSON);
-                        FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
-                                document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION)
-                                .document(title).set(newToStore);
+                        if(items.size()==0){
+
+                        }
+                    }else{
+                        if (likedArticleView.getBackground().getConstantState().equals(context.getDrawable(R.drawable.ic_baseline_star_24).getConstantState())) {
+                            likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_border_24));
+                            FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
+                                    document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION).
+                                    document(title).delete();
+                        } else {
+                            likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_24));
+                            Map<String, Object> newToStore = new HashMap<>();
+                            newToStore.put(UtilitiesStrings.LIKED_NEWS_COLUMN_NEWS_NAME_FIRESTORE, newJSON);
+                            FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
+                                    document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION)
+                                    .document(title).set(newToStore);
+                        }
                     }
+
 
                 }
             });

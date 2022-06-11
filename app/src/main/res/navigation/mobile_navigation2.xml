@@ -20,9 +20,9 @@
 
     <fragment
         android:id="@+id/navigation_bets"
-        android:name="com.cristiandrami.football365.ui.bets.BetsFragment"
+        android:name="com.cristiandrami.football365.ui.bets.LikedNewsFragment"
         android:label="@string/title_bets"
-        tools:layout="@layout/fragment_bets" />
+        tools:layout="@layout/fragment_liked_news" />
 
     <fragment
         android:id="@+id/navigation_profile"

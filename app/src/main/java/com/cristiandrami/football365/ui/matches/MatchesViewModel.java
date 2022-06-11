@@ -116,7 +116,8 @@ public class MatchesViewModel extends ViewModel {
 
                         for (int i = 0; i < matchesJSONArray.length(); i++) {
                             Match match = setMatchesFromJSONArray(matchesJSONArray, i);
-                            addTimeZoneOnStartTime(match, context.getString(R.string.match_time_zone));
+                            if(context!=null)
+                                addTimeZoneOnStartTime(match, context.getString(R.string.match_time_zone));
 
                         }
 

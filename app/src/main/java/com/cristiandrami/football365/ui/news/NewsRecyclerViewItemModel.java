@@ -5,55 +5,80 @@ public class NewsRecyclerViewItemModel {
     //this is for the image
 
 
-    private String newsImage;
+    private String image;
 
     //this is for the main string title
-    private String newsTitle;
+    private String title;
 
     //this is for the description
-    private String newsDescription;
+    private String description;
 
-    private String articleLink;
+    private String link;
+
+    int type;
 
 
+    public NewsRecyclerViewItemModel(){
+        /***
+         * this is the empty constructor
+         */
+    }
 
 
-    public NewsRecyclerViewItemModel(String newsImage, String newsTitle, String descriptionRecyclerViewItem) {
-        this.newsImage = newsImage;
-        this.newsTitle = newsTitle;
-        this.newsDescription = descriptionRecyclerViewItem;
+    public NewsRecyclerViewItemModel(String image, String title, String descriptionRecyclerViewItem) {
+        this.image = image;
+        this.title = title;
+        this.description = descriptionRecyclerViewItem;
 
     }
 
-    public String getNewsImage() {
-        return newsImage;
+    public String getImage() {
+        return image;
     }
 
-    public void setNewsImage(String newsImage) {
-        this.newsImage = newsImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getNewsTitle() {
-        return newsTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setNewsTitle(String newsTitle) {
-        this.newsTitle = newsTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getNewsDescription() {
-        return newsDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setNewsDescription(String newsDescription) {
-        this.newsDescription = newsDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getArticleLink() {
-        return articleLink;
+    public String getLink() {
+        return link;
     }
 
-    public void setArticleLink(String articleLink) {
-        this.articleLink = articleLink;
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        return "NewsRecyclerViewItemModel{" +
+                "newsImage='" + image + '\'' +
+                ", newsTitle='" + title + '\'' +
+                ", newsDescription='" + description + '\'' +
+                ", articleLink='" + link + '\'' +
+                '}';
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

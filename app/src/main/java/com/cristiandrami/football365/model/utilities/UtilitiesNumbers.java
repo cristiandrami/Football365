@@ -7,6 +7,10 @@ package com.cristiandrami.football365.model.utilities;
  * @author Cristian D. Dramisino
  */
 public class UtilitiesNumbers {
+    public static final int DAILY_NEWS_TYPE = 0;
+    public static final int LIKED_NEWS_TYPE = 1;
+
+
     private UtilitiesNumbers(){}
     public static final int MATCHES_DAYS = 7;
     public static final int MATCHES_PREVIOUS_DAYS = 4;

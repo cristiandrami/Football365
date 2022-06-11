@@ -3,7 +3,6 @@ package com.cristiandrami.football365.ui.news;
 import android.content.Context;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
 import com.cristiandrami.football365.R;
@@ -177,6 +176,7 @@ public class NewsViewModel extends ViewModel {
                 for (int i = 0; i < newsJSONArray.length(); i++) {
                     JSONObject article = (JSONObject) newsJSONArray.get(i);
                     NewsRecyclerViewItemModel news = NewsUtilities.getNewsObjectFromJSON(article);
+                    news.setType(UtilitiesNumbers.DAILY_NEWS_TYPE);
                     newsList.add(news);
                 }
                 if(databaseUpdateNeeded) {
