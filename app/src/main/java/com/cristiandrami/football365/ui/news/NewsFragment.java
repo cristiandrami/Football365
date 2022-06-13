@@ -17,6 +17,9 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * This class is used as a Controller for the News Fragment
  * It contains all methods to manage the News Fragment Graphic.
@@ -32,7 +35,7 @@ public class NewsFragment extends Fragment {
     private ShimmerFrameLayout shimmerFrameLayoutRecyclerView;
 
     private List<NewsRecyclerViewItemModel> recyclerViewItems = new ArrayList<>();
-    private NewsRecyclerViewHandler recyclerViewHandler;
+    public static NewsRecyclerViewHandler recyclerViewHandler;
     private RecyclerView recyclerViewNews;
     private LinearLayoutManager layoutNewsRecyclerViewManager;
     private View view;
@@ -105,6 +108,29 @@ public class NewsFragment extends Fragment {
         recyclerViewNews.setAdapter(recyclerViewHandler);
 
         newsViewModel.setHandler(recyclerViewHandler);
+
+        int delay = 1200;   // delay for 5 sec.
+        int period=5000;
+
+        Timer timer = new Timer();
+
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerViewHandler.notifyDataSetChanged();
+                    }
+                });
+
+
+            }
+        }, delay, period);
+
+
+
 
 
     }

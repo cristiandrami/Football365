@@ -1,7 +1,6 @@
-package com.cristiandrami.football365.ui.bets;
+package com.cristiandrami.football365.ui.likedNews;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentLikedNewsBinding;
 import com.cristiandrami.football365.model.internal_database.InternalDatabaseHandler;
-import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.ui.news.NewsRecyclerViewHandler;
 import com.cristiandrami.football365.ui.news.NewsRecyclerViewItemModel;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +55,8 @@ public class LikedNewsFragment extends Fragment {
         likedNewsViewModel.setNewsList(recyclerViewItems);
 
 
-        //i need before initData because i have to set from the database the news and then
-        //i can set the recycler view
+        //I need before initData because i have to set from the database the news and then
+        //I can set the recycler view
         initData();
         initRecyclerView();
 
@@ -84,7 +80,7 @@ public class LikedNewsFragment extends Fragment {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
 
-                Log.e("size", String.valueOf(recyclerViewItems.size()));
+                //Log.e("size", String.valueOf(recyclerViewItems.size()));
                 if(recyclerViewItems.size()==0){
                     makeNoNewsGraphicVisible(View.VISIBLE);
                 }

@@ -1,5 +1,7 @@
 package com.cristiandrami.football365.ui.news;
 
+import java.util.Objects;
+
 public class NewsRecyclerViewItemModel {
     //see the recycler_view_item layout
     //this is for the image
@@ -80,5 +82,19 @@ public class NewsRecyclerViewItemModel {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NewsRecyclerViewItemModel)) return false;
+        NewsRecyclerViewItemModel that = (NewsRecyclerViewItemModel) o;
+        return Objects.equals(getTitle(), that.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle());
     }
 }

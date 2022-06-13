@@ -43,11 +43,12 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/bungee_regular"
                 android:text=""
-                android:textColor="@color/black"
                 android:textAlignment="center"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                ></TextView>
+                app:layout_constraintTop_toTopOf="parent"></TextView>
 
             <TextView
                 android:id="@+id/matches_fragment_right_arrow"
@@ -76,6 +77,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></ProgressBar>
+
+    <ImageView
+        android:id="@+id/no_matches_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/no_matches_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        ></ImageView>
+
+    <TextView
+        android:id="@+id/no_matches_string"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee_regular"
+        android:text="@string/no_matches_string"
+        android:visibility="invisible"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_matches_icon"
+        app:layout_constraintVertical_bias="0.0"></TextView>
+
 
     <ScrollView
         android:id="@+id/matches_fragment_scroll_view"

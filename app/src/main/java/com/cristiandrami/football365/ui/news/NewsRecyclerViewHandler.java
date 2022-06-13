@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.model.likedNews.LikedNewsUtilities;
 import com.cristiandrami.football365.model.news.News;
 import com.cristiandrami.football365.model.utilities.UtilitiesNumbers;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
@@ -96,8 +97,22 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
                 itemImage.setImageResource(R.drawable.news_item_icon);
             }
             setClickListenerOnItem(link);
-            if(type==UtilitiesNumbers.LIKED_NEWS_TYPE)
+
+
+            NewsRecyclerViewItemModel currentNews = new NewsRecyclerViewItemModel();
+            currentNews.setImage(image);
+            currentNews.setType(type);
+            currentNews.setLink(link);
+            currentNews.setTitle(title);
+            currentNews.setDescription(description);
+
+
+            if (LikedNewsUtilities.getInstance().getNewsList().contains(currentNews)) {
                 likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_24));
+            }else{
+                likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_border_24));
+            }
+
 
             setClickListenerOnLikedView(image, title, description, link, type);
 
@@ -118,22 +133,31 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
                     currentNew.setLink(link);
                     currentNew.setTitle(title);
                     String newJSON = new Gson().toJson(currentNew);
-                    if(type== UtilitiesNumbers.LIKED_NEWS_TYPE){
+
+                    NewsRecyclerViewItemModel newToAddOnList = new NewsRecyclerViewItemModel();
+                    newToAddOnList.setImage(image);
+                    newToAddOnList.setType(type);
+                    newToAddOnList.setLink(link);
+                    newToAddOnList.setTitle(title);
+                    newToAddOnList.setDescription(description);
+
+                    if (type == UtilitiesNumbers.LIKED_NEWS_TYPE) {
                         items.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         notifyItemRangeChanged(getAdapterPosition(), items.size());
                         FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
                                 document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION).
                                 document(title).delete();
-                        if(items.size()==0){
+                        LikedNewsUtilities.getInstance().getNewsList().remove(newToAddOnList);
 
-                        }
-                    }else{
+                    } else {
                         if (likedArticleView.getBackground().getConstantState().equals(context.getDrawable(R.drawable.ic_baseline_star_24).getConstantState())) {
                             likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_border_24));
                             FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
                                     document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION).
                                     document(title).delete();
+                            LikedNewsUtilities.getInstance().getNewsList().remove(newToAddOnList);
+
                         } else {
                             likedArticleView.setBackground(context.getDrawable(R.drawable.ic_baseline_star_24));
                             Map<String, Object> newToStore = new HashMap<>();
@@ -141,6 +165,9 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
                             FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
                                     document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION)
                                     .document(title).set(newToStore);
+
+
+                            LikedNewsUtilities.getInstance().addOnLikedList(newToAddOnList);
                         }
                     }
 

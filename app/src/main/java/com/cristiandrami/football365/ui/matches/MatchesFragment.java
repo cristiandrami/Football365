@@ -206,6 +206,11 @@ public class MatchesFragment extends Fragment {
     }
 
     private void showMatchesFromMatchList(List<Match> matchesList) {
+        if(matchesList.size()==0){
+            setNoMatchesGraphicsVisibility(View.VISIBLE);
+            return;
+        }
+        setNoMatchesGraphicsVisibility(View.INVISIBLE);
         for (int i = 0; i < matchesList.size(); i++) {
             Match matches = matchesList.get(i);
 
@@ -251,6 +256,11 @@ public class MatchesFragment extends Fragment {
         }
     }
 
+    private void setNoMatchesGraphicsVisibility(int visible) {
+        binding.noMatchesIcon.setVisibility(visible);
+        binding.noMatchesString.setVisibility(visible);
+    }
+
     private void addSwitchToDetailedActivityListenerToMatch(View matchView, Match match) {
         matchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,6 +283,8 @@ public class MatchesFragment extends Fragment {
         if(currentTimeString!=null){
             Integer currentTimeID= Integer.valueOf(currentTimeString);
             currentTime.setText(getString(currentTimeID));
+        }else{
+            currentTime.setText("");
         }
 
 

@@ -1,4 +1,4 @@
-package com.cristiandrami.football365.ui.bets;
+package com.cristiandrami.football365.ui.likedNews;
 
 import android.util.Log;
 import android.view.View;

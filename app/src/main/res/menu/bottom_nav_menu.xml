@@ -13,9 +13,9 @@
         android:title="@string/title_matches" />
 
     <item
-        android:id="@+id/navigation_bets"
-        android:icon="@drawable/bet_icon"
-        android:title="@string/title_bets" />
+        android:id="@+id/navigation_liked_news"
+        android:icon="@drawable/like_icon"
+        android:title="@string/title_liked_news" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_baseline_person_24"

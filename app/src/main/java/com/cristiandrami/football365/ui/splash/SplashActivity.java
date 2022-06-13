@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.detailed_match.comment.CommentItemsListTest;
 import com.cristiandrami.football365.model.detailed_match.line_up.PlayersListTest;
+import com.cristiandrami.football365.model.likedNews.LikedNewsUtilities;
 import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.ui.login.LoginActivity;
@@ -38,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
 
     //This variable sets the delay time before pass on login activity
     //In this case we wait 3 seconds
-    private static int SPLASH_SCREEN = 1500;
+    private static int SPLASH_SCREEN = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         CompetitionsUtilities.getInstance();
         PlayersListTest.getInstance();
         CommentItemsListTest.getInstance();
+        LikedNewsUtilities.getInstance();
 
     }
 

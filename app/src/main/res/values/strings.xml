@@ -24,7 +24,7 @@
     <string name="sign_up_to_continue">Get on board, and experience football to the fullest</string>
     <string name="sign_in_to_continue">SignIn to continue</string>
     <string name="sign_up_hint">New here? Let\'s SignUp</string>
-    <string name="splash_description_text">Enjoy football at 365°</string>
+    <string name="splash_description_text">Enjoy football at 360°</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -63,6 +63,8 @@
     <string name="match_line_up_title">LINE UP</string>
     <string name="match_referees_title">REFEREES</string>
     <string name="no_liked_news">You didn\'t like any news...</string>
+    <string name="title_liked_news">Liked news</string>
+    <string name="no_matches_string">There aren\'t matches for today...</string>
 
 
 </resources>
