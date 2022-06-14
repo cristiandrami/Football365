@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="150dp"
 
-        android:src="@drawable/ic_baseline_sports_soccer_24"
+        android:src="@drawable/app_icon"
         android:transitionName="logo_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

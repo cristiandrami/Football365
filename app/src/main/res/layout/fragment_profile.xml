@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.news.NewsFragment">
+    tools:context=".ui.news.NewsFragment"
+    android:background="@color/background_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
         <!--to avoid the font padding is used android:includeFontPadding="false" -->
 
         <RelativeLayout
@@ -61,6 +63,39 @@
             android:padding="20dp"
             android:layout_marginTop="50dp">
 
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Switch
+                    android:id="@+id/switch_theme_profile_fragment"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    android:thumbTint="@color/yellow"
+
+                    android:trackTint="@color/yellow"
+
+                    ></Switch>
+
+                <ImageView
+                    android:id="@+id/theme_icon_profile_fragment"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/light_theme_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/switch_theme_profile_fragment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"></ImageView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -140,7 +175,7 @@
 
 
             <Button
-                android:id="@+id/info_update__profile_button"
+                android:id="@+id/info_update_profile_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -148,10 +183,10 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginBottom="5dp"
-                android:background="@color/black"
+                android:background="@color/button_color"
                 android:elevation="0dp"
                 android:text="@string/update_hint"
-                android:textColor="@color/white"
+                android:textColor="@color/button_text_color"
                ></Button>
 
 

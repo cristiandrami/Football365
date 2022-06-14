@@ -2,23 +2,29 @@ package com.cristiandrami.football365.ui.profile;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentProfileBinding;
+import com.cristiandrami.football365.model.AppUtilities;
 import com.cristiandrami.football365.model.registration.PasswordValidator;
 import com.cristiandrami.football365.model.user.User;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,6 +55,10 @@ public class ProfileFragment extends Fragment {
     private TextView emailTextView;
     private TextView fullNameTextView;
 
+    private ImageView themeIcon;
+
+    private Switch switchThemeButton;
+
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -72,6 +82,16 @@ public class ProfileFragment extends Fragment {
 
 
         setListenerOnUpdateButton();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String actualTheme=preferences.getString(AppUtilities.THEME_PREFERENCE_KEY, "");
+        SharedPreferences.Editor editor = preferences.edit();
+
+        if(actualTheme.equals(AppUtilities.DARK_THEME)){
+            themeIcon.setImageResource(R.drawable.dark_theme_icon);
+        }else{
+            themeIcon.setImageResource(R.drawable.light_theme_icon);
+        }
 
 
         return root;
@@ -204,8 +224,41 @@ public class ProfileFragment extends Fragment {
         fullNameTextView = binding.profileFullName;
 
         updateButton = binding.infoUpdateProfileButton;
+        switchThemeButton= binding.switchThemeProfileFragment;
+        themeIcon= binding.themeIconProfileFragment;
+
+        setOnClickListenerSwitchThemeButton();
 
         setGraphicalValuesDynamically();
+
+    }
+
+    private void setOnClickListenerSwitchThemeButton() {
+
+        switchThemeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String actualTheme=preferences.getString(AppUtilities.THEME_PREFERENCE_KEY, "");
+                SharedPreferences.Editor editor = preferences.edit();
+
+                if(actualTheme.equals(AppUtilities.DARK_THEME)){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    setNewThemePreference(editor, AppUtilities.LIGHT_THEME, R.drawable.light_theme_icon);
+                }else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    setNewThemePreference(editor, AppUtilities.DARK_THEME, R.drawable.dark_theme_icon);
+
+                }
+            }
+        });
+    }
+
+    private void setNewThemePreference(SharedPreferences.Editor editor, String newTheme, int drawableID) {
+        editor.remove(AppUtilities.THEME_PREFERENCE_KEY);
+        editor.putString(AppUtilities.THEME_PREFERENCE_KEY, newTheme);
+        editor.apply();
+        themeIcon.setImageResource(drawableID);
 
     }
 

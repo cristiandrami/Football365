@@ -4,16 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     tools:context=".ui.detailed_match.DetailedMatchActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/background_color">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/detailed_match_score_card_view"
             android:layout_width="match_parent"
             android:layout_height="110dp"
+            android:backgroundTint="@color/yellow"
             android:minHeight="80dp"
             app:cardBackgroundColor="@color/yellow"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,20 +34,20 @@
                     android:id="@+id/detailed_match_home_team_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="home"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/bungee_regular"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/detailed_match_current_score"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:maxWidth="130dp"
-                    app:autoSizeTextType="uniform"
-                    android:layout_marginRight="20dp"
-                    app:layout_constraintHorizontal_bias="0.0"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/bungee_regular"
+                    android:maxWidth="130dp"
+                    android:text="home"
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/detailed_match_current_score"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
 
                     >
 
@@ -57,12 +60,12 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bungee_regular"
                     android:text="vs"
+                    android:textColor="@color/black"
                     android:textSize="30sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:textColor="@color/black"
 
                     app:layout_constraintVertical_bias="0.40"></TextView>
 
@@ -70,16 +73,15 @@
                     android:id="@+id/detailed_match_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="-20dp"
+                    android:textColor="@color/black"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.50"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detailed_match_current_score"
-                    app:layout_constraintVertical_bias="0.0"
-                    android:layout_marginTop="-20dp"
-                    android:textColor="@color/black"
-                    >
+                    app:layout_constraintVertical_bias="0.0">
 
                 </TextView>
 
@@ -92,15 +94,15 @@
                     android:fontFamily="@font/bungee_regular"
                     android:maxWidth="130dp"
                     android:text="away"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/detailed_match_current_score"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/black"></TextView>
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -112,22 +114,25 @@
             android:id="@+id/detailed_match_activity_comment_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/background_color"
             android:minHeight="100dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detailed_match_score_card_view"
-            app:layout_constraintVertical_bias="0.0"
-            android:orientation="vertical">
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                app:cardBackgroundColor="@color/background_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/background_color">
 
                     <View
                         android:id="@+id/detailed_match_activity_comment_left_divider"
@@ -149,8 +154,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee_regular"
                         android:text="@string/match_comment_title"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -183,6 +188,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/background_color"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -192,13 +198,15 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                app:cardBackgroundColor="@color/background_color">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/background_color">
 
                     <View
                         android:id="@+id/detailed_match_activity_line_up_left_divider"
@@ -220,11 +228,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee_regular"
                         android:text="@string/match_line_up_title"
+                        android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textColor="@color/black"></TextView>
+                        app:layout_constraintTop_toTopOf="parent"></TextView>
 
 
                     <View
@@ -254,6 +262,7 @@
             android:id="@+id/detailed_match_activity_line_up_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/background_color"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -264,14 +273,17 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/background_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginBottom="4dp"
+                    android:backgroundTint="@color/background_color">
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -299,8 +311,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"></TextView>
+                            android:textColor="@color/black"
+                            android:textSize="18sp"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_home_midfielder_number"
@@ -309,8 +321,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"></TextView>
+                            android:textColor="@color/black"
+                            android:textSize="18sp"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_home_strikers_number"
@@ -318,8 +330,8 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"></TextView>
+                            android:textColor="@color/black"
+                            android:textSize="18sp"></TextView>
 
                     </LinearLayout>
 
@@ -342,8 +354,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"></TextView>
+                            android:textColor="@color/black"
+                            android:textSize="18sp"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_away_midfielder_number"
@@ -352,8 +364,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"></TextView>
+                            android:textColor="@color/black"
+                            android:textSize="18sp"></TextView>
 
                         <TextView
                             android:id="@+id/detailed_match_activity_line_up_away_strikers_number"
@@ -362,8 +374,8 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textSize="18sp"
-                            android:textColor="@color/black"></TextView>
+                            android:textColor="@color/black"
+                            android:textSize="18sp"></TextView>
 
                         <ImageView
                             android:layout_width="36dp"
@@ -382,14 +394,13 @@
         </LinearLayout>
 
 
-
-
         <LinearLayout
             android:id="@+id/detailed_match_activity_referees_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
 
+            android:background="@color/background_color"
             android:minHeight="100dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -398,12 +409,14 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                app:cardBackgroundColor="@color/background_color">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/background_color">
 
                     <View
                         android:id="@+id/detailed_match_activity_referees_left_divider"
@@ -425,11 +438,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee_regular"
                         android:text="@string/match_referees_title"
+                        android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textColor="@color/black"></TextView>
+                        app:layout_constraintTop_toTopOf="parent"></TextView>
 
 
                     <View
@@ -452,7 +465,6 @@
 
 
         </LinearLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

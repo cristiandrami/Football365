@@ -40,14 +40,15 @@
 
         <TextView
             android:id="@+id/news_title_recycler_view_item"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/news_card_view_recycler_view_item"
-            android:maxWidth="250dp"
             android:maxHeight="100dp"
             android:textSize="15sp"
             android:layout_marginStart="10dp"
+            app:layout_constraintHorizontal_bias="0.0"
             app:autoSizeTextType="uniform"
+            android:textAlignment="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/news_fragment_liked_news_view"
             app:layout_constraintStart_toEndOf="@+id/news_card_view_recycler_view_item"

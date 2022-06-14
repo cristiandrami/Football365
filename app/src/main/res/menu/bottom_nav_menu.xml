@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/nav_view_background_color"
+    >
 
 
     <item
         android:id="@+id/navigation_news"
         android:icon="@drawable/news_icon"
-        android:title="@string/title_news" />
+        android:title="@string/title_news"
+        android:background="@color/nav_view_background_color"
+        />
 
     <item
         android:id="@+id/navigation_matches"
         android:icon="@drawable/matches_icon"
-        android:title="@string/title_matches" />
+        android:title="@string/title_matches"
+        android:background="@color/nav_view_background_color"/>
 
     <item
         android:id="@+id/navigation_liked_news"
         android:icon="@drawable/like_icon"
-        android:title="@string/title_liked_news" />
+        android:title="@string/title_liked_news"
+        android:background="@color/nav_view_background_color"/>
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="@string/title_profile" />
+        android:title="@string/title_profile"
+        android:background="@color/nav_view_background_color"/>
 
 
 </menu>

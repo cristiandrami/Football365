@@ -25,17 +25,15 @@ import java.util.TimerTask;
  * It contains all methods to manage the News Fragment Graphic.
  * It contains an object used to manage the Model of News Fragment
  *
- * @see NewsViewModel
  * @author Cristian D. Dramisino
- *
+ * @see NewsViewModel
  */
 public class NewsFragment extends Fragment {
 
+    public static NewsRecyclerViewHandler recyclerViewHandler;
     private FragmentNewsBinding binding;
     private ShimmerFrameLayout shimmerFrameLayoutRecyclerView;
-
     private List<NewsRecyclerViewItemModel> recyclerViewItems = new ArrayList<>();
-    public static NewsRecyclerViewHandler recyclerViewHandler;
     private RecyclerView recyclerViewNews;
     private LinearLayoutManager layoutNewsRecyclerViewManager;
     private View view;
@@ -44,7 +42,6 @@ public class NewsFragment extends Fragment {
     private InternalDatabaseHandler internalDB;
 
     private boolean alreadyCalled = false;
-
 
 
     @Override
@@ -57,7 +54,6 @@ public class NewsFragment extends Fragment {
     }
 
 
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -65,19 +61,17 @@ public class NewsFragment extends Fragment {
     }
 
 
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-         newsViewModel =
+        newsViewModel =
                 new ViewModelProvider(this).get(NewsViewModel.class);
 
 
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        shimmerFrameLayoutRecyclerView=binding.shimmerViewContainerNewsFragment;
+        shimmerFrameLayoutRecyclerView = binding.shimmerViewContainerNewsFragment;
         newsViewModel.setShimmerFrameLayout(shimmerFrameLayoutRecyclerView);
         shimmerFrameLayoutRecyclerView.startShimmer();
 
@@ -92,7 +86,6 @@ public class NewsFragment extends Fragment {
 
     /**
      * This method is used to setup the recycler view that will show the daily news
-     *
      */
     private void initRecyclerView() {
 
@@ -110,27 +103,30 @@ public class NewsFragment extends Fragment {
         newsViewModel.setHandler(recyclerViewHandler);
 
         int delay = 1200;   // delay for 5 sec.
-        int period=5000;
+        int period = 5000;
 
         Timer timer = new Timer();
 
 
+
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-
-                getActivity().runOnUiThread(new Runnable() {
+                Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
                         recyclerViewHandler.notifyDataSetChanged();
                     }
-                });
+                };
+
+                if (runnable != null) {
+                    if(getActivity() == null)
+                        return;
+                    getActivity().runOnUiThread(runnable);
+                }
 
 
             }
         }, delay, period);
-
-
-
 
 
     }
@@ -140,10 +136,9 @@ public class NewsFragment extends Fragment {
      * This method is used to create the internal database if it doesn't exists
      * Then it retrieves the daily news from the internal database and sets the recycler view item list
      * with the news item {@link NewsRecyclerViewItemModel}
-     *
      */
-    private void initData(){
-        internalDB=new InternalDatabaseHandler(getContext());
+    private void initData() {
+        internalDB = new InternalDatabaseHandler(getContext());
         recyclerViewItems = newsViewModel.refreshNewsList(internalDB, getContext());
     }
 
