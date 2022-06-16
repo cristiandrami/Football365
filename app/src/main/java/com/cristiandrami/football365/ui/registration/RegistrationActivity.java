@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cristiandrami.football365.EmailConfirmationActivity;
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.registration.RegistrationUser;
@@ -47,6 +50,10 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextInputEditText emailTextField;
     private Button registrationButton;
     private Button switchToLoginActivityButton;
+
+    private TextView backToLoginTextView;
+
+    private ProgressBar registrationProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,34 +65,53 @@ public class RegistrationActivity extends AppCompatActivity {
 
         setRegistrationButtonListener();
         setSwitchToLoginButtonListener();
+        setBackToLoginActivityListener();
+    }
+
+    private void setBackToLoginActivityListener() {
+        backToLoginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setSwitchToLoginButtonListener() {
         switchToLoginActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent switchToMainActivityIntent= new Intent(RegistrationActivity.this, LoginActivity.class);
-                startActivity(switchToMainActivityIntent);
                 finish();
-
             }
         });
+
+
     }
 
     private void setRegistrationButtonListener() {
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                switchRegistrationButtonAndProgressBar(View.GONE, View.VISIBLE);
+
                 RegistrationUser newUser= new RegistrationUser();
                 setNewUserFields(newUser);
                 ValidationUser validatedUser= SignUpValidator.validateRegistration(newUser);
                 if(validatedUser.isValidUser()){
                     registerUser(newUser);
+
                 }else{
                     setInvalidFields(validatedUser);
+                    switchRegistrationButtonAndProgressBar(View.VISIBLE, View.GONE);
+
                 }
             }
         });
+    }
+
+    private void switchRegistrationButtonAndProgressBar(int buttonVisibility, int progressBarVisibility) {
+        registrationButton.setVisibility(buttonVisibility);
+        registrationProgressBar.setVisibility(progressBarVisibility);
     }
 
     private void registerUser(RegistrationUser newUser) {
@@ -100,7 +126,8 @@ public class RegistrationActivity extends AppCompatActivity {
                    addToDatabase(user, newUser.getEmail());
                }
                else{
-                   Toast.makeText(RegistrationActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
+                   switchRegistrationButtonAndProgressBar(View.VISIBLE, View.GONE);
+                   emailTextField.setError(getString(R.string.email_already_used));
                }
            }
        });
@@ -114,17 +141,22 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
 
-                    switchToMainActivity();
+                    //switchToMainActivity();
+                    firebaseAuth.getCurrentUser().sendEmailVerification();
+
+                    switchToEmailConfirmationActivity();
                     finish();
                 }
             }
         });
     }
 
-    private void switchToMainActivity() {
-       Intent switchToMainActivityIntent= new Intent(RegistrationActivity.this, MainActivity.class);
-       startActivity(switchToMainActivityIntent);
+    private void switchToEmailConfirmationActivity() {
+        Intent switchToEmailVerificationActivity = new Intent(RegistrationActivity.this, EmailConfirmationActivity.class);
+        startActivity(switchToEmailVerificationActivity);
     }
+
+
 
     private void setInvalidFields(ValidationUser validatedUser) {
         if(!validatedUser.isValidEmail()) emailTextField.setError(this.getString(R.string.email_not_valid));
@@ -154,7 +186,8 @@ public class RegistrationActivity extends AppCompatActivity {
         emailTextField=findViewById(R.id.email_field_edit_text);
         registrationButton=findViewById(R.id.registration_button);
         switchToLoginActivityButton=findViewById(R.id.switch_to_login_activity_button);
-
+        backToLoginTextView=findViewById(R.id.activity_registration_return_to_login_text_view);
+        registrationProgressBar=findViewById(R.id.activity_registration_registration_progress_bar);
 
     }
 }

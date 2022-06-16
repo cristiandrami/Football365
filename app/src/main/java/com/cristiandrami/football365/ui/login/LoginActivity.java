@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.cristiandrami.football365.EmailConfirmationActivity;
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button registrationLinkButton;
     private TextInputEditText emailTextField;
     private TextInputEditText passwordTextField;
+    ProgressBar loginProgressBar;
 
 
     /**
@@ -52,8 +55,13 @@ public class LoginActivity extends AppCompatActivity {
         setupApplication();
 
         if(firebaseAuth.getCurrentUser()!=null) {
-            switchToMainActivity();
-            finish();
+            if(firebaseAuth.getCurrentUser().isEmailVerified()){
+                switchToMainActivity();
+                finish();
+            }else{
+                switchToEmailVerificationActivity();
+            }
+
         }
         bindGraphicalObjects();
 
@@ -94,6 +102,10 @@ public class LoginActivity extends AppCompatActivity {
      * if the email and password are correct the app switches to MainActivity
      * if the email or the password are not correct the UI show the error to the user*/
     private void login() {
+
+        setProgressBarAndButtonVisibility(View.GONE, View.VISIBLE);
+
+
         UserLogin user= new UserLogin();
         user.setEmail(emailTextField.getText().toString().trim());
         user.setPassword(passwordTextField.getText().toString());
@@ -105,21 +117,33 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
 
-                    Toast.makeText(LoginActivity.this, "Welcome",
-                            Toast.LENGTH_SHORT).show();
 
-                    switchToMainActivity();
-                    finish();
+                    if(firebaseAuth.getCurrentUser().isEmailVerified()){
+                        switchToMainActivity();
+                        finish();
+                    }else{
+                        setProgressBarAndButtonVisibility(View.VISIBLE, View.GONE);
+                        switchToEmailVerificationActivity();
+                    }
+
 
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(LoginActivity.this, UtilitiesStrings.LOGIN_FAILED,
-                            Toast.LENGTH_SHORT).show();
-
+                    setProgressBarAndButtonVisibility(View.VISIBLE, View.GONE);
+                    emailTextField.setError(getString(R.string.login_failed));
                 }
             }
         });
 
+    }
+
+    private void setProgressBarAndButtonVisibility(int loginButtonVisibility, int loginProgressBarVisibility) {
+        loginButton.setVisibility(loginButtonVisibility);
+        loginProgressBar.setVisibility(loginProgressBarVisibility);
+    }
+
+    private void switchToEmailVerificationActivity() {
+        Intent switchToEmailVerificationActivity = new Intent(LoginActivity.this, EmailConfirmationActivity.class);
+        startActivity(switchToEmailVerificationActivity);
     }
 
     private void switchToMainActivity() {
@@ -128,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void bindGraphicalObjects() {
+        loginProgressBar=findViewById(R.id.activity_login_progress_bar);
         loginButton= findViewById(R.id.login_button);
         emailTextField = findViewById(R.id.email_field_edit_text);
         passwordTextField = findViewById(R.id.password_field_edit_text);

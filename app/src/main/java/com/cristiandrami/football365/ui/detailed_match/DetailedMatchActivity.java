@@ -35,6 +35,8 @@ public class DetailedMatchActivity extends AppCompatActivity {
     private LinearLayout commentLayout;
 
     private LinearLayout refereesLayout;
+
+    private TextView backToMainActivityTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,17 +45,38 @@ public class DetailedMatchActivity extends AppCompatActivity {
 
         detailedMatchActivityModel= new DetailedMatchActivityModel();
 
-        lineUpLayout= findViewById(R.id.detailed_match_activity_line_up_linear_layout);
-        commentLayout=findViewById(R.id.detailed_match_activity_comment_layout);
-        refereesLayout=findViewById(R.id.detailed_match_activity_referees_layout);
-        match= new Gson().fromJson(getIntent().getStringExtra("match"), Match.class);
+        setGraphicalBinding();
 
+
+
+        setGraphicalValues();
+        setBackToMainActivityTextViewListener();
+    }
+
+    private void setBackToMainActivityTextViewListener() {
+        backToMainActivityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void setGraphicalValues() {
+        match= new Gson().fromJson(getIntent().getStringExtra("match"), Match.class);
         setPlayersLineUp(match);
         setTeamsNames(match);
         setMatchScore(match);
         setCommentSection(match);
         setRefereesSection(match);
         setDate(match);
+    }
+
+    private void setGraphicalBinding() {
+        lineUpLayout= findViewById(R.id.activity_detailed_match_line_up_linear_layout);
+        commentLayout=findViewById(R.id.activity_detailed_match_comment_layout);
+        refereesLayout=findViewById(R.id.activity_detailed_match_referees_layout);
+        backToMainActivityTextView=findViewById(R.id.activity_detailed_match_back_to_main_activity_text_view);
     }
 
 

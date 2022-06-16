@@ -1,11 +1,15 @@
 package com.cristiandrami.football365.ui.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.model.AppUtilities;
 import com.cristiandrami.football365.model.detailed_match.comment.CommentItemsListTest;
 import com.cristiandrami.football365.model.detailed_match.line_up.PlayersListTest;
 import com.cristiandrami.football365.model.likedNews.LikedNewsUtilities;
@@ -56,6 +61,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setupAllApp() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String actualTheme=preferences.getString(AppUtilities.THEME_PREFERENCE_KEY, "");
+        if(actualTheme.equals("")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         CompetitionsUtilities.getInstance();
         PlayersListTest.getInstance();
         CommentItemsListTest.getInstance();

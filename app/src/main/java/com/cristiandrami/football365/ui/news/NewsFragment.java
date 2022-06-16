@@ -102,8 +102,8 @@ public class NewsFragment extends Fragment {
 
         newsViewModel.setHandler(recyclerViewHandler);
 
-        int delay = 1200;   // delay for 5 sec.
-        int period = 5000;
+        int delay = 1000;   // delay for 5 sec.
+        int period = 3000;
 
         Timer timer = new Timer();
 

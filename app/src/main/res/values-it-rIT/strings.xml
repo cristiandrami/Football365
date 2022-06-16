@@ -20,7 +20,7 @@
     <string name="action_sign_in_short">Accedi</string>
     <string name="invalid_username">Username non valido, assicurati che ci siano solo lettere e spazi</string>
     <string name="invalid_password">La password deve avere almeno 5 caratteri</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_failed">Login fallito, assicurati di aver iserito i dati correttamente</string>
     <string name="sign_up_to_continue">Sali a bordo, e vivi a pieno il calcio</string>
     <string name="sign_in_to_continue">Accedi per continuare</string>
     <string name="sign_up_hint">Nuovo qui? Dai, registrati...</string>
@@ -69,10 +69,10 @@
 
     <string name="no_matches_string">Non ci sono partite per oggi...</string>
 
-
-
-
-
+    <string name="email_already_used">Questa email è già stata usata per un altro account... per favore prova con un\'altra...</string>
+    <string name="email_sent">Ti abbiamo inviato una mail di conferma, verifica il tuo account per procedere...</string>
+    <string name="email_confirmed_button_hint">Ho confermato</string>
+    <string name="email_resent_text">Il tuo profilo non sembra essere stato verificato, abbiamo inviato una nuova email, prova ora con la verifica...</string>
 
 
 </resources>
