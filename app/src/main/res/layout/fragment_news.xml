@@ -12,7 +12,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             app:cardBackgroundColor="@color/yellow"
             app:cardElevation="4dp"
             app:layout_constraintVertical_bias="0.0"
@@ -29,7 +29,7 @@
                 <TextView
                     android:id="@+id/matches_fragment_current_date"
                     android:layout_width="250dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/bungee_regular"
                     android:text="@string/title_news"
                     android:textAlignment="center"
@@ -37,7 +37,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"></TextView>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"></TextView>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,7 +93,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
             app:layout_constraintVertical_bias="0.0"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
            ></androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

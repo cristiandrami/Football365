@@ -2,6 +2,7 @@ package com.cristiandrami.football365.ui.matches;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,13 +175,16 @@ public class MatchesFragment extends Fragment {
         matchList = matchesList;
 
         try {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showMatchesList(matchesList);
+            if(getActivity()!=null){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showMatchesList(matchesList);
 
-                }
-            });
+                    }
+                });
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,6 +201,8 @@ public class MatchesFragment extends Fragment {
         graphicCompetitionHashMap.clear();
         if (matchesList != null) {
             showMatchesFromMatchList(matchesList);
+        }else{
+            setNoMatchesGraphicsVisibility(View.VISIBLE);
         }
 
 
@@ -206,6 +212,7 @@ public class MatchesFragment extends Fragment {
     }
 
     private void showMatchesFromMatchList(List<Match> matchesList) {
+        Log.e("size", String.valueOf(matchesList.size()));
         if(matchesList.size()==0){
             setNoMatchesGraphicsVisibility(View.VISIBLE);
             return;
@@ -257,8 +264,11 @@ public class MatchesFragment extends Fragment {
     }
 
     private void setNoMatchesGraphicsVisibility(int visible) {
-        binding.noMatchesIcon.setVisibility(visible);
-        binding.noMatchesString.setVisibility(visible);
+        if(binding!=null){
+            binding.noMatchesIcon.setVisibility(visible);
+            binding.noMatchesString.setVisibility(visible);
+        }
+
     }
 
     private void addSwitchToDetailedActivityListenerToMatch(View matchView, Match match) {
@@ -321,6 +331,7 @@ public class MatchesFragment extends Fragment {
             matchesViewModel.updateMatchesListV2(fragment, datesPositionMap.get(currentPosition), getContext());
         } else {
             List<Match> nextMatches = matchesViewModel.getMatchesListFromDate(datesPositionMap.get(currentPosition));
+
             showMatchesList(nextMatches);
         }
     }

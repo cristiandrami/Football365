@@ -103,8 +103,6 @@ public class LikedNewsViewModel extends ViewModel {
                             }
                             //dismissShimmer();
 
-
-                            Log.e("listsize", String.valueOf(newsList.size()));
                             recyclerViewHandler.notifyDataSetChanged();
                             dismissShimmer();
                             //likedNewsFragment.updateList(newsList);

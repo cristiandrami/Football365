@@ -84,7 +84,6 @@ public class MatchesViewModel extends ViewModel {
     }
 
     public void updateMatchesListV2(MatchesFragment matchesFragment, String date, Context context) {
-        Log.e("request date", date);
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()

@@ -100,7 +100,6 @@ public class LikedNewsFragment extends Fragment {
      */
     private void initData() {
         likedNewsViewModel.refreshNewsList(recyclerViewItems);
-
     }
 
 
@@ -154,10 +153,6 @@ public class LikedNewsFragment extends Fragment {
 
     public void updateList(List<NewsRecyclerViewItemModel> newsList) {
         this.recyclerViewItems = newsList;
-
-
         recyclerViewHandler.notifyDataSetChanged();
-
-
     }
 }

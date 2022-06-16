@@ -45,6 +45,7 @@
                     app:autoSizeTextType="uniform"
                     android:maxWidth="120dp"
                     android:text="home player"
+                    android:textColor="@color/text_color"
                     android:textSize="12sp"></TextView>
 
 
@@ -71,6 +72,7 @@
                     android:maxWidth="120dp"
                     android:text="away player"
                     android:textSize="12sp"
+                    android:textColor="@color/text_color"
 
                     ></TextView>
 

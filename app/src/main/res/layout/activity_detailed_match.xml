@@ -154,7 +154,7 @@
                         android:id="@+id/detailed_match_activity_comment_left_divider"
                         android:layout_width="100dp"
                         android:layout_height="2dp"
-                        android:background="@android:color/background_dark"
+                        android:background="@color/text_color"
 
 
                         android:minWidth="100dp"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee_regular"
                         android:text="@string/match_comment_title"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
 
                         app:layout_constraintEnd_toEndOf="parent"
@@ -182,7 +182,7 @@
                         android:id="@+id/detailed_match_activity_comment_right_divider"
                         android:layout_width="100dp"
                         android:layout_height="2dp"
-                        android:background="@android:color/background_dark"
+                        android:background="@color/text_color"
                         android:minWidth="100dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -228,8 +228,7 @@
                         android:id="@+id/detailed_match_activity_line_up_left_divider"
                         android:layout_width="100dp"
                         android:layout_height="2dp"
-                        android:background="@android:color/background_dark"
-
+                        android:background="@color/text_color"
 
                         android:minWidth="150dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -244,7 +243,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee_regular"
                         android:text="@string/match_line_up_title"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -255,7 +254,7 @@
                         android:id="@+id/detailed_match_activity_line_up_right_divider"
                         android:layout_width="100dp"
                         android:layout_height="2dp"
-                        android:background="@android:color/background_dark"
+                        android:background="@color/text_color"
                         android:minWidth="100dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -327,7 +326,7 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"></TextView>
 
                         <TextView
@@ -337,7 +336,7 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"></TextView>
 
                         <TextView
@@ -346,7 +345,7 @@
                             android:layout_height="match_parent"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"></TextView>
 
                     </LinearLayout>
@@ -370,7 +369,7 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"></TextView>
 
                         <TextView
@@ -380,7 +379,7 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"></TextView>
 
                         <TextView
@@ -390,7 +389,7 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/bungee_regular"
                             android:text="1"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"></TextView>
 
                         <ImageView
@@ -438,7 +437,7 @@
                         android:id="@+id/detailed_match_activity_referees_left_divider"
                         android:layout_width="100dp"
                         android:layout_height="2dp"
-                        android:background="@android:color/background_dark"
+                        android:background="@color/text_color"
 
 
                         android:minWidth="100dp"
@@ -454,7 +453,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee_regular"
                         android:text="@string/match_referees_title"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -465,7 +464,7 @@
                         android:id="@+id/detailed_match_activity_referees_right_divider"
                         android:layout_width="100dp"
                         android:layout_height="2dp"
-                        android:background="@android:color/background_dark"
+                        android:background="@color/text_color"
                         android:minWidth="100dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

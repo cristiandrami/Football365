@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
 
     //This variable sets the delay time before pass on login activity
     //In this case we wait 3 seconds
-    private static int SPLASH_SCREEN = 3000;
+    private static int SPLASH_SCREEN = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

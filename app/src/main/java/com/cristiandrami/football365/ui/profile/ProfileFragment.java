@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +84,7 @@ public class ProfileFragment extends Fragment {
 
 
         setListenerOnUpdateButton();
+        setChangeListenerToNewPassword();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String actualTheme=preferences.getString(AppUtilities.THEME_PREFERENCE_KEY, "");
@@ -95,6 +98,26 @@ public class ProfileFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void setChangeListenerToNewPassword() {
+        newPasswordFieldEditTextProfileFragment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.newPasswordFieldLayout.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     /*private void setListenerOnNewPasswordEditText() {
@@ -276,6 +299,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void setErrorOnNewPassword() {
+        binding.newPasswordFieldLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
         newPasswordFieldEditTextProfileFragment.setError(getActivity().getString(R.string.password_not_valid));
     }
 

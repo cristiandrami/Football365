@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +25,7 @@ import com.cristiandrami.football365.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -66,6 +69,47 @@ public class RegistrationActivity extends AppCompatActivity {
         setRegistrationButtonListener();
         setSwitchToLoginButtonListener();
         setBackToLoginActivityListener();
+        setPasswordTextFieldListener();
+        setRepeatedPasswordTextFieldListener();
+
+    }
+
+    private void setRepeatedPasswordTextFieldListener() {
+        repeatedPasswordTextField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ((TextInputLayout)findViewById(R.id.activity_registration_repeat_password_field_layout)).setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void setPasswordTextFieldListener() {
+        passwordTextField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ((TextInputLayout)findViewById(R.id.activity_registration_password_field_layout)).setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void setBackToLoginActivityListener() {
@@ -162,8 +206,14 @@ public class RegistrationActivity extends AppCompatActivity {
         if(!validatedUser.isValidEmail()) emailTextField.setError(this.getString(R.string.email_not_valid));
         if(!validatedUser.isValidLastName()) lastNameTextField.setError(this.getString(R.string.last_name_empty));
         if(!validatedUser.isValidFirstName()) firstNameTextField.setError(this.getString(R.string.first_name_empty));
-        if(!validatedUser.isValidPassword()) passwordTextField.setError(this.getString(R.string.password_not_valid));
-        if(!validatedUser.isValidRepeatedPassword()) repeatedPasswordTextField.setError((this.getString(R.string.repeated_password_doesnt_match)));
+        if(!validatedUser.isValidPassword()){
+            passwordTextField.setError(this.getString(R.string.password_not_valid));
+            ((TextInputLayout)findViewById(R.id.activity_registration_password_field_layout)).setEndIconMode(TextInputLayout.END_ICON_NONE);
+        }
+        if(!validatedUser.isValidRepeatedPassword()){
+            repeatedPasswordTextField.setError((this.getString(R.string.repeated_password_doesnt_match)));
+            ((TextInputLayout)findViewById(R.id.activity_registration_repeat_password_field_layout)).setEndIconMode(TextInputLayout.END_ICON_NONE);
+        }
 
 
     }

@@ -25,6 +25,7 @@
         android:fontFamily="@font/bungee_regular"
         android:maxWidth="155dp"
         android:text=""
+        android:textColor="@color/text_color"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         ></TextView>
 
     <TextView
@@ -56,6 +57,7 @@
         android:fontFamily="@font/bungee_regular"
         android:maxWidth="155dp"
         android:text=""
+        android:textColor="@color/text_color"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/detailed_match_comment_item_icon"
