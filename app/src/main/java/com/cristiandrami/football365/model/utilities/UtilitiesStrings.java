@@ -16,6 +16,8 @@ public class UtilitiesStrings {
     public static final String MATCHES_API_JSON_MATCH_CURRENT_TIME ="currentTime" ;
     public static final String FIREBASE_LIKED_NEWS_USERS_COLLECTION = "liked_news_users";
     public static final String FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION = "news";
+    public static final String FIREBASE_AUTH_PASSWORD_WRONG = "The password is invalid or the user does not have a password";
+    public static final String DETAILED_MATCH_EXTRA_TO_RETRIEVE = "match";
 
 
     private UtilitiesStrings(){}

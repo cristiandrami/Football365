@@ -71,7 +71,7 @@ public class LikedNewsFragment extends Fragment {
     }
 
     private void setTimerToManageChangesOnRecyclerView() {
-        int delay = 1200;   // delay for 5 sec.
+        int delay = 1200;
         int period=500;
 
         Timer timer = new Timer();
@@ -83,8 +83,7 @@ public class LikedNewsFragment extends Fragment {
                 //Log.e("size", String.valueOf(recyclerViewItems.size()));
                 if(recyclerViewItems.size()==0){
                     makeNoNewsGraphicVisible(View.VISIBLE);
-                }
-                else {
+                } else {
                     makeNoNewsGraphicVisible(View.INVISIBLE);
                 }
 
@@ -112,8 +111,6 @@ public class LikedNewsFragment extends Fragment {
                     root.findViewById(R.id.no_liked_news_icon).setVisibility(visible);
                     root.findViewById(R.id.no_liked_news_string).setVisibility(visible);
 
-                    //shimmerFrameLayoutRecyclerView.setVisibility(View.GONE);
-                    //shimmerFrameLayoutRecyclerView.stopShimmer();
                 }
             });
         }

@@ -75,8 +75,6 @@ public class NewsFragment extends Fragment {
         newsViewModel.setShimmerFrameLayout(shimmerFrameLayoutRecyclerView);
         shimmerFrameLayoutRecyclerView.startShimmer();
 
-        //i need before initData because i have to set from the database the news and then
-        //i can set the recycler view
         initData();
         initRecyclerView();
 
@@ -102,12 +100,16 @@ public class NewsFragment extends Fragment {
 
         newsViewModel.setHandler(recyclerViewHandler);
 
+        startTimerToUpdateLikedNews();
+
+
+    }
+
+    private void startTimerToUpdateLikedNews() {
         int delay = 1000;   // delay for 5 sec.
         int period = 3000;
 
         Timer timer = new Timer();
-
-
 
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -127,8 +129,6 @@ public class NewsFragment extends Fragment {
 
             }
         }, delay, period);
-
-
     }
 
 

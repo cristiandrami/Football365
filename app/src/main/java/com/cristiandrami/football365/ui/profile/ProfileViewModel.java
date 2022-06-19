@@ -119,12 +119,11 @@ public class ProfileViewModel extends ViewModel {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Log.e("update", "logged");
                         updateDocumentInformation(newInformation);
                         if (!newPassword.isEmpty()) {
                             updatePassword(user, newPassword, profileFragment);
                         } else {
-                            Log.e("dismissing", "dismiss");
+
                             profileFragment.dismissPopup();
                         }
                     } else {
@@ -142,8 +141,6 @@ public class ProfileViewModel extends ViewModel {
     }
     private void updateDocumentInformation(User newInformation){
         String userEmail=newInformation.getEmail();
-
-        Log.e("update", userEmail);
 
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userEmail);
         Map<String, Object> user= new HashMap<>();
@@ -171,7 +168,6 @@ public class ProfileViewModel extends ViewModel {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Log.e("password", "updated " + newPassword);
                     profileFragment.dismissPopup();
                 }
             }

@@ -69,6 +69,8 @@
     <string name="email_sent">We have sent a confirmation email, please check it to continue...</string>
     <string name="email_confirmed_button_hint">I have confirmed</string>
     <string name="email_resent_text">It seems that your account is not verified, we have sent another email to you address, please verify your account...</string>
+    <string name="email_empty">Email field empty...</string>
+    <string name="password_empty">Password field empty...</string>
 
 
 </resources>

@@ -54,13 +54,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/email_field_layout"
+            android:id="@+id/activity_login_email_field_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="@string/email_hint"
             android:layout_marginBottom="5dp"
             android:textColorHint="@color/black">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email_field_edit_text"
+                android:id="@+id/activity_login_email_field_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_baseline_email_24"></com.google.android.material.textfield.TextInputEditText>
@@ -68,9 +68,10 @@
 
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/activity_registration_password_field_layout"
+            android:id="@+id/activity_login_password_field_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:textColorHint="@color/black"
             android:hint="@string/password_hint"
@@ -78,7 +79,7 @@
             android:layout_marginTop="5dp"
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_field_edit_text"
+                android:id="@+id/activity_login_password_field_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"

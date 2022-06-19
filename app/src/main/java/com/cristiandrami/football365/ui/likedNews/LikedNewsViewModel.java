@@ -78,7 +78,6 @@ public class LikedNewsViewModel extends ViewModel {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-
                                 try {
                                     Gson gsonObject = new Gson();
                                     String jsonArticle = gsonObject.toJson(document.getData().values());
@@ -89,33 +88,17 @@ public class LikedNewsViewModel extends ViewModel {
 
                                     news.setType(UtilitiesNumbers.LIKED_NEWS_TYPE);
 
-
-                                    Log.e("article", news.toString());
-
-
                                     newsList.add(news);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
-
                             }
-                            //dismissShimmer();
-
                             recyclerViewHandler.notifyDataSetChanged();
                             dismissShimmer();
-                            //likedNewsFragment.updateList(newsList);
-
-
                         }
-
-
                     }
                 });
-
-
-
     }
 
 

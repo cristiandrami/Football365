@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
 
     //This variable sets the delay time before pass on login activity
     //In this case we wait 3 seconds
-    private static int SPLASH_SCREEN = 0;
+    private static int SPLASH_SCREEN = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,9 @@ public class SplashActivity extends AppCompatActivity {
     private void setupAllApp() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String actualTheme=preferences.getString(AppUtilities.THEME_PREFERENCE_KEY, "");
-        if(actualTheme.equals("")){
+        if(actualTheme.equals(AppUtilities.DARK_THEME)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         CompetitionsUtilities.getInstance();

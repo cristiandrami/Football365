@@ -64,6 +64,7 @@ public class MatchesViewModel extends ViewModel {
      * @param maxPosition
      * @param datesPositionMap
      */
+
     public void setPositionDatesMap(int minPosition, int maxPosition, HashMap<Integer, String> datesPositionMap) {
 
         if (minPosition <= 0) {
@@ -111,13 +112,11 @@ public class MatchesViewModel extends ViewModel {
                         matchesOfTheDayList.clear();
                         matchesJSONObject = new JSONObject(response.body().string());
                         JSONArray matchesJSONArray = matchesJSONObject.getJSONArray(UtilitiesStrings.MATCHES_API_JSON_MATCHES_ARRAY_NAME);
-                        Log.e("match string", matchesJSONArray.toString());
 
                         for (int i = 0; i < matchesJSONArray.length(); i++) {
                             Match match = setMatchesFromJSONArray(matchesJSONArray, i);
                             if(context!=null)
                                 addTimeZoneOnStartTime(match, context.getString(R.string.match_time_zone));
-
                         }
 
                         /** This sorts the matches from their geographic areas (alphabetic sorting) */
@@ -150,12 +149,11 @@ public class MatchesViewModel extends ViewModel {
      */
     private void addTimeZoneOnStartTime(Match match, String currentTimeZone) {
         if (!currentTimeZone.equals(UtilitiesStrings.MATCH_TIME_ZONE_0)) {
-            System.out.println(currentTimeZone);
+
             if (changeStartTimeAndDateIfNeeded(match, currentTimeZone)) {
                 addMatchOnTheOtherDaysMap(match);
             } else {
                 matchesOfTheDayList.add(match);
-
             }
         }
     }
@@ -278,6 +276,28 @@ public class MatchesViewModel extends ViewModel {
                 java.util.Date date = formatter.parse(match.getDate());
                 long milliseconds = date.getTime();
                 milliseconds += UtilitiesNumbers.DAY_IN_MILLISECONDS;
+                Date sqlDate = new Date(milliseconds);
+                match.setDate(sqlDate.toString());
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            /** the date has been changed */
+            dateChanged = true;
+        } else if (intHour < 0) {
+            /** if the new hour is <0> we have to switch the date to the previous day */
+
+            /** getting the correct new hour */
+            intHour += 24;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            /** creating the new date and converting it in a String */
+            try {
+                java.util.Date date = formatter.parse(match.getDate());
+                long milliseconds = date.getTime();
+                milliseconds -= UtilitiesNumbers.DAY_IN_MILLISECONDS;
                 Date sqlDate = new Date(milliseconds);
                 match.setDate(sqlDate.toString());
 

@@ -57,24 +57,19 @@ public class MatchesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         matchesViewModel =
                 new ViewModelProvider(this).get(MatchesViewModel.class);
 
         binding = FragmentMatchesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        matchFragmentLinearLayout = binding.matchesFragmentLinearLayout;
-        progressBar = binding.matchesFragmentProgressBar;
+
+        bindGraphicalComponents();
 
         matchFragmentLinearLayout.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
-        leftArrow = binding.matchesFragmentLeftArrow;
-        rightArrow = binding.matchesFragmentRightArrow;
-        currentDateTextView = binding.matchesFragmentCurrentDate;
 
         setLeftArrowClickListener();
         setRightArrowClickListener();
-
 
         matchesViewModel.setPositionDatesMap(minPosition, maxPosition, datesPositionMap);
 
@@ -82,18 +77,22 @@ public class MatchesFragment extends Fragment {
 
         competitionHashMap = CompetitionsUtilities.getInstance().getCompetitions();
 
-
         matchesViewModel.updateMatchesListV2(this, datesPositionMap.get(currentPosition), getContext());
 
         rightArrow.setVisibility(View.INVISIBLE);
         leftArrow.setVisibility(View.INVISIBLE);
         matchesViewModel.updateNextAndPreviousMatches(minPosition, maxPosition, datesPositionMap, getContext(), this);
 
-
         updateMatchesEachMinute();
-
-
         return root;
+    }
+
+    private void bindGraphicalComponents() {
+        matchFragmentLinearLayout = binding.matchesFragmentLinearLayout;
+        progressBar = binding.matchesFragmentProgressBar;
+        leftArrow = binding.matchesFragmentLeftArrow;
+        rightArrow = binding.matchesFragmentRightArrow;
+        currentDateTextView = binding.matchesFragmentCurrentDate;
     }
 
 
@@ -276,7 +275,7 @@ public class MatchesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent switchToDetailedMatchActivity = new Intent(getActivity(), DetailedMatchActivity.class);
-                switchToDetailedMatchActivity.putExtra("match", new Gson().toJson(match));
+                switchToDetailedMatchActivity.putExtra(UtilitiesStrings.DETAILED_MATCH_EXTRA_TO_RETRIEVE, new Gson().toJson(match));
                 startActivity(switchToDetailedMatchActivity);
             }
         });

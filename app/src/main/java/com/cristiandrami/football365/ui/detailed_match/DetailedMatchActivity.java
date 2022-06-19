@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.model.detailed_match.comment.CommentItem;
 import com.cristiandrami.football365.model.detailed_match.line_up.Player;
+import com.cristiandrami.football365.model.utilities.UtilitiesStrings;
 import com.cristiandrami.football365.model.utilities.matches_utilities.Match;
 import com.google.gson.Gson;
 
@@ -37,6 +38,7 @@ public class DetailedMatchActivity extends AppCompatActivity {
     private LinearLayout refereesLayout;
 
     private TextView backToMainActivityTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,7 @@ public class DetailedMatchActivity extends AppCompatActivity {
     }
 
     private void setGraphicalValues() {
-        match= new Gson().fromJson(getIntent().getStringExtra("match"), Match.class);
+        match= new Gson().fromJson(getIntent().getStringExtra(UtilitiesStrings.DETAILED_MATCH_EXTRA_TO_RETRIEVE), Match.class);
         setPlayersLineUp(match);
         setTeamsNames(match);
         setMatchScore(match);
@@ -115,7 +117,6 @@ public class DetailedMatchActivity extends AppCompatActivity {
      * if the comment item is related to the away team, the home team information are hidden
      * @param match contains all information */
     private void setCommentSection(Match match) {
-
         detailedMatchActivityModel.fillCommentSectionLayout(match, this, commentLayout);
     }
 

@@ -31,13 +31,11 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="sign_up">Registrati</string>
-    <string name="email_not_valid">Email non valida, assicurati di averla inserita correttamente</string>
-    <string name="last_name_empty">Assicurati che il nome contenga solo lettere e spazi</string>
-    <string name="first_name_empty">Assicurati che il cognome contenga solo lettere e spazi</string>
-    <string name="password_not_valid"><![CDATA[Password non valida: deve avere almeno un numero
-     almeno una lettera maiuscola
-     almeno un carattere speciale tra ?=.*[@#$%^&-+=()
-     deve avere una lunghezza tra almeno 8 e massimo 20 caratteri]]></string>
+    <string name="email_not_valid">Email non valida, assicurati di averla inserita correttamente e che rispetti il formato
+    esempio@dominio.__</string>
+    <string name="last_name_empty">Assicurati che il cognome contenga solo lettere e spazi</string>
+    <string name="first_name_empty">Assicurati che il nome contenga solo lettere e spazi</string>
+    <string name="password_not_valid"><![CDATA[Password non valida, deve contenere:\nalmeno un numero\nalmeno una lettera maiuscola\nalmeno un carattere speciale tra ?=.*[@#$%^&-+=()\nalmeno 8 ma massimo 20 caratteri]]></string>
     <string name="repeated_password_doesnt_match">Passwords doesn\'t match</string>
     <string name="title_news">Notizie</string>
     <string name="full_name_title">Nome completo</string>
@@ -64,7 +62,7 @@
     <string name="match_comment_title">COMMENTO</string>
     <string name="match_line_up_title">FORMAZIONI</string>
     <string name="match_referees_title">ARBITRI</string>
-    <string name="no_liked_news">Non hai messo mi piace a nessuna news...</string>
+    <string name="no_liked_news">Non hai messo mi piace a nessuna notizia...</string>
     <string name="title_liked_news">Notizie preferite</string>
 
     <string name="no_matches_string">Non ci sono partite per oggi...</string>
@@ -74,5 +72,7 @@
     <string name="email_confirmed_button_hint">Ho confermato</string>
     <string name="email_resent_text">Il tuo profilo non sembra essere stato verificato, abbiamo inviato una nuova email, prova ora con la verifica...</string>
 
+    <string name="email_empty">Il campo Email non può essere vuoto, perfavore inserisci la tua email per accedere...</string>
+    <string name="password_empty">Il campo Password non può essere vuoto, perfavore inserisci la tua password per accedere...</string>
 
 </resources>

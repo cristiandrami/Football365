@@ -126,20 +126,13 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
             likedArticleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    News currentNew = new News();
-                    currentNew.setDescription(description);
-                    currentNew.setImage(image);
-                    currentNew.setLink(link);
-                    currentNew.setTitle(title);
-                    String newJSON = new Gson().toJson(currentNew);
-
                     NewsRecyclerViewItemModel newToAddOnList = new NewsRecyclerViewItemModel();
                     newToAddOnList.setImage(image);
                     newToAddOnList.setType(type);
                     newToAddOnList.setLink(link);
                     newToAddOnList.setTitle(title);
                     newToAddOnList.setDescription(description);
+                    String newJSON = new Gson().toJson(newToAddOnList);
 
                     if (type == UtilitiesNumbers.LIKED_NEWS_TYPE) {
                         items.remove(getAdapterPosition());
@@ -165,13 +158,9 @@ public class NewsRecyclerViewHandler extends RecyclerView.Adapter<NewsRecyclerVi
                             FirebaseFirestore.getInstance().collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_USERS_COLLECTION).
                                     document(FirebaseAuth.getInstance().getCurrentUser().getEmail()).collection(UtilitiesStrings.FIREBASE_LIKED_NEWS_SINGLE_USER_COLLECTION)
                                     .document(title).set(newToStore);
-
-
                             LikedNewsUtilities.getInstance().addOnLikedList(newToAddOnList);
                         }
                     }
-
-
                 }
             });
         }

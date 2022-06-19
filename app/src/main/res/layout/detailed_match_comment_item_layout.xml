@@ -19,8 +19,10 @@
         android:layout_marginBottom="3dp"></ImageView>
 
     <TextView
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:id="@+id/detailed_match_comment_item_away_event"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bungee_regular"
         android:maxWidth="155dp"
@@ -51,8 +53,10 @@
         ></TextView>
 
     <TextView
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:id="@+id/detailed_match_comment_item_home_event"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bungee_regular"
         android:maxWidth="155dp"

@@ -24,10 +24,10 @@ public class SignUpValidator {
     private SignUpValidator(){}
 
 
-    private static final String emailValidationRegex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
+    private static final String emailValidationRegex = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@" +
+            "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
     private static final Pattern emailPattern = Pattern.compile(emailValidationRegex);
-    private static final String nameValidationRegex = "^[a-zA-Z\\s]*$";
-    private static final Pattern namePattern = Pattern.compile(nameValidationRegex);
+
 
 
     public static ValidationUser validateRegistration(RegistrationUser newUser) {
@@ -66,10 +66,6 @@ public class SignUpValidator {
     }
 
     private static boolean validateName(String name) {
-        if(name.trim().isEmpty()){
-            return false;
-        }
-        Matcher nameMatcher= namePattern.matcher(name);
-        return nameMatcher.matches();
+       return NameValidator.validateName(name);
     }
 }

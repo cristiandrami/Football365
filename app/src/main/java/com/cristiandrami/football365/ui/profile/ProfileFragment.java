@@ -1,6 +1,5 @@
 package com.cristiandrami.football365.ui.profile;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.cristiandrami.football365.R;
 import com.cristiandrami.football365.databinding.FragmentProfileBinding;
 import com.cristiandrami.football365.model.AppUtilities;
+import com.cristiandrami.football365.model.registration.NameValidator;
 import com.cristiandrami.football365.model.registration.PasswordValidator;
 import com.cristiandrami.football365.model.user.User;
 import com.google.android.material.textfield.TextInputEditText;
@@ -80,28 +79,40 @@ public class ProfileFragment extends Fragment {
         View root = binding.getRoot();
 
 
-        setBindInformation();
+        setGraphicalBinding();
+        createUpdatePopup();
 
 
         setListenerOnUpdateButton();
         setChangeListenerToNewPassword();
+        setOnClickListenerSwitchThemeButton();
+        setGraphicalValuesDynamically();
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String actualTheme=preferences.getString(AppUtilities.THEME_PREFERENCE_KEY, "");
-        SharedPreferences.Editor editor = preferences.edit();
-
-        if(actualTheme.equals(AppUtilities.DARK_THEME)){
-            themeIcon.setImageResource(R.drawable.dark_theme_icon);
-        }else{
-            themeIcon.setImageResource(R.drawable.light_theme_icon);
-        }
+        setThemeIconByUserPreference();
 
 
         return root;
     }
 
-    private void setChangeListenerToNewPassword() {
-        newPasswordFieldEditTextProfileFragment.addTextChangedListener(new TextWatcher() {
+    private void createUpdatePopup() {
+        updatePopup = new Dialog(getContext());
+        updatePopup.setContentView(R.layout.profile_update_popup);
+        updatePopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogConfirmationButton = updatePopup.findViewById(R.id.confirmation_update_profile_button);
+        oldPasswordFieldEditTextProfileFragment = updatePopup.findViewById(R.id.profile_update_popup_old_password_field_edit_text_profile_fragment);
+        setOnChangeListenerOnTextInputEdit(oldPasswordFieldEditTextProfileFragment, oldPasswordFieldLayoutProfileFragment);
+        oldPasswordFieldLayoutProfileFragment = updatePopup.findViewById(R.id.profile_update_popup_old_password_field_layout);
+
+        dialogConfirmationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateInformation();
+            }
+        });
+    }
+
+    private void setOnChangeListenerOnTextInputEdit(TextInputEditText textField, TextInputLayout textInputLayout) {
+        textField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -109,7 +120,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                binding.newPasswordFieldLayout.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+                textInputLayout.setError(null);
             }
 
             @Override
@@ -117,7 +128,21 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
 
+    private void setThemeIconByUserPreference() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String actualTheme=preferences.getString(AppUtilities.THEME_PREFERENCE_KEY, "");
+
+        if(actualTheme.equals(AppUtilities.DARK_THEME)){
+            themeIcon.setImageResource(R.drawable.dark_theme_icon);
+        }else{
+            themeIcon.setImageResource(R.drawable.light_theme_icon);
+        }
+    }
+
+    private void setChangeListenerToNewPassword() {
+        setOnChangeListenerOnTextInputEdit(newPasswordFieldEditTextProfileFragment, binding.profileFragmentNewPasswordFieldLayout);
     }
 
     /*private void setListenerOnNewPasswordEditText() {
@@ -167,35 +192,29 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //TODO validator fields if valid show
+                binding.profileFragmentLastNameFieldLayout.setError(null);
+                binding.profileFragmentFirstNameFieldLayout.setError(null);
+
+
                 String newPassword=newPasswordFieldEditTextProfileFragment.getText().toString().trim();
                 String firstName=firstNameFieldEditTextProfileFragment.getText().toString().trim();
                 String lastName=lastNameTextInputEditTextProfileFragment.getText().toString().trim();
+                boolean areAllFieldCorrect=true;
                 if (!newPassword.isEmpty() && !PasswordValidator.validatePassword(newPassword)) {
-                    Log.e("new pass", newPasswordFieldEditTextProfileFragment.getText().toString());
                     setErrorOnNewPassword();
-                }else if(lastName==null || lastName.isEmpty()){
-                    setErrorOnLastName();
-                }else if(firstName==null || firstName.isEmpty()){
-                    setErrorOnFirstName();
+                    areAllFieldCorrect=false;
                 }
-                else{
+                if(lastName==null || !NameValidator.validateName(lastName)){
+                    setErrorOnLastName();
+                    areAllFieldCorrect=false;
+                }
+                if(firstName==null || !NameValidator.validateName(firstName)){
+                    setErrorOnFirstName();
+                    areAllFieldCorrect=false;
+                }
+                if( areAllFieldCorrect){
                     updatePopup.show();
                 }
-            }
-        });
-
-        updatePopup = new Dialog(getContext());
-        updatePopup.setContentView(R.layout.profile_update_popup);
-        updatePopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialogConfirmationButton = updatePopup.findViewById(R.id.confirmation_update_profile_button);
-        oldPasswordFieldEditTextProfileFragment = updatePopup.findViewById(R.id.old_password_field_edit_text_profile_fragment);
-        oldPasswordFieldLayoutProfileFragment = updatePopup.findViewById(R.id.old_password_field_layout);
-
-        dialogConfirmationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateInformation();
             }
         });
 
@@ -204,10 +223,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setErrorOnLastName() {
-        lastNameTextInputEditTextProfileFragment.setError(getActivity().getString(R.string.last_name_empty));
+        binding.profileFragmentLastNameFieldLayout.setError(getActivity().getString(R.string.last_name_empty));
     }
     private void setErrorOnFirstName() {
-        firstNameFieldEditTextProfileFragment.setError(getActivity().getString(R.string.first_name_empty));
+        binding.profileFragmentFirstNameFieldLayout.setError(getActivity().getString(R.string.first_name_empty));
     }
 
     public void dismissPopup() {
@@ -238,11 +257,11 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void setBindInformation() {
+    private void setGraphicalBinding() {
 
-        firstNameFieldEditTextProfileFragment = binding.firstNameFieldEditTextProfileFragment;
-        lastNameTextInputEditTextProfileFragment = binding.lastNameFieldEditTextProfileFragment;
-        newPasswordFieldEditTextProfileFragment = binding.newPasswordFieldEditTextProfileFragment;
+        firstNameFieldEditTextProfileFragment = binding.profileFragmentFirstNameFieldEditText;
+        lastNameTextInputEditTextProfileFragment = binding.profileFragmentLastNameFieldEditText;
+        newPasswordFieldEditTextProfileFragment = binding.profileFragmentNewPasswordFieldEditText;
         emailTextView = binding.profileEmail;
         fullNameTextView = binding.profileFullName;
 
@@ -250,9 +269,7 @@ public class ProfileFragment extends Fragment {
         switchThemeButton= binding.switchThemeProfileFragment;
         themeIcon= binding.themeIconProfileFragment;
 
-        setOnClickListenerSwitchThemeButton();
 
-        setGraphicalValuesDynamically();
 
     }
 
@@ -299,11 +316,10 @@ public class ProfileFragment extends Fragment {
     }
 
     public void setErrorOnNewPassword() {
-        binding.newPasswordFieldLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
-        newPasswordFieldEditTextProfileFragment.setError(getActivity().getString(R.string.password_not_valid));
+        binding.profileFragmentNewPasswordFieldLayout.setError(getActivity().getString(R.string.password_not_valid));
     }
 
     public void setErrorOnOldPassword() {
-        oldPasswordFieldEditTextProfileFragment.setError(getActivity().getString(R.string.password_not_correct));
+        oldPasswordFieldLayoutProfileFragment.setError(getActivity().getString(R.string.password_not_correct));
     }
 }
