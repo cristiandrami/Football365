@@ -36,8 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MatchesViewModel extends ViewModel {
-
-    private final CompetitionsUtilities competitionsUtilities = CompetitionsUtilities.getInstance();
     private final List<Match> matchesOfTheDayList = new ArrayList<>();
 
 
@@ -174,7 +172,6 @@ public class MatchesViewModel extends ViewModel {
         matchDate = matchDate.substring(0, matchDate.indexOf("T"));
 
         JSONObject competitionJSONObject = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_NAME);
-        System.out.println(competitionJSONObject);
         String competitionId = String.valueOf(competitionJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_COMPETITION_ID_FIELD));
 
         JSONObject homeTeam = (JSONObject) singleMatchJSONObject.get(UtilitiesStrings.MATCHES_API_JSON_HOME_TEAM);

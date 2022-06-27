@@ -14,11 +14,11 @@ public class UtilitiesNumbers {
     private UtilitiesNumbers(){}
     public static final int MATCHES_DAYS = 7;
     public static final int MATCHES_PREVIOUS_DAYS = 4;
-    public static long DAY_IN_MILLISECONDS= 24 * 60 * 60 * 1000;
+    public static final long DAY_IN_MILLISECONDS= (24 * 60 * 60 * 1000);
 
 
 
     //every 4 hours The news will be updated
-    public static final long NEWS_FREQUENCY_UPDATE = 4 * 60 * 60 * 1000;
+    public static final long NEWS_FREQUENCY_UPDATE = (4 * 60 * 60 * 1000);
 
 }

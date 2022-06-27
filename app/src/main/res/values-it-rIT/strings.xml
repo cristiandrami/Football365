@@ -74,5 +74,10 @@
 
     <string name="email_empty">Il campo Email non può essere vuoto, perfavore inserisci la tua email per accedere...</string>
     <string name="password_empty">Il campo Password non può essere vuoto, perfavore inserisci la tua password per accedere...</string>
+    <string name="send_reset_password_email_button_hint">Send reset email</string>
+    <string name="send_password_reset_email_information">Per favore inserisci l\'indirizzo email associato al tuo account per ricevere l\'email di reset della password</string>
+    <string name="reset_password_email_sent">Ti abbiamo inviato una email per il reset della password...</string>
+    <string name="go_to_login">Vai al login</string>
+    <string name="email_not_used">Non esiste nessun account con questo indirizzo email, per favore controlla di averlo inserito correttamente</string>
 
 </resources>

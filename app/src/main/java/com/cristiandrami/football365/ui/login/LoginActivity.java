@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.cristiandrami.football365.EmailConfirmationActivity;
 import com.cristiandrami.football365.MainActivity;
 import com.cristiandrami.football365.R;
+import com.cristiandrami.football365.ResetPasswordActivity;
 import com.cristiandrami.football365.model.utilities.matches_utilities.CompetitionsUtilities;
 import com.cristiandrami.football365.ui.registration.RegistrationActivity;
 import com.cristiandrami.football365.model.login.UserLogin;
@@ -44,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout passwordTextLayout;
     private TextInputLayout emailTextLayout;
     private ProgressBar loginProgressBar;
+    private Button forgetPasswordButton;
 
 
     /**
@@ -71,6 +73,19 @@ public class LoginActivity extends AppCompatActivity {
         setLoginButtonListener();
         setRegistrationButtonLinkListener();
         setPasswordTextFieldListener();
+        setForgetPasswordButtonListener();
+
+    }
+
+    private void setForgetPasswordButtonListener() {
+        forgetPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent switchToResetPasswordActivity = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                startActivity(switchToResetPasswordActivity);
+            }
+        });
+
     }
 
     private void setupApplication() {
@@ -194,6 +209,7 @@ public class LoginActivity extends AppCompatActivity {
         registrationLinkButton= findViewById(R.id.register_button_link);
         passwordTextLayout= findViewById(R.id.activity_login_password_field_layout);
         emailTextLayout=findViewById(R.id.activity_login_email_field_layout);
+        forgetPasswordButton= findViewById(R.id.activity_login_forget_password_button);
 
     }
 }

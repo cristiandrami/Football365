@@ -89,7 +89,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/forget_password_button"
+            android:id="@+id/activity_login_forget_password_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="@string/forgot_password"

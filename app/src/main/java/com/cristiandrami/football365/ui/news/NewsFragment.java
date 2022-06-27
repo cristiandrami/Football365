@@ -120,11 +120,11 @@ public class NewsFragment extends Fragment {
                     }
                 };
 
-                if (runnable != null) {
-                    if(getActivity() == null)
-                        return;
-                    getActivity().runOnUiThread(runnable);
-                }
+
+                if (getActivity() == null)
+                    return;
+
+                getActivity().runOnUiThread(runnable);
 
 
             }

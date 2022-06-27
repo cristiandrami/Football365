@@ -116,6 +116,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                /***
+                 * This method is not needed
+                 */
             }
 
             @Override
@@ -125,7 +128,9 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                /***
+                 * This method is not needed
+                 */
             }
         });
     }
@@ -144,47 +149,6 @@ public class ProfileFragment extends Fragment {
     private void setChangeListenerToNewPassword() {
         setOnChangeListenerOnTextInputEdit(newPasswordFieldEditTextProfileFragment, binding.profileFragmentNewPasswordFieldLayout);
     }
-
-    /*private void setListenerOnNewPasswordEditText() {
-        newPasswordFieldEditTextProfileFragment.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()>0){
-
-                }else{
-                    makeOldPasswordFieldsInvisible();
-
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if(charSequence.length()>0){
-                    makeOldPasswordFieldsVisible();
-                }else{
-                    makeOldPasswordFieldsInvisible();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-    }
-
-    private void makeOldPasswordFieldsInvisible() {
-        oldPasswordFieldEditTextProfileFragment.setVisibility(View.INVISIBLE);
-        oldPasswordFieldLayoutProfileFragment.setVisibility(View.INVISIBLE);
-    }
-
-
-
-    private void makeOldPasswordFieldsVisible() {
-        oldPasswordFieldEditTextProfileFragment.setVisibility(View.VISIBLE);
-        oldPasswordFieldLayoutProfileFragment.setVisibility(View.VISIBLE);
-    }
-    */
 
 
     private void setListenerOnUpdateButton() {

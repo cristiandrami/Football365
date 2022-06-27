@@ -71,6 +71,11 @@
     <string name="email_resent_text">It seems that your account is not verified, we have sent another email to you address, please verify your account...</string>
     <string name="email_empty">Email field empty...</string>
     <string name="password_empty">Password field empty...</string>
+    <string name="send_reset_password_email_button_hint">Send reset email</string>
+    <string name="send_password_reset_email_information">Please enter your email address to receive the password change email....</string>
+    <string name="reset_password_email_sent">We have sent you an email to reset the password, check it...</string>
+    <string name="go_to_login">Go to login page</string>
+    <string name="email_not_used">There isn\'t an account with this email...</string>
 
 
 </resources>

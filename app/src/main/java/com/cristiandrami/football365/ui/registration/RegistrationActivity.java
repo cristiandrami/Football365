@@ -82,7 +82,9 @@ public class RegistrationActivity extends AppCompatActivity {
         repeatedPasswordTextField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                /***
+                 * This method is not needed
+                 */
             }
 
             @Override
@@ -92,7 +94,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                /***
+                 * This method is not needed
+                 */
             }
         });
     }
@@ -101,7 +105,9 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordTextField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                /***
+                 * This method is not needed
+                 */
             }
 
             @Override
@@ -111,7 +117,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                /***
+                 * This method is not needed
+                 */
             }
         });
     }
@@ -189,7 +197,6 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
 
-                    //switchToMainActivity();
                     firebaseAuth.getCurrentUser().sendEmailVerification();
 
                     switchToEmailConfirmationActivity();
