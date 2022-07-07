@@ -76,6 +76,8 @@
     <string name="reset_password_email_sent">We have sent you an email to reset the password, check it...</string>
     <string name="go_to_login">Go to login page</string>
     <string name="email_not_used">There isn\'t an account with this email...</string>
+    <string name="logout_hint">Logout</string>
+    <string name="logout_confirmation">Logout... Are you sure?</string>
 
 
 </resources>
